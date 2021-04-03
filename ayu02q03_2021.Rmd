@@ -50,7 +50,7 @@ xtabs(~ dem_group + level_lab, data = .) %>%     # calcular la cantidad de casos
 
 ```
 
-# Enfoque 2: empleado `table`
+# Enfoque 2: empleando `table`
 
 En el segundo enfoque emplearemos sólo codigo base. Una de las ventajas de este enfoque es que no requiere instalar librerias. Sin embargo, el codigo generado tiene un costo: no resuelve la presentación del resultado.
 
@@ -253,4 +253,4 @@ knitr::kable(., digits = 2)
 # Respuesta
 
 **Cuál es el nivel de conocimiento más frecuente en cada perfil de concepto de democracia, en Perú.**
-Los niveles de conocimiento más frecuente en cada perfil, son los siguientes: entre los estudiantes de perfil *complex* la mayoría de los estudiantes se encuentra en el nivel de conocimiento 2 (level 2 = 44%, n = 34); mientras que la mayoría de los estudiantes del perfil *minimalist* se encuentran en el nivel de conocimiento 1 (level 1 = 36%, n = 390). Finalmente, en el perfil *limited* concentra un 41% de sus estudiantes en el nivel 0 (level 0 = 41%, 76).
+Empleando los datos de Perú, observamos que los niveles de conocimiento más frecuente en cada perfil, son los siguientes: entre los estudiantes de perfil *complex* la mayoría de los estudiantes se encuentra en el nivel de conocimiento 2 (level 2 = 44%, n = 34); mientras que la mayoría de los estudiantes del perfil *minimalist* se encuentran en el nivel de conocimiento 1 (level 1 = 36%, n = 390). Finalmente, en el perfil *limited* concentra un 41% de sus estudiantes en el nivel 0 (level 0 = 41%, 76).
