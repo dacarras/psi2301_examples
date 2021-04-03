@@ -758,24 +758,23 @@ dem_16 %>%
 # cambiando orden de los grupos
 # -----------------------------------------------
 
+ordered_dem <- factor(dem_16$dem_group,
+                      level = c('limited', 'minimalist', 'complex'))
+
+
 dem_16 %>%
   ggplot(
     aes(
-      x= dem_group,
-      fill= dem_group)
-    ) +
-  scale_fill_brewer(palette = "Set3") +
+      x= ordered_dem,
+      fill= ordered_dem
+      )) +
+  geom_bar() +
   labs(
     x= "Perfiles democráticos",
     y= "Frecuencia",
     title = "Distribución de Perfiles Democráticos") +
   coord_flip() +
-  scale_x_discrete(
-    limits = c(
-      'complex',
-      'minimalist',
-      'limited')) +
-  theme_classic() 
+  theme_classic()
 
 ```
 
