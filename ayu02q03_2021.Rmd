@@ -192,7 +192,7 @@ paso_1 <- tabla_max %>%
           print
 ```
 
-Luego, calculamos el total de casos por cada `dem_group`. Al contar con esta cifra1, el total, en la tabla que estamos creando, la podemos ocupar posteriormente, para obtener los porcetajes.
+Luego, calculamos el total de casos por cada `dem_group`. Al contar con esta cifra1, el total, en la tabla que estamos creando, la podemos ocupar posteriormente, para obtener los porcentajes.
 
 ```{r}
 
@@ -204,7 +204,7 @@ paso_2 <- tabla_max %>%
 ```
 
 Ahora, ya tenemos los datos de interés, pero necesitamos eleminar las filas que no queremos utilizar.
-Esto lo logramos con `dplyr::filter(interes == 1)` sobre la tabla generada. Además, ocupamos `ungroup()` para que `R` interprete a nuestra tabla como una tabla plana.
+Esto lo logramos con `dplyr::filter(interes == 1)` sobre la tabla generada. Además, ocupamos `ungroup()` para que `R` interprete a nuestra tabla como una tabla plana, y no una tabla agrupada.
 
 ```{r}
 
