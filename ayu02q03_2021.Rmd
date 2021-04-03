@@ -1,0 +1,246 @@
+---
+title: "Ayudantía 2, pregunta c"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+- c) Cuál es el nivel de conocimiento más frecuente en cada perfil de concepto de democracia, en Perú.
+
+>Nota: para resolver la siguente pregunta necesitamos obtener el máximo de frecuencia de "nivel de conocimiento" (`level_lab`), al interior de cada grupo de "perfil de concepto de democracia" (`dem_group`). Existen diferentes maneras de obtener resultados que nos permitan contestar esta pregunta. En el siguiente código, revisaremos dos formas.
+
+
+# Enfoque 1: empleando `xtabs`
+
+En el primer enfoque, emplearemos la menor cantidad de líneas de código que podamos.
+Al igual que en otros ejemplos, en pasos, lo que debemos incluir es la siguiente secuencia:
+
+- abrir los datos
+- filtrar los casos, para realizar el análisis de datos sobre los casos de interés
+- calcular las frecuencia en una tabla cruzada o tabla de contingencia
+- obtener los porcentajes por fila
+  + queremos que los porcentajes obtenidos sumen 1 al interior de cada perfil
+- mostrar la tabla.
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+
+# -----------------------------------------------------------------------------
+# tabla de contigencia
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# tabla de contingencia: enfoque 01
+# -----------------------------------------------
+
+library(dplyr)                                   # abrir dplyr para activar los pipes
+psi2301::dem_16 %>%                              # abrir los datos desde la libreria
+dplyr::filter(ctry == 'Peru') %>%                # filtrar los casos, para quedarse solo con Perú
+xtabs(~ dem_group + level_lab, data = .) %>%     # calcular la cantidad de casos cruzados
+  prop.table(., margin = 1) %>%                  # calcular los porcentajes por fila
+  knitr::kable(., digits = 2)                    # formatear la tabla
+
+```
+
+# Enfoque 2: empleado `table`
+
+En el segundo enfoque emplearemos sólo codigo base. Una de las ventajas de este enfoque es que no requiere instalar librerias. Sin embargo, el codigo generado tiene un costo: no resuelve la presentación del resultado.
+
+Al igual que en otros ejemplos, en pasos, lo que debemos incluir es la siguiente secuencia:
+
+- abrir los datos
+- filtrar los casos, para realizar el análisis de datos sobre los casos de interés
+- calcular las frecuencia en una tabla cruzada o tabla de contingencia
+- obtener los porcentajes por fila
+  + queremos que los porcentajes obtenidos sumen 1 al interior de cada perfil
+- mostrar la tabla.
+
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+
+# -----------------------------------------------------------------------------
+# tabla de contigencia
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# tabla de contingencia: enfoque 02
+# -----------------------------------------------
+
+# abrir los datos desde la libreria
+dem_16 <- psi2301::dem_16                       
+
+# filtrar los casos, para quedarse solo con Perú
+dem_16_peru <- dem_16[dem_16$ctry == 'Peru',]    
+
+# calcular la cantidad de casos cruzados
+tabla_cruzada <- table(dem_16_peru$dem_group, dem_16_peru$level_lab)     
+
+# calcular los porcentajes por fila
+prop.table(tabla_cruzada, margin = 1)                  
+
+```
+
+
+# Enfoque 3: empleando `dplyr`
+
+Este enfoque tiene muchas más lineas. Tiene como objetivo no solo identificar las cifras que necesitamos, sino ordenar estas cifras en una tabla que fuera más facil de leer, y que contenga la información que necesitaramos incluir en un reporte.
+
+En pasos, lo que vamos a realizar es lo siguiente:
+
+- abrir los datos
+- filtrar los casos, para realizar el análisis de datos sobre los casos de interés
+- calcular las frecuencia en una tabla cruzada o tabla de contingencia
+- calcular los máximos de frecuencia por grupo
+- calcular los totales de caso por grupo
+- filtrar las filas de interes
+- obtener los porcentajes de cada máximo, respecto a su propio grupo
+- mostrar la tabla.
+
+
+```{r}
+
+# -----------------------------------------------------------------------------
+# tabla de contigencia
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# tabla de contingencia: enfoque 03
+# -----------------------------------------------
+
+# obtener el numero de casos en ambas condiciones
+tabla_n <- psi2301::dem_16 %>%
+           dplyr::filter(ctry == 'Peru') %>%
+           group_by(dem_group, level_lab) %>%
+           summarize(n = n()) %>%
+           ungroup() %>%
+           print
+
+# calcular el maximo por cada uno de los perfiles
+tabla_max <- tabla_n %>%
+             group_by(dem_group) %>%
+             mutate(max = max(n, na.rm = TRUE)) %>%
+             ungroup() %>%
+             print
+
+# crear una tabla con las totales, las filas de interes, y los porcentajes
+tabla_filtrada <- tabla_max %>%
+                  mutate(interes = dplyr::if_else(n == max, 1, 0)) %>%
+                  group_by(dem_group) %>%
+                  mutate(total   = sum(n)) %>%
+                  ungroup() %>%
+                  dplyr::filter(interes == 1) %>%
+                  dplyr::select(dem_group, level_lab, max, total) %>%
+                  mutate(porcentaje = max/total) %>%
+                  print
+
+# mostrar la tabla estructurada en consola
+tabla_filtrada %>%
+  knitr::kable(., digits = 2)
+
+```
+
+## Comentarios sobre el enfoque 03 con `dplyr`
+
+En contraste a las soluciones anteriores, implica muchas más lineas de código.
+Sin embargo, tiene una ganancia: nos permite generar la tabla específica que queremos a la pregunta. La pregunta refiere a lo planteado por Sofía
+
+>...cómo puedo lograr mostrar sólo los valores pedidos y no toda la tabla?? pregunto porque me imagino que a futuro utilizaremos mayor cantidad de datos y estar buscándolos "manualmente" no tiene sentido.
+
+Cuando se genera el objeto `tabla_n`, en este empleamos el comando `group_by()`. Este comando, "agrupa" los datos. Y hace que nuestros datos queden **agrupados**. Para evitar posibles problemas con esta operación, en la creación de tablas paso a paso, cerramos la secuencia de códigos con `ungroup()`. De este modo, nuestros datos quedan en formato de tabla, y no de tabla agrupada. Los siguientes códigos muestran lo que le sucede a la tabla en la sesión según ocupemos o no el comando `ungroup`. Ocupando el comando `class()` estamos consultando a `R` como interpreta a la tabla generada.
+
+
+```{r}
+
+# -----------------------------------------------
+# datos agrupados
+# -----------------------------------------------
+
+psi2301::dem_16 %>%
+dplyr::filter(ctry == 'Peru') %>%
+group_by(dem_group, level_lab) %>%
+summarize(n = n()) %>%
+class()
+
+# -----------------------------------------------
+# datos sin agrupar
+# -----------------------------------------------
+
+psi2301::dem_16 %>%
+dplyr::filter(ctry == 'Peru') %>%
+group_by(dem_group, level_lab) %>%
+summarize(n = n()) %>%
+ungroup() %>%
+class()
+
+```
+
+Cuando generamos el objeto `tabla_filtrada` estamos haciendo varios pasos. Primero identificamos cuáles son nuestras filas de interés. Es decir, estamos diferenciando entre aquellas filas que poseen los datos que nos interesan, y aquellas filas que estan fuera de lo que queremos producir. Lo anterior, es para no tener que buscar las cifras de interés visualmente.
+
+
+```{r}
+
+paso_1 <- tabla_max %>%
+          mutate(interes = dplyr::if_else(n == max, 1, 0)) %>%
+          print
+```
+
+Luego, calculamos el total de casos por cada `dem_group`. Al contar con esta cifra1, el total, en la tabla que estamos creando, la podemos ocupar posteriormente, para obtener los porcetajes.
+
+```{r}
+
+paso_2 <- tabla_max %>%
+          mutate(interes = dplyr::if_else(n == max, 1, 0)) %>%
+          group_by(dem_group) %>%
+          mutate(total   = sum(n)) %>%
+          print
+```
+
+Ahora, ya tenemos los datos de interés, pero necesitamos eleminar las filas que no queremos utilizar.
+Esto lo logramos con `dplyr::filter(interes == 1)` sobre la tabla generada. Además, ocupamos `ungroup()` para que `R` interprete a nuestra tabla como una tabla plana.
+
+```{r}
+
+paso_3 <- tabla_max %>%
+          mutate(interes = dplyr::if_else(n == max, 1, 0)) %>%
+          group_by(dem_group) %>%
+          mutate(total   = sum(n)) %>%
+          ungroup() %>%
+          dplyr::filter(interes == 1) %>%
+          print
+```
+
+En el siguiente paso, calculamos el porcentaje de interés, y seleccionamos los campos que queremos mostrar en un reporte, y la tabla que nosotros queremos leer.
+
+
+```{r}
+
+paso_4 <- tabla_max %>%
+          mutate(interes = dplyr::if_else(n == max, 1, 0)) %>%
+          group_by(dem_group) %>%
+          mutate(total   = sum(n)) %>%
+          ungroup() %>%
+          dplyr::filter(interes == 1) %>%
+          dplyr::select(dem_group, level_lab, max, total) %>%
+          mutate(porcentaje = max/total) %>%  
+          print
+
+```
+
+Finalmente, integramos la secuencia completa, y le damos un formato más amigable a la tabla generada para verla en consola.
+
+```{r}
+
+tabla_max %>%
+mutate(interes = dplyr::if_else(n == max, 1, 0)) %>%
+group_by(dem_group) %>%
+mutate(total   = sum(n)) %>%
+ungroup() %>%
+dplyr::filter(interes == 1) %>%
+dplyr::select(dem_group, level_lab, max, total) %>%
+mutate(porcentaje = max/total) %>%  
+knitr::kable(., digits = 2)
+
+```
+
+```
