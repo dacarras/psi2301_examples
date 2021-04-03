@@ -177,6 +177,10 @@ data(dem_16)
 
 dem_16[1:10, ]
 
+# Nota: agregamos [1:10, ], de modo que solo muestre
+#       las primeras 10 filas. De lo contrario nos mostraría
+#       toda la tabla de datos, la cual posee 2500 filas.
+
 ```
 
 Una forma alternativa de abrir los datos de una librería, consiste en llamar al objeto dentro de la librería. Esta forma, requiere que el usuario, conozca de antemano el nombre de los datos que quiere cargar en sesión. Esta forma de abrir datos, emplea la siguiente estructura de código `libreria::nombre_datos`.
@@ -190,7 +194,11 @@ Una forma alternativa de abrir los datos de una librería, consiste en llamar al
 # cargar datos de una librería y ver objeto
 # ---------------------------------------------------------
 
-psi2301::dem_16
+psi2301::dem_16[1:10, ]
+
+# Nota: agregamos [1:10, ], de modo que solo muestre
+#       las primeras 10 filas. De lo contrario nos mostraría
+#       toda la tabla de datos, la cual posee 2500 filas.
 
 ```
 
