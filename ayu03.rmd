@@ -9,15 +9,15 @@ output:
 ---
 
 
-La ayudantía de hoy revisaremos el trabajo (Quaranta, 2019), el cuál describe perfiles de concepciones democráticas. La investigación distingue tres grupos:
+En la ayudantía de hoy trabajaremos perfiles de concepciones democráticas. Estos perfiles se derivan del trabajo de Quaranta (2019), y han sido propuestos como una forma de evaluar el logro de las "Sustainable Development Goals" (Sandoval-Hernández & Carrasco, 2020). Los perfiles de concepciones democráticas presentan las siguientes características:
 
-- **complex**: son aquellos estudiantes que consideran constitutivos de los sistemas democráticos, un conjunto complejo de características. Entre ellas se encuentran las elecciones de autoridades políticas, la igualdad ante la ley, y el ejericicio de protesta frente a leyes injustas. Además, consideran que la concentración de medios de comunicación, el nepotismo en el gobierno, y la influencia del ejecutivo sobre los tribunales de justicia como amenazas claras a los sistemas democráticos.
+- **complex**: son aquellos estudiantes que consideran constitutivos de los sistemas democráticos, un conjunto complejo de características. Entre ellas se encuentran las elecciones de autoridades políticas, la igualdad ante la ley, y el ejericicio de protesta frente a leyes injustas. Además, consideran que la concentración de medios de comunicación, el nepotismo en el gobierno, y la influencia del ejecutivo sobre los tribunales de justicia como amenazas a los sistemas democráticos.
 
 - **minimalist**: son aquellos estudiantes que consideran constitutivos de los sistemas democráticos, un conjunto minimalista de características. Esto incluye a las elecciones de autoridades políticas, la igualdad ante la ley, y el ejericicio de protesta frente a leyes injustas. Sin embargo, este perfil de estudiantes, es insensible a la concentración de medios, el nepotismo, y la influencia del ejecutivo sobre el poder judicial.
 
 - **limited**: son aquellos estudiantes que no distinguen de forma adecuada las características centrales de los sistemas democráticos.
 
-Para conocer más sobre estos características de los estudiantes que pertenecen a cada una de estas categorías utilizaremos los resultados encuesta de ICCS. Esta encuesta fue creada con el fin de poder investigar las formas en que las/os jóvenes están preparados para adoptar sus roles como ciudades en un mundo en el cuál la democracia y la participación se encuentran en constante cambio. La base de datos `dem_16` es una submuestra de la anterior encuesta con 2500 casos de la medición del año 2016. 
+Para conocer más sobre estos características de los estudiantes que pertenecen a cada una de estas categorías utilizaremos los resultados encuesta de ICCS 2016 (Schulz et al, 2018). Esta encuesta fue creada con el fin de poder investigar las formas en que las/os jóvenes están preparados para adoptar sus roles como ciudadanos en un mundo en el cuál la democracia y la participación se encuentran en constante cambio. La base de datos `dem_16` es una submuestra de este estudio, la cual incluyen una muestra de 500 casos por país latinoaméricano, llegando a un total de 2500 casos. 
 
 Esta base de datos cuenta con las siguientes variables:
 
@@ -42,53 +42,70 @@ A partir de lo anterior, procederemos a realizar los siguientes ejercicios:
 # Análisis descriptivo
 
 ## Pregunta 1
-Cargue la base de datos de la encuesta y verifique si el proceso de lectura fue realizado sin problemas. Para esto, considere e indique la instalación o actualización de las librerías correspondientes para la realización de este ejercicio.
 
-```
+Cargue la base de datos de la encuesta y verifique si el proceso de lectura fue realizado sin problemas. Para esto, considere la instalación y/o actualización de las librerías correspondientes. A continuación se agrega codigo en texto de ayuda.
+
+```text
 # Estas instalaciones solo tendrán que se efectuadas la primera vez
 install.packages("tidyverse")
 install.packages("remotes")
 install.packages("skimr")
 remotes::install_github("dacarras/psi2301")
 
-# Actualización de librerías
-# la librería del curso se está constantemente actualizando por lo que esta 
+# Actualización de librerías
+# 
+# la librería del curso se está constantemente actualizando por lo que esta 
 # deberá actualizarse al comienzo de cada semana
 # esta es la única librería que requerirá este proceso
 
 remotes::install_github("dacarras/psi2301", force =TRUE)
 
-
 # Ahora se procede a la lectura de la base de datos
 
-data(psi2301::dem16)
+dem_16 <- psi2301::dem_16
 
 
 # revisión
 
 dplyr::glimpse(dem_16)
 
+```
 
 >Nota de Ayuda: Para esta sesión se utilizará las librerías de `tidyverse`, `skimr` en conjunto con la librería del curso. Recuerde cargar sus librerías antes de comenzar. 
 library(tidyverse)
 library(skimr)
-```
 
-## Pregunta 2
-La creación de los perfiles de concepciones democráticas corresponde a una categorización del puntaje de conocimiento cívico (variable `civ`) obtenido por los estudiantes que contestan la escuesta. Por lo mismo, el primer paso de esta ayudantía corresponderá a analizar en profundidad esta variable. Reporte a continuación los estadísticos de orden o posición de la variable conocimiento cívico (mediana, mínimo, máximo, cuartiles).
+## Pregunta 2
+
+La creación de los perfiles de concepciones democráticas corresponde representa el patrón de respuesta que entregaron los estudiantea una serie de preguntas, las cuales refierens a cuáles son las características que una democracia debiera tener. Lo anterior, se encuentra muy relacionado al conocimiento cívico que poseen los estudiantes. En la base `dem_16` el conocmiento cívico de los estudiantes, se encuentra representado por la variable `civ`.  El primer paso de esta ayudantía corresponde a analizar en profundidad esta variable.
+
+A continuación, calcule y reporte los estadísticos de orden o posición de la variable conocimiento cívico (mediana, mínimo, máximo, cuartiles).
 
 
 ```{r}
+# cargar la libreria
+library(psi2301)
+
+# cargar los datos
+data(dem_16)
+
 # mínimo
 min(dem_16$civ)
+
 # máximo
 max(dem_16$civ)
+
 # cuartiles
 fivenum(dem_16$civ)
-# en orden aparecen mínimo (percentil 0), percentil 25, mediana (percentil 50), percentil 75 y máximo.
+
+# Nota: en orden aparecen mínimo (percentil 0), 
+#       percentil 25, mediana (percentil 50),
+#       percentil 75 y máximo.
+
 ```
 
-## Pregunta 3
+## Pregunta 3
+
 A partir de la información obtenida anteriormente, ¿Qué es posible identificar a partir de estos elementos?, ¿Cuál es el menor puntaje en conocimiento cívico obtenido por los estudiantes de ésta sub-muestra?
 
 ## Pregunta 4
@@ -96,73 +113,85 @@ Utilizando la variable conocimiento cívico, genere y reporte los estadísticos 
 
 ```{r}
 
-# solo civ
+# solo civ
 mean(dem_16$civ)
 sd(dem_16$civ)
 median(dem_16$civ)
 ```
 
 ## Pregunta 5
+
 A partir de la información obtenida anteriormente, ¿Qué es posible identificar a partir de estos elementos? ¿Cómo diríamos que se distribuye el conocimiento cívico de los estudiantes? 
 
 ## Pregunta 6
+
 Utilizando la función `describe` de la librería `psych` genere una tabla de datos descriptivos del resto de las variables contenidas en la base de datos.
 
 
 ```{r}
-# el resto
+# el resto
 
 # al existir variables que no son númericas, el argumento omit permite que el programa las evita
-# y no tenga problemas para correrlas
+# y no tenga problemas para correrlas
 # el argumento quant nos permite obtener los percentiles que queramos
 psych::describe(dem_16, omit=TRUE, quant = c(.25,.75))
 ```
 
 ## Pregunta 7
-Una vez caracterizada la variable con la que se generaron las categorías (variable `civ`) procederemos a revisar la variable niveles (variable `level`). Para esto genere una tabla de frencuencia y presente los resultados obtenidos en términos de frecuencia y porcentaje.
+
+El conocimiento cívico de los estudiantes, se encuentra categorizado en niveles. Esto son una representación ordinal de los puntajes de `civ`, con la cual se describen diferentes niveles de logro de conocimiento civico, o sofisticación política de los estudiantes (Schulz et al., 2013). En el siguiente ejercicio, revisaremos como se distribuye esta variable `level`. Para esto genere una tabla de frencuencia y presente los resultados obtenidos en términos de frecuencia y porcentaje.
 
 ```{r}
 table(dem_16$level)
 prop.table(table(dem_16$level))
 # para obtener números más pequeños
 round(prop.table(table(dem_16$level)),2)
-# para verlo en términos de porcentajes
+# para verlo en términos de porcentajes
 round(prop.table(table(dem_16$level)),2)*100
 
 ```
 
 ## Pregunta 8
+
 Describa los resultados obtenidos. ¿Cuál es el porcentaje de estudiantes que tienen los niveles más bajos de conocimiento cívico ? y cuál es el porcentaje de quienes tienen mayores niveles de conocimiento cívico?
 
 ## Pregunta 9
+
 Genere una tabla cruzada o de contingencia con las categorías de conocimiento cívico (variable `level`) y los países participantes de la submuestra (variable `ctry`).
 
 ```{r}
+
 table(dem_16$level,cut(dem_16$civ,3))
 
-# tabla de proporciones
-tab0 = prop.table(table(dem_16$ctry,dem_16$level))
-# tabla redondeada 2 dígitos
+# tabla de proporciones
+tab0 <- prop.table(table(dem_16$ctry,dem_16$level))
+tab0
 
-tab1 = prop.table(table(dem_16$ctry,dem_16$level))
+# tabla redondeada 2 dígitos
+tab1 <- prop.table(table(dem_16$ctry,dem_16$level))
 round(tab1,2)
+
 ```
 
 ## Pregunta 10
+
 ¿Podemos afirmar que existe una distribución homogénea entre los países? ¿Qué países presentan mayores proporciones de estudiantes con categorías de logro más altas?
 
 # Visualización de datos
 
 ## Pregunta 11
+
 Considerando los resultados, presente los siguientes resultados utilizando gráficos.
 
 
 ### a. Histograma 
+
 Histograma de el puntaje de conocimiento cívico
 
 ```{r}
-# activamos la librería ggplot2
+# activamos la librería ggplot2 y dplyr
 library(ggplot2)
+library(dplyr)
 
 dem_16 %>%
 ggplot(.,
@@ -174,9 +203,11 @@ ggplot(.,
       x="Conocimiento cívico",
       y ="Frecuencia")
 ```
+
 Interprete los resultados, ¿Cómo se distribuye el conocimiento cívico de los estudiantes en la sub-muestra analizada? 
 
 ### c. Gráfico de barras
+
 Gráfico de barras (barplot) de categorías de conocimiento cívico
 
 ```{r}
@@ -199,10 +230,13 @@ ggplot(.,
     title = "Niveles de Conocimiento Cívico") +
   ylim(0,1) +
   theme_classic()  
+
 ```
+
 Interprete los resultados, ¿qué porcentaje de los estudiantes pertenece a cada grupo de estos distintos niveles de conocimiento cívico? 
 
 ### e. Dispersograma
+
 Dispersograma entre conocimiento cívico y creencias autoritarias.
 
 ```{r}
@@ -222,6 +256,19 @@ labs(
       x = "Conocimiento Cívico") +
 xlim(200,800) +
 ylim(20,80)
+
 ```
 
 Interprete los resultados, ¿se observa algún tipo de relación entre los niveles de conocimiento cívico y las creencias autoritarias de los estudiantes? 
+
+
+# Referencias
+
+Quaranta, M. (2019). What makes up democracy? Meanings of democracy and their correlates among adolescents in 38 countries. Acta Politica, 0123456789. https://doi.org/10.1057/s41269-019-00129-4
+
+Sandoval-Hernández, A., & Carrasco, D. (2020). A Measurement Strategy for SDG Thematic Indicators 4.7.4 and 4.7.5 Using International Large Scale Assessments in Education. http://tcg.uis.unesco.org/wp-content/uploads/sites/4/2020/06/Measurement-Strategy-for-474-and-475-using-ILSA_20200625.pdf
+
+Schulz, W., Carstens, R., Losito, B., & Fraillon, J. (2018). ICCS 2016 Technical Report (W. Schulz, R. Carstens, B. Losito, & J. Fraillon (eds.)). International Association for the Evaluation of Educational Achievement (IEA).
+
+Schulz, W., Fraillon, J., & Ainley, J. (2013). Measuring young people’s understanding of civics and citizenship in a cross-national study. Educational Psychology, 33(3), 327–349. https://doi.org/10.1080/01443410.2013.772776
+
