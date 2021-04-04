@@ -625,10 +625,9 @@ Los perfiles de concepciones democráticas, siguen el trabajo de (Quaranta, 2019
 - **limited**: son aquellos estudiantes que no distinguen de forma adecuada las características centrales de los sistemas democráticos.
 
 La siguiente figura describe la distribución de respuesta que estos diferentes perfiles expresan frente los diferentes eventos.
- 
-```{r echo=FALSE, out.width = '100%', fig.retina = 3, eval = FALSE}
-knitr::include_graphics('dem_groups.png')
-```
+
+![](dem_groups.png)
+
 
 Los respuestas recogidas provienen del estudio Internacional sobre Educación Cívica y Ciudadana (ICCS). Este estudio incluye diferentes paises de Latinoamérica, Europa y Asia, incluyendo muestras representativas de estudiantes de 8vo grado (14 años de edad aproximadamente). Los datos `dem_16` incluyen una sub muestra de 500 casos de Chile, Colombia, Republica Dominicana, Mexico y Perú.
 

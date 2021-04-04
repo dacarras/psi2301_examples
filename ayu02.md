@@ -1170,6 +1170,8 @@ y distinguen a los estudiantes en tres grupos:
 La siguiente figura describe la distribución de respuesta que estos
 diferentes perfiles expresan frente los diferentes eventos.
 
+![](dem_groups.png)
+
 Los respuestas recogidas provienen del estudio Internacional sobre
 Educación Cívica y Ciudadana (ICCS). Este estudio incluye diferentes
 paises de Latinoamérica, Europa y Asia, incluyendo muestras
@@ -1322,7 +1324,7 @@ dem_16 %>%
   theme_classic()                                    # el formato
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 ``` r
 # -----------------------------------------------
@@ -1345,7 +1347,7 @@ dem_16 %>%
   theme_classic()  
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-20-2.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-19-2.png)<!-- -->
 
 ``` r
 # -----------------------------------------------
@@ -1371,7 +1373,7 @@ dem_16 %>%
   theme_classic()
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-20-3.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-19-3.png)<!-- -->
 
 # Variable Ordinal: Niveles de Conocimiento cívico
 
@@ -1542,7 +1544,7 @@ dem_16 %>%
   theme_classic()  
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ``` r
 # -----------------------------------------------
@@ -1569,7 +1571,7 @@ mutate(percentage = n/sum(n)) %>%
   theme_classic()  
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-22-2.png)<!-- -->
 
 ## Tabla de contigencia
 
@@ -1679,7 +1681,7 @@ ggplot() +
     )
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 ``` r
 # -----------------------------------------------
@@ -1727,7 +1729,7 @@ ggplot() +
     )
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-25-2.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->
 
 ``` r
 # Nota: en `margin`
@@ -1858,7 +1860,7 @@ hist(dem_16$aut,
   xlim = c(20, 80))
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 ``` r
 # -----------------------------------------------
@@ -1884,7 +1886,7 @@ scale_x_continuous(
   theme_light()
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-27-2.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-26-2.png)<!-- -->
 
 ``` r
 # Nota: Éste es un plot generado con ggplot2.
@@ -1918,7 +1920,7 @@ scale_x_continuous(
   theme_light()
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-27-3.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-26-3.png)<!-- -->
 
 ``` r
 # -----------------------------------------------
@@ -1945,7 +1947,7 @@ scale_x_continuous(
   theme_light()
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-27-4.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-26-4.png)<!-- -->
 
 ## Dispersiogramas
 
@@ -1978,7 +1980,7 @@ ylim(20,80) +
 theme_light()
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
 ``` r
 # -----------------------------------------------
@@ -2006,7 +2008,7 @@ facet_grid(dem_group ~ .) +
 theme_light()
 ```
 
-![](ayu02_files/figure-gfm/unnamed-chunk-28-2.png)<!-- -->
+![](ayu02_files/figure-gfm/unnamed-chunk-27-2.png)<!-- -->
 
 # Ejercicios
 
