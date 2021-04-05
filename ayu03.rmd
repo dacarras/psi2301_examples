@@ -45,7 +45,7 @@ Cargue la base de datos de la encuesta y verifique si el proceso de lectura fue 
 # Estas instalaciones solo tendrán que se efectuadas la primera vez
 install.packages("tidyverse")
 install.packages("remotes")
-install.packages("skimr")
+install.packages("psych")
 remotes::install_github("dacarras/psi2301")
 
 # Actualización de librerías
@@ -67,9 +67,15 @@ dplyr::glimpse(dem_16)
 
 ```
 
->Nota de Ayuda: Para esta sesión se utilizará las librerías de `tidyverse`, `skimr` en conjunto con la librería del curso. Recuerde cargar sus librerías antes de comenzar. 
-library(tidyverse)
-library(skimr)
+>Nota de Ayuda: Para esta sesión se utilizará las librerías de `tidyverse`, `dplyr` y `ggplot2`. Ademas se empleará la librería `psych`. A continuación se incluyen los comandos para cargar estas librerías. Recuerde cargar sus librerías antes de comenzar.
+
+```
+
+library(dplyr)
+library(psych)
+library(ggplot2)
+
+```
 
 ## Pregunta 2
 
