@@ -1,2 +1,2 @@
 # psi2301_examples
-Ejemplos de código empleados en ayudantía y en clases
+Ejemplos de código empleados en ayudantía y en clases del curso psi2301.
