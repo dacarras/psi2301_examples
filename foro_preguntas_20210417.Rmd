@@ -12,7 +12,7 @@ pero la tabla nos arroja números decimales (tal como se ve en la foto del mail 
 Avíseme si me explico más por favor, muchisimas gracias!
 
 
-```{r, echo=TRUE, eval = FALSE}
+```{r, echo=TRUE, eval = TRUE}
 
 # abrir dplyr
 library(dplyr)
@@ -50,7 +50,7 @@ El problema esta en los valores de las respuestas no válidas. Estas poseen 99 (
 - generar histograma
 
 
-```{r, echo=TRUE, eval = FALSE}
+```{r, echo=TRUE, eval = TRUE}
 
 # abrir dplyr
 library(dplyr)
