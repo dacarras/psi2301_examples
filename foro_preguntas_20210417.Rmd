@@ -1,0 +1,101 @@
+---
+title: "Preguntas foro 20210417"
+output: github_document
+---
+
+# Pregunta 20210417_1
+
+>Muchas gracias por su respuesta, pero el problema que tenemos es otro :( Lo que pasa es que creamos una variable con múltiples preguntas la cual designamos con el nombre de "democracia" . Esta variable se encuentra en la escala 2 (Formas de expresión), que mide los grados de acuerdo y desacuerdo en torno a diferentes preguntas, una de ellas: "cada ciudadano tiene el derecho de llevar sus convicciones...". Al crear esta variable construida, con el siguiente código  
+
+>INJUV$DEMOCRACIA=with(INJUV,rowMeans(cbind(I13_1,I13_2,I13_3,I13_4,I13_5,I13_6,I13_7,I13_8),na.rm = TRUE)) intentamos calcular la frecuencia con este código: stats::xtabs(~ DEMOCRACIA, data = INJUV) %>% knitr::kable()
+pero la tabla nos arroja números decimales (tal como se ve en la foto del mail anterior)... ese es el problema... Por lo mismo nos preguntamos si ocurre un problema con la base o si nos estamos equivocando con nuestros códigos.
+Avíseme si me explico más por favor, muchisimas gracias!
+
+
+```{r, echo=TRUE, eval = FALSE}
+
+# abrir dplyr
+library(dplyr)
+
+# abrir datos
+INJUV <- readr::read_csv("data/Injuv 2012.csv")
+
+# crear medias
+INJUV$DEMOCRACIA=with(INJUV,rowMeans(cbind(I13_1,I13_2,I13_3,I13_4,I13_5,I13_6,I13_7,I13_8),na.rm = TRUE))
+
+# inspeccionar
+dplyr::glimpse(INJUV)
+
+# ver descriptivos
+INJUV %>%
+  dplyr::select(DEMOCRACIA) %>%
+  r4sda::get_desc() %>%
+  knitr::kable(., digits = 2)
+
+# vert histograma
+hist(INJUV$DEMOCRACIA, 
+     main = 'histograma variable creada',
+     xlab = 'puntajes Democracia')
+
+````
+
+
+El problema esta en los valores de las respuestas no válidas. Estas poseen 99 (ver Anexos). Estos valores deben ser convertidos a NA, de modo que R pueda tratarlos como valores perdidos. Voy a repetir todo el código desde el inicio:
+
+- abrir datos
+- convertir 99 a NA
+- verificar los datos convertidos
+- crear el puntaje promedio
+- revisar descriptivo del puntaje promedio creado
+- generar histograma
+
+
+```{r, echo=TRUE, eval = FALSE}
+
+# abrir dplyr
+library(dplyr)
+
+# abrir datos
+data_injuv <- readr::read_csv("data/Injuv 2012.csv")
+
+# convertir 99 a NA
+data_dem <- data_injuv %>%
+            dplyr::select(I13_1:I13_8) %>%
+            dplyr::na_if(., 99)
+  
+# ver valores
+data_injuv %>%
+  dplyr::select(I13_1:I13_8) %>%
+  r4sda::wide_resp() %>%
+  knitr::kable(., digits = 2)
+
+# crear medias
+data_injuv$democra <- with(data_dem,
+                        rowMeans(
+                          cbind(
+                            I13_1,I13_2,I13_3,I13_4,
+                            I13_5,I13_6,I13_7,I13_8
+                            ),
+                          na.rm = TRUE))
+
+# Nota: se edita el codidgo para que sea visible.
+
+# inspeccionar
+dplyr::glimpse(data_injuv)
+
+# ver descriptivos
+data_injuv %>%
+  dplyr::select(democra) %>%
+  r4sda::get_desc() %>%
+  knitr::kable(., digits = 2)
+
+# vert histograma
+hist(data_injuv$democra, 
+     main = 'histograma variable creada',
+     xlab = 'puntajes Democracia')
+
+````
+
+# Anexos
+
+- Los items I13_1 a I13_8 poseen valores válidos de 1 a 10, donde 99, es respuesta vacía. Ver: https://www.injuv.gob.cl/sites/default/files/cuestionario_7ma_enj_cara_a_cara.pdf
