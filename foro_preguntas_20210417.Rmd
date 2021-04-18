@@ -94,6 +94,20 @@ hist(data_injuv$democra,
      main = 'histograma variable creada',
      xlab = 'puntajes Democracia')
 
+
+# vert histograma con intervalos gruesos
+library(ggplot2)
+ggplot(data_injuv, aes(x=democra)) + 
+geom_histogram(binwidth=1) + 
+  theme_bw()
+
+# vert histograma con intervalos delgados
+library(ggplot2)
+ggplot(data_injuv, aes(x=democra)) + 
+  geom_histogram(binwidth=.1) + 
+  theme_bw()
+
+
 ````
 
 # Anexos
@@ -148,7 +162,7 @@ hist(data_informe$confianza_exogrupo,
 ````
 
 
-Creo que la razón la por cual no se obtienen rangos, en las variables creadas, similares a los esperados es debido a la presencia de valores -99. Vamos a convertir estos valores a "NA", de modo que R los interprete como valores perdidos, y luego calcularemos descriptivos con las variables creadas.
+Creo que la razón la por cual no se obtienen rangos, en las variables creadas, similares a los esperados es debido a la presencia de valores -99. Además, es posible que esto se produce por como esta escrita la funcion de "rowMeans". En el siguiente codigo voy a incluir diferentes formas de crear el puntaje promedio, y compararla con el codigo original. Para simplifcar el ejemplo, solo haremos el ejericio con los items aff1, aff2 e aff3. Vamos a convertir estos valores a "NA", de modo que R los interprete como valores perdidos, y luego calcularemos descriptivos con las variables creadas.
 
 Al igual que en el caso anterior, repetiremos todos los pasos de forma explícita:
 
@@ -156,68 +170,99 @@ Al igual que en el caso anterior, repetiremos todos los pasos de forma explícit
 - convertir `-99` a `NA`
 - verificar los datos convertidos
 - crear el puntaje promedio
-- revisar descriptivo de los puntaje promedio creados
-- generar histograma
+- revisar los promedios generado para 4 casos.
+
 
 ```{r, echo=TRUE, eval = TRUE}
 
+# -----------------------------------------------------------------------------
+# comparación de generacion de mean scores
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
 # abrir dplyr
+# -----------------------------------------------
 library(dplyr)
 
-# abrir datos
-data_informe <- readr::read_csv("data/Amistad intergrupal.csv")
+# -----------------------------------------------
+# abrir los datos
+# -----------------------------------------------
+
 data_amistad <- readr::read_csv("data/Amistad intergrupal.csv")
 
+# -----------------------------------------------
 # revisar la tabla de variables
+# -----------------------------------------------
+
 data_amistad %>%
   r4sda::variables_table() %>%
   knitr::kable()
 
+# -----------------------------------------------
 # revisar los valores digitados en todas las variables de pocas categorias
+# -----------------------------------------------
+
 data_amistad %>%
   dplyr::select(-ethnia, -ID, -age) %>%
 r4sda::wide_resp() %>%
   knitr::kable()
 
+
+# -----------------------------------------------
 # convertir todos los -99 a NA
+# -----------------------------------------------
+
 data_amistad <- data_amistad %>%
                 dplyr::na_if(-99)
 
+# -----------------------------------------------
 # revisar la conversion
+# -----------------------------------------------
+
 data_amistad %>%
   dplyr::select(-ethnia, -ID, -age) %>%
 r4sda::wide_resp() %>%
   knitr::kable()
 
+# -----------------------------------------------
 # revisar la conversion sobre los items de interes
+# -----------------------------------------------
+
 data_amistad %>%
   dplyr::select(affo1:outt3) %>%
 r4sda::wide_resp() %>%
   knitr::kable()
 
-
-# revisar la conversion sobre los items de interes
-data_test_1 <- data_amistad %>%
+# -----------------------------------------------
+# crear los puntajes de medias, con diferentes codigos
+# -----------------------------------------------
+data_amistad <- data_amistad %>%
                mutate(aff_1 = r4sda::mean_score(affo1, affo2, affo3)) %>%
-               mutate(out_1 = r4sda::mean_score(outt1, outt2, outt3)) %>%
-               mutate(aff_2 = rowMeans(dplyr::select(., affo1, affo1, affo3))) %>%
-               mutate(out_2 = rowMeans(dplyr::select(., outt1, outt2, outt3))) %>%
-               mutate(aff_3 = with(data_informe,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))) %>%
-               mutate(out_3 = with(data_informe,rowMeans(cbind(outt1,outt2,outt3,na.rm=TRUE))))
+               mutate(aff_2 = rowMeans(dplyr::select(., affo1, affo2, affo3))) %>%
+               mutate(aff_3 = with(data_informe,rowMeans(cbind(affo1,affo2,affo3),na.rm=TRUE)))
+
+# -----------------------------------------------
+# codigo original, donde cbind no esta cerrado
+# -----------------------------------------------
+
+data_amistad$aff_4=with(data_amistad,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))
 
 
+# -----------------------------------------------
+# ejemplo de las medias generadas para 4 casos
+# -----------------------------------------------
 
-# ver descriptivos
-data_test_1 %>%
-  summarize(
-    mean_aff_1 = mean(aff_1, na.rm = TRUE),
-    max_aff_1 = max(aff_1, na.rm = TRUE),
-    mean_aff_2 = mean(aff_2, na.rm = TRUE),
-    max_aff_2 = max(aff_2, na.rm = TRUE),
-    mean_aff_3 = mean(aff_3, na.rm = TRUE),
-    max_aff_3 = max(aff_3, na.rm = TRUE)
-      ) %>%
+data_amistad %>%
+  dplyr::filter(ID %in% 1:4) %>%
+  dplyr::select(affo1:affo3, aff_1, aff_2, aff_3, aff_4) %>%
   knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# revision del primer caso
+# -----------------------------------------------
+
+mean(c(7,3,7))
 
 ```
 
+El problema generado, esta en la forma en que se escribe el codigo de cbind. Este no esta cerrado, y el argumento "na.rm=TRUE" esta generando una distorsión en el calculo de los promedios de items.
