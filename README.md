@@ -1,13 +1,18 @@
 # psi2301_examples
 Ejemplos de código empleados en ayudantía y en clases del curso psi2301.
 
-## Preguntas de foro
+## Preguntas realizadas en el foro y por email
 
-- Pregunta 20210404_01: ejemplo donde nombre de función esta mal escrita
+- Pregunta 20210404_01:
+  + dejemplo donde nombre de función esta mal escrita
   + https://github.com/dacarras/psi2301_examples/blob/master/foro_preguntas_20210404.md
 
-- Pregunta 20210417_01: ejemplo de cómo remover valores no válidos (e.g., -99, 99)
-- Pregunta 20210417_02: ejemplo donde argumento "na.rm=TRUE" es posicionado en otra función, generando resultados inesperados
+- Pregunta 20210417_01
+  + ejemplo de cómo remover valores no válidos (e.g., -99, 99) sobre una matriz de respuestas
+  + https://github.com/dacarras/psi2301_examples/blob/master/foro_preguntas_20210417.md
+
+- Pregunta 20210417_02
+  + ejemplo donde argumento "na.rm=TRUE" es posicionado en otra función, generando resultados inesperados
   + https://github.com/dacarras/psi2301_examples/blob/master/foro_preguntas_20210417.md
 
 ## Preguntas acerca de ejercicios de ayudantías
