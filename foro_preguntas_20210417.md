@@ -650,7 +650,7 @@ r4sda::wide_resp() %>%
 data_amistad <- data_amistad %>%
                mutate(aff_1 = r4sda::mean_score(affo1, affo2, affo3)) %>%
                mutate(aff_2 = rowMeans(dplyr::select(., affo1, affo2, affo3))) %>%
-               mutate(aff_3 = with(data_informe,rowMeans(cbind(affo1,affo2,affo3),na.rm=TRUE)))
+               mutate(aff_3 = with(data_amistad,rowMeans(cbind(affo1,affo2,affo3),na.rm=TRUE)))
 
 # -----------------------------------------------
 # codigo original, donde cbind no esta cerrado
@@ -686,6 +686,53 @@ mean(c(7,3,7))
 
     ## [1] 5.666667
 
-El problema generado, esta en la forma en que se escribe el codigo de
+El problema generado, esta en la forma en que esta escrito el código de
 cbind. Este no esta cerrado, y el argumento “na.rm=TRUE” esta generando
-una distorsión en el calculo de los promedios de items.
+una distorsión en el calculo de los promedios de items, al estar dentro
+de cbind(). En el siguiente código se ilustra la diferencia.
+
+``` r
+# -----------------------------------------------
+# código original, donde cbind no esta cerrado
+# -----------------------------------------------
+
+data_amistad$aff_4=with(data_amistad,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))
+
+# -----------------------------------------------
+# código original, mostrando los pares de parentesis
+# -----------------------------------------------
+
+data_amistad$aff_4 = with(data_amistad,
+                           rowMeans(
+                            cbind(affo1,affo2,affo3,na.rm=TRUE)
+                            )
+                         )
+# Nota: el argumento "na.rm = TRUE" esta dentro de cbind(), y debiera estar fuera.
+#       R lee bien este código, porque posee 6 paréntesis.
+
+summary(data_amistad$aff_4)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    ##   1.000   3.000   3.750   3.716   4.500   5.500      40
+
+``` r
+# -----------------------------------------------
+# código corregido
+# -----------------------------------------------
+
+data_amistad$aff_4 = with(data_amistad,
+                          rowMeans(
+                             cbind(affo1,affo2,affo3),
+                             na.rm=TRUE)
+                             )
+# Nota: el argumento "na.rm = TRUE" es parte de la función rowMeans(), y no
+#       parte de la función cbind(), como en el código original.
+#       R lee bien este código, porque posee 6 paréntesis. Pero donde esta ubicado
+#       el argumento "na.rm = TRUE", hace toda la diferencia.
+
+summary(data_amistad$aff_4)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##   1.000   3.667   4.667   4.634   5.667   7.000
