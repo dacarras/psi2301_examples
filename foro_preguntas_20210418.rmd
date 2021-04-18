@@ -1,0 +1,187 @@
+---
+title: "Preguntas foro 20210418"
+output: github_document
+---
+
+
+# Abrir datos
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# load data
+#------------------------------------------------------------------------------
+
+library(dplyr)
+data_desarollo <- psi2301::desarollo_psicomotor %>%
+                  rename_all(tolower)
+
+```
+
+# Tabla de frecuencia
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# wide response table
+#------------------------------------------------------------------------------
+
+data_desarollo %>%
+dplyr::select(a8com1:a8si6) %>%
+r4sda::wide_resp(.) %>%
+knitr::kable(., digits = 2)
+
+```
+
+# Correlación item-test
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# comunicación
+#------------------------------------------------------------------------------
+
+data_desarollo %>%
+dplyr::select(a8com1:a8com6) %>%
+as.data.frame() %>%
+CTT::itemAnalysis(.) %>%
+purrr::pluck('itemReport') %>%
+knitr::kable(., digits = 2)
+
+#------------------------------------------------------------------------------
+# motricidad gruesa
+#------------------------------------------------------------------------------
+
+data_desarollo %>%
+dplyr::select(a8mamp1:a8mamp6) %>%
+as.data.frame() %>%
+CTT::itemAnalysis(.) %>%
+purrr::pluck('itemReport') %>%
+knitr::kable(., digits = 2)
+
+#------------------------------------------------------------------------------
+# motricidad fina
+#------------------------------------------------------------------------------
+
+data_desarollo %>%
+dplyr::select(a8mfin1:a8mfin6) %>%
+as.data.frame() %>%
+CTT::itemAnalysis(.) %>%
+purrr::pluck('itemReport') %>%
+knitr::kable(., digits = 2)
+
+#------------------------------------------------------------------------------
+# motricidad resolucion de problemas
+#------------------------------------------------------------------------------
+
+data_desarollo %>%
+dplyr::select(a8rp1:a8rp6) %>%
+as.data.frame() %>%
+CTT::itemAnalysis(.) %>%
+purrr::pluck('itemReport') %>%
+knitr::kable(., digits = 2)
+
+#------------------------------------------------------------------------------
+# relaciones interpersonales
+#------------------------------------------------------------------------------
+
+data_desarollo %>%
+dplyr::select(a8si1:a8si6) %>%
+as.data.frame() %>%
+CTT::itemAnalysis(.) %>%
+purrr::pluck('itemReport') %>%
+knitr::kable(., digits = 2)
+
+
+```
+
+# Items Invertidos identificados
+
+## Valores de digitación
+
+```text
+- 10 puntos = Sí
+-  5 puntos = A veces
+-  0 puntos = No aún
+```
+
+## Nota sobre items invertidos
+
+>NOTA IMPORTANTE: Para efectos de este taller, algunos ítems de las dimensiones del Ages and Stages fueron invertidos, esto es, se codificó Sí con 0 puntos, A veces con 5 y No aún con 0. Cuando se trabaje con los datos debería identificarse cuál es el ítem invertido y recodificarlo en forma correcta.
+
+
+## Tabla de frecuencia con item invertidos
+
+```text
+
+|variable |   00|   05|   10|   NA|hist     |
+|:--------|----:|----:|----:|----:|:--------|
+|a8com1   |   NA| 0.06| 0.94|   NA|▁▁▁▁▁▁▁▇ |
+|a8com2   |   NA| 0.09| 0.90| 0.00|▁▁▁▁▁▁▁▇ |
+|a8com3   | 0.06| 0.30| 0.64| 0.00|▁▁▁▃▁▁▁▇ |
+|a8com4   | 0.07| 0.09| 0.84|   NA|▁▁▁▁▁▁▁▇ |
+|a8com5   | 0.06| 0.20| 0.74| 0.00|▁▁▁▂▁▁▁▇ |
+|a8com6   | 0.07| 0.08| 0.84| 0.00|▁▁▁▁▁▁▁▇ |
+|a8mamp1  | 0.09| 0.10| 0.82|   NA|▁▁▁▁▁▁▁▇ |
+|a8mamp2  | 0.12| 0.12| 0.76| 0.01|▁▁▁▁▁▁▁▇ |
+|a8mamp3  | 0.50| 0.14| 0.36| 0.00|▇▁▁▂▁▁▁▆ |
+|a8mamp4  | 0.10| 0.11| 0.79|   NA|▁▁▁▁▁▁▁▇ |
+|a8mamp5  | 0.09| 0.12| 0.79|   NA|▁▁▁▁▁▁▁▇ |
+|a8mamp6  | 0.36| 0.19| 0.45| 0.00|▆▁▁▃▁▁▁▇ |
+|a8mfin1  | 0.02| 0.05| 0.93|   NA|▁▁▁▁▁▁▁▇ |
+|a8mfin2  | 0.94| 0.05| 0.01| 0.00|▇▁▁▁▁▁▁▁ | * item invertido
+|a8mfin3  | 0.07| 0.10| 0.84|   NA|▁▁▁▁▁▁▁▇ |
+|a8mfin4  | 0.01| 0.05| 0.94|   NA|▁▁▁▁▁▁▁▇ |
+|a8mfin5  | 0.08| 0.15| 0.77| 0.00|▁▁▁▂▁▁▁▇ |
+|a8mfin6  | 0.11| 0.20| 0.69|   NA|▁▁▁▂▁▁▁▇ |
+|a8rp1    | 0.00| 0.04| 0.96|   NA|▁▁▁▁▁▁▁▇ |
+|a8rp2    | 0.04| 0.09| 0.86| 0.01|▁▁▁▁▁▁▁▇ |
+|a8rp3    | 0.04| 0.05| 0.92|   NA|▁▁▁▁▁▁▁▇ |
+|a8rp4    | 0.05| 0.10| 0.85|   NA|▁▁▁▁▁▁▁▇ |
+|a8rp5    | 0.10| 0.22| 0.68|   NA|▁▁▁▂▁▁▁▇ |
+|a8rp6    | 0.14| 0.18| 0.68| 0.00|▂▁▁▂▁▁▁▇ |
+|a8si1    | 0.91| 0.05| 0.04|   NA|▇▁▁▁▁▁▁▁ | * item invertido
+|a8si2    | 0.06| 0.07| 0.87| 0.00|▁▁▁▁▁▁▁▇ |
+|a8si3    | 0.06| 0.07| 0.88|   NA|▁▁▁▁▁▁▁▇ |
+|a8si4    | 0.08| 0.12| 0.80| 0.00|▁▁▁▁▁▁▁▇ |
+|a8si5    | 0.15| 0.08| 0.75| 0.02|▂▁▁▁▁▁▁▇ |
+|a8si6    | 0.21| 0.06| 0.71| 0.02|▂▁▁▁▁▁▁▇ |
+
+```
+
+## Items invertidos
+
+- A8MFIN2: ¿Puede tomar un juguete pequeño y tenerlo en la palma de la mano, sujetándolo con los dedos?
+- A8SI2: Al estar delante de un espejo, ¿intenta tocar el espejo con las manos?
+
+
+# Recodificación
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# load data
+#------------------------------------------------------------------------------
+
+
+library(dplyr)
+data_recoded <- # abrir los datos
+                psi2301::desarollo_psicomotor %>%
+                # cambiar todos los nombres a minusculas
+                # para facilitar la escritura de codigo
+                rename_all(tolower) %>%
+                # inversion de las respuestas de los items
+                mutate(a8mfin2r = case_when(
+                  	a8mfin2 == 10 ~  0,
+                  	a8mfin2 ==  5 ~  5,
+                  	a8mfin2 ==  0 ~ 10
+                  	)) %>%
+                mutate(a8si1r = case_when(
+                  	a8si1 == 10 ~  0,
+                  	a8si1 ==  5 ~  5,
+                  	a8si1 ==  0 ~ 10
+                  	)) %>%
+                  dplyr::glimpse()
+
+```
+

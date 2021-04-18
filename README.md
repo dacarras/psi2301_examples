@@ -15,6 +15,10 @@ Ejemplos de código empleados en ayudantía y en clases del curso psi2301.
   + ejemplo donde argumento "na.rm=TRUE" es posicionado en otra función, generando resultados inesperados
   + https://github.com/dacarras/psi2301_examples/blob/master/foro_preguntas_20210417.md
 
+- Pregunta 20210418
+  + identificación de items invertidos, y recodificación
+  + https://github.com/dacarras/psi2301_examples/blob/master/foro_preguntas_20210418.md
+
 ## Preguntas acerca de ejercicios de ayudantías
 
 - Ayudantia 02, pregunta c
