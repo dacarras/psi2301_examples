@@ -160,9 +160,8 @@ knitr::kable(., digits = 2)
 ```{r , echo=TRUE, warning=FALSE}
 
 #------------------------------------------------------------------------------
-# load data
+# recode data
 #------------------------------------------------------------------------------
-
 
 library(dplyr)
 data_recoded <- # abrir los datos
@@ -179,9 +178,14 @@ data_recoded <- # abrir los datos
                 mutate(a8si1r = case_when(
                   	a8si1 == 10 ~  0,
                   	a8si1 ==  5 ~  5,
-                  	a8si1 ==  0 ~ 10
-                  	)) %>%
-                  dplyr::glimpse()
+                  	a8si1 ==  0 ~ 10))
+#------------------------------------------------------------------------------
+# revisar recodificaciones
+#------------------------------------------------------------------------------
+
+dplyr::count(data_recoded, a8mfin2, a8mfin2r)
+
+dplyr::count(data_recoded, a8si1, a8si1r)
 
 ```
 
