@@ -99,3 +99,125 @@ hist(data_injuv$democra,
 # Anexos
 
 - Los items I13_1 a I13_8 poseen valores válidos de 1 a 10, donde 99, es respuesta vacía. Ver: https://www.injuv.gob.cl/sites/default/files/cuestionario_7ma_enj_cara_a_cara.pdf
+
+
+# Pregunta 20210417_2
+
+>Hola! espero que estén bien :) escribo como parte del grupo 8 y tenemos una duda que no nos deja avanzar con el análisis (puse este mismo mensaje en el foro por si prefieren responder ahí). Estamos trabajando con la base de datos "Amistad Intergrupal" y tenemos problemas precisamente con la variable de reacciones afectivas y confianza hacia el exogrupo, ya que como son variables construidas las agrupamos para poder calcular las medidas de tendencia central y de dispersión, y además poder cruzarla con otras variables categóricas. Estas variables incluían (dentro de la misma) 3 preguntas que se responden de 1-7. Sin embargo, al agrupar los 3 ítems en una sola gran variable, el rango pasa a ser de 1.0-5.5, entonces no sabemos como interpretar tanto los descriptivos como los gráficos que muestran la distribución de la variable.
+
+>El código que utilizamos en R es el siguiente, y nos basamos en el código publicado previamente con el ayudante:
+
+```text
+data_informe$reacciones_afectivas=with(data_informe,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))
+data_informe$confianza_exogrupo=with(data_informe,rowMeans(cbind(outt1,outt2,outt3,na.rm=TRUE)))
+
+```
+>Esperamos su respuesta :( gracias!
+
+Hola Josefa, primero vamos a replicar el codigo empleado, y ver si puedo reproducir los mismos resultados.
+
+
+```{r, echo=TRUE, eval = TRUE}
+
+# abrir dplyr
+library(dplyr)
+
+# abrir datos
+data_informe <- readr::read_csv("data/Amistad intergrupal.csv")
+
+# crear medias
+data_informe$reacciones_afectivas=with(data_informe,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))
+data_informe$confianza_exogrupo=with(data_informe,rowMeans(cbind(outt1,outt2,outt3,na.rm=TRUE)))
+
+# ver descriptivos
+data_informe %>%
+  dplyr::select(reacciones_afectivas, confianza_exogrupo) %>%
+  r4sda::get_desc() %>%
+  knitr::kable(., digits = 2)
+
+# vert histograma
+hist(data_informe$reacciones_afectivas, 
+     main = 'histograma variable creada \n reacciones afectivas',
+     xlab = 'medias')
+
+# vert histograma
+hist(data_informe$confianza_exogrupo, 
+     main = 'histograma variable creada \n confianza con el exogrupo',
+     xlab = 'medias')
+
+````
+
+
+Creo que la razón la por cual no se obtienen rangos, en las variables creadas, similares a los esperados es debido a la presencia de valores -99. Vamos a convertir estos valores a "NA", de modo que R los interprete como valores perdidos, y luego calcularemos descriptivos con las variables creadas.
+
+Al igual que en el caso anterior, repetiremos todos los pasos de forma explícita:
+
+- cargar los datos en sesión
+- convertir `-99` a `NA`
+- verificar los datos convertidos
+- crear el puntaje promedio
+- revisar descriptivo de los puntaje promedio creados
+- generar histograma
+
+```{r, echo=TRUE, eval = TRUE}
+
+# abrir dplyr
+library(dplyr)
+
+# abrir datos
+data_informe <- readr::read_csv("data/Amistad intergrupal.csv")
+data_amistad <- readr::read_csv("data/Amistad intergrupal.csv")
+
+# revisar la tabla de variables
+data_amistad %>%
+  r4sda::variables_table() %>%
+  knitr::kable()
+
+# revisar los valores digitados en todas las variables de pocas categorias
+data_amistad %>%
+  dplyr::select(-ethnia, -ID, -age) %>%
+r4sda::wide_resp() %>%
+  knitr::kable()
+
+# convertir todos los -99 a NA
+data_amistad <- data_amistad %>%
+                dplyr::na_if(-99)
+
+# revisar la conversion
+data_amistad %>%
+  dplyr::select(-ethnia, -ID, -age) %>%
+r4sda::wide_resp() %>%
+  knitr::kable()
+
+# revisar la conversion sobre los items de interes
+data_amistad %>%
+  dplyr::select(affo1:outt3) %>%
+r4sda::wide_resp() %>%
+  knitr::kable()
+
+
+# revisar la conversion sobre los items de interes
+data_test_1 <- data_amistad %>%
+               mutate(aff_1 = r4sda::mean_score(affo1, affo2, affo3)) %>%
+               mutate(out_1 = r4sda::mean_score(outt1, outt2, outt3)) %>%
+               mutate(aff_2 = rowMeans(dplyr::select(., affo1, affo1, affo3))) %>%
+               mutate(out_2 = rowMeans(dplyr::select(., outt1, outt2, outt3))) %>%
+               mutate(aff_3 = with(data_informe,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))) %>%
+               mutate(out_3 = with(data_informe,rowMeans(cbind(outt1,outt2,outt3,na.rm=TRUE))))
+
+
+
+# ver descriptivos
+data_test_1 %>%
+  summarize(
+    mean_aff_1 = mean(aff_1, na.rm = TRUE),
+    max_aff_1 = max(aff_1, na.rm = TRUE),
+    mean_aff_2 = mean(aff_2, na.rm = TRUE),
+    max_aff_2 = max(aff_2, na.rm = TRUE),
+    mean_aff_3 = mean(aff_3, na.rm = TRUE),
+    max_aff_3 = max(aff_3, na.rm = TRUE)
+      ) %>%
+  knitr::kable(., digits = 2)
+
+```
+

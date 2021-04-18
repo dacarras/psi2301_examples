@@ -343,3 +343,294 @@ hist(data_injuv$democra,
 -   Los items I13\_1 a I13\_8 poseen valores válidos de 1 a 10, donde
     99, es respuesta vacía. Ver:
     <https://www.injuv.gob.cl/sites/default/files/cuestionario_7ma_enj_cara_a_cara.pdf>
+
+# Pregunta 20210417\_2
+
+> Hola! espero que estén bien :) escribo como parte del grupo 8 y
+> tenemos una duda que no nos deja avanzar con el análisis (puse este
+> mismo mensaje en el foro por si prefieren responder ahí). Estamos
+> trabajando con la base de datos “Amistad Intergrupal” y tenemos
+> problemas precisamente con la variable de reacciones afectivas y
+> confianza hacia el exogrupo, ya que como son variables construidas las
+> agrupamos para poder calcular las medidas de tendencia central y de
+> dispersión, y además poder cruzarla con otras variables categóricas.
+> Estas variables incluían (dentro de la misma) 3 preguntas que se
+> responden de 1-7. Sin embargo, al agrupar los 3 ítems en una sola gran
+> variable, el rango pasa a ser de 1.0-5.5, entonces no sabemos como
+> interpretar tanto los descriptivos como los gráficos que muestran la
+> distribución de la variable.
+
+> El código que utilizamos en R es el siguiente, y nos basamos en el
+> código publicado previamente con el ayudante:
+
+``` text
+data_informe$reacciones_afectivas=with(data_informe,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))
+data_informe$confianza_exogrupo=with(data_informe,rowMeans(cbind(outt1,outt2,outt3,na.rm=TRUE)))
+```
+
+> Esperamos su respuesta :( gracias!
+
+Hola Josefa, primero vamos a replicar el codigo empleado, y ver si puedo
+reproducir los mismos resultados.
+
+``` r
+# abrir dplyr
+library(dplyr)
+
+# abrir datos
+data_informe <- readr::read_csv("data/Amistad intergrupal.csv")
+```
+
+    ## 
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## cols(
+    ##   .default = col_double(),
+    ##   ethnia = col_character()
+    ## )
+    ## ℹ Use `spec()` for the full column specifications.
+
+``` r
+# crear medias
+data_informe$reacciones_afectivas=with(data_informe,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))
+data_informe$confianza_exogrupo=with(data_informe,rowMeans(cbind(outt1,outt2,outt3,na.rm=TRUE)))
+
+# ver descriptivos
+data_informe %>%
+  dplyr::select(reacciones_afectivas, confianza_exogrupo) %>%
+  r4sda::get_desc() %>%
+  knitr::kable(., digits = 2)
+```
+
+| var                   | missing | complete |   n |  mean |    sd | min |  p25 | median |  p75 | max |  skew | kurt | hist     |
+|:----------------------|--------:|---------:|----:|------:|------:|----:|-----:|-------:|-----:|----:|------:|-----:|:---------|
+| reacciones\_afectivas |       0 |        1 | 200 | -1.46 | 10.42 | -24 | 1.75 |   3.50 | 4.50 | 5.5 | -1.47 | 3.23 | ▂▁▁▁▁▁▁▇ |
+| confianza\_exogrupo   |       0 |        1 | 200 |  0.66 |  7.75 | -24 | 2.50 |   3.25 | 3.75 | 5.5 | -2.62 | 7.98 | ▁▁▁▁▁▁▁▇ |
+
+``` r
+# vert histograma
+hist(data_informe$reacciones_afectivas, 
+     main = 'histograma variable creada \n reacciones afectivas',
+     xlab = 'medias')
+```
+
+![](foro_preguntas_20210417_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
+# vert histograma
+hist(data_informe$confianza_exogrupo, 
+     main = 'histograma variable creada \n confianza con el exogrupo',
+     xlab = 'medias')
+```
+
+![](foro_preguntas_20210417_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
+
+Creo que la razón la por cual no se obtienen rangos, en las variables
+creadas, similares a los esperados es debido a la presencia de valores
+-99. Vamos a convertir estos valores a “NA”, de modo que R los
+interprete como valores perdidos, y luego calcularemos descriptivos con
+las variables creadas.
+
+Al igual que en el caso anterior, repetiremos todos los pasos de forma
+explícita:
+
+-   cargar los datos en sesión
+-   convertir `-99` a `NA`
+-   verificar los datos convertidos
+-   crear el puntaje promedio
+-   revisar descriptivo de los puntaje promedio creados
+-   generar histograma
+
+``` r
+# abrir dplyr
+library(dplyr)
+
+# abrir datos
+data_informe <- readr::read_csv("data/Amistad intergrupal.csv")
+```
+
+    ## 
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## cols(
+    ##   .default = col_double(),
+    ##   ethnia = col_character()
+    ## )
+    ## ℹ Use `spec()` for the full column specifications.
+
+``` r
+data_amistad <- readr::read_csv("data/Amistad intergrupal.csv")
+```
+
+    ## 
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## cols(
+    ##   .default = col_double(),
+    ##   ethnia = col_character()
+    ## )
+    ## ℹ Use `spec()` for the full column specifications.
+
+``` r
+# revisar la tabla de variables
+data_amistad %>%
+  r4sda::variables_table() %>%
+  knitr::kable()
+```
+
+    ## Loading required package: purrr
+
+    ## Loading required package: stringr
+
+| variable | type | values                        | labels                    |
+|:---------|:-----|:------------------------------|:--------------------------|
+| ID       | dbl  | 12, 13, 14, 15, 16, 17, 18, … | === no variable label === |
+| affo1    | dbl  | , 6, 4, 6, 2, 5, 5, 4, 6, 6,… | === no variable label === |
+| affo2    | dbl  | 7, 7, -99, 4, 6, 7, 7, -99,…  | === no variable label === |
+| affo3    | dbl  | 7, 5, 1, 2, 5, 5, 1, 4, 4, …  | === no variable label === |
+| outt1    | dbl  | 4, 6, 1, 5, 1, 4, 3, 4, 2, …  | === no variable label === |
+| outt2    | dbl  | 1, 1, 4, 3, 2, 3, 1, 4, 5, …  | === no variable label === |
+| outt3    | dbl  | 7, 7, 1, 5, 3, 3, 2, 4, 4, …  | === no variable label === |
+| famn1    | dbl  | 4, 6, 4, 3, 4, 4, 7, 5, 4, …  | === no variable label === |
+| famn2    | dbl  | 4, 6, 4, 3, -99, 4, 7, 5, 4…  | === no variable label === |
+| famn3    | dbl  | 4, 4, 1, 3, 4, 5, 7, -99, -…  | === no variable label === |
+| clan1    | dbl  | 4, 3, 1, 3, 6, 7, 4, 2, 5, …  | === no variable label === |
+| clan2    | dbl  | 4, 4, 1, 3, 5, 4, 4, 4, 4, …  | === no variable label === |
+| clan3    | dbl  | 4, 4, 6, 3, 5, 4, 4, 4, 5, …  | === no variable label === |
+| natic1   | dbl  | 4, 7, -99, 2, 4, 4, 7, 4, 4…  | === no variable label === |
+| natic2   | dbl  | , 5, 4, 7, 3, 3, -99, 4, 7, … | === no variable label === |
+| natic3   | dbl  | , 7, 7, 7, 4, 7, 6, 4, 7, 7,… | === no variable label === |
+| idma1    | dbl  | 1, 7, 1, 2, 2, 2, 7, 1, 4, …  | === no variable label === |
+| idma2    | dbl  | 4, -99, 5, -99, 1, 5, -99, 7… | === no variable label === |
+| idma3    | dbl  | 4, 1, 6, 1, 2, -99, 4, 7, 1,… | === no variable label === |
+| qous1    | dbl  | 2, 5, 1, 1, 4, 3, 5, 5, 4, …  | === no variable label === |
+| qous2    | dbl  | 2, 5, 1, -99, 6, 3, 5, 4, 4…  | === no variable label === |
+| qous3    | dbl  | -99, 2, 5, 1, 2, 7, 3, 6, 4,… | === no variable label === |
+| qous4    | dbl  | 2, 4, 1, 2, 6, 3, 5, 3, 4, …  | === no variable label === |
+| qous5    | dbl  | 6, 3, 4, 1, 2, 7, 4, 7, 2, 5… | === no variable label === |
+| goufr    | dbl  | 10, 3, 2, 1, 2, 2, 7, 0, 10,… | === no variable label === |
+| ethnia   | chr  | “CHI”, “CHI”, “CHI”, “CHI”, … | === no variable label === |
+| sex      | dbl  | 2, 1, 1, 2, 2, 2, 1, 1, 2, …  | === no variable label === |
+| region   | dbl  | 1, 1, 2, 2, 2, 1, 2, 2, 1, …  | === no variable label === |
+| age      | dbl  | 14, 14, 15, 16, 17, 14, 15,…  | === no variable label === |
+
+``` r
+# revisar los valores digitados en todas las variables de pocas categorias
+data_amistad %>%
+  dplyr::select(-ethnia, -ID, -age) %>%
+r4sda::wide_resp() %>%
+  knitr::kable()
+```
+
+| variable |   -99 |    00 |    01 |    02 |    03 |    04 |    05 |    06 |    07 |    08 |   09 |    10 | hist     |
+|:---------|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|-----:|------:|:---------|
+| affo1    | 0.045 |    NA | 0.020 | 0.025 | 0.040 | 0.175 | 0.175 | 0.290 | 0.230 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| affo2    | 0.095 |    NA | 0.130 | 0.040 | 0.115 | 0.205 | 0.160 | 0.130 | 0.125 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| affo3    | 0.060 |    NA | 0.080 | 0.070 | 0.115 | 0.235 | 0.210 | 0.145 | 0.085 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| outt1    | 0.020 |    NA | 0.105 | 0.045 | 0.115 | 0.245 | 0.210 | 0.160 | 0.100 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| outt2    | 0.045 |    NA | 0.260 | 0.130 | 0.100 | 0.155 | 0.130 | 0.125 | 0.055 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| outt3    | 0.035 |    NA | 0.105 | 0.070 | 0.115 | 0.245 | 0.185 | 0.130 | 0.115 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| famn1    | 0.030 |    NA | 0.080 | 0.045 | 0.090 | 0.170 | 0.170 | 0.205 | 0.210 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| famn2    | 0.070 |    NA | 0.055 | 0.060 | 0.090 | 0.185 | 0.205 | 0.165 | 0.170 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| famn3    | 0.020 |    NA | 0.090 | 0.065 | 0.085 | 0.270 | 0.160 | 0.160 | 0.150 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| clan1    | 0.005 |    NA | 0.090 | 0.055 | 0.145 | 0.295 | 0.135 | 0.150 | 0.125 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| clan2    | 0.075 |    NA | 0.080 | 0.055 | 0.155 | 0.255 | 0.130 | 0.155 | 0.095 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| clan3    | 0.015 |    NA | 0.090 | 0.075 | 0.140 | 0.250 | 0.215 | 0.135 | 0.080 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| natic1   | 0.095 |    NA | 0.045 | 0.085 | 0.060 | 0.170 | 0.160 | 0.170 | 0.215 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| natic2   | 0.085 |    NA | 0.050 | 0.040 | 0.070 | 0.125 | 0.190 | 0.180 | 0.260 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| natic3   | 0.020 |    NA | 0.035 | 0.040 | 0.050 | 0.115 | 0.080 | 0.150 | 0.510 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| idma1    | 0.065 |    NA | 0.190 | 0.130 | 0.070 | 0.155 | 0.110 | 0.070 | 0.210 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| idma2    | 0.085 |    NA | 0.210 | 0.110 | 0.110 | 0.150 | 0.130 | 0.080 | 0.125 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| idma3    | 0.075 |    NA | 0.245 | 0.105 | 0.075 | 0.125 | 0.125 | 0.075 | 0.175 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| qous1    | 0.065 |    NA | 0.090 | 0.070 | 0.120 | 0.250 | 0.175 | 0.095 | 0.135 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| qous2    | 0.015 |    NA | 0.035 | 0.090 | 0.090 | 0.215 | 0.185 | 0.185 | 0.185 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| qous3    | 0.060 |    NA | 0.045 | 0.085 | 0.075 | 0.160 | 0.155 | 0.170 | 0.250 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| qous4    | 0.085 |    NA | 0.040 | 0.045 | 0.110 | 0.190 | 0.150 | 0.170 | 0.210 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| qous5    | 0.085 |    NA | 0.045 | 0.045 | 0.080 | 0.190 | 0.140 | 0.175 | 0.240 |    NA |   NA |    NA | ▁▁▁▁▁▁▁▇ |
+| goufr    | 0.080 | 0.045 | 0.065 | 0.085 | 0.070 | 0.055 | 0.045 | 0.040 | 0.035 | 0.035 | 0.03 | 0.415 | ▁▁▁▁▁▁▁▇ |
+| sex      |    NA |    NA | 0.520 | 0.480 |    NA |    NA |    NA |    NA |    NA |    NA |   NA |    NA | ▇▁▁▁▁▁▁▇ |
+| region   |    NA |    NA | 0.195 | 0.805 |    NA |    NA |    NA |    NA |    NA |    NA |   NA |    NA | ▂▁▁▁▁▁▁▇ |
+
+``` r
+# convertir todos los -99 a NA
+data_amistad <- data_amistad %>%
+                dplyr::na_if(-99)
+
+# revisar la conversion
+data_amistad %>%
+  dplyr::select(-ethnia, -ID, -age) %>%
+r4sda::wide_resp() %>%
+  knitr::kable()
+```
+
+| variable |    00 |    01 |    02 |    03 |    04 |    05 |    06 |    07 |    08 |   09 |    10 |    NA | hist     |
+|:---------|------:|------:|------:|------:|------:|------:|------:|------:|------:|-----:|------:|------:|:---------|
+| affo1    |    NA | 0.020 | 0.025 | 0.040 | 0.175 | 0.175 | 0.290 | 0.230 |    NA |   NA |    NA | 0.045 | ▁▁▁▅▁▅▇▆ |
+| affo2    |    NA | 0.130 | 0.040 | 0.115 | 0.205 | 0.160 | 0.130 | 0.125 |    NA |   NA |    NA | 0.095 | ▅▂▅▇▁▆▅▅ |
+| affo3    |    NA | 0.080 | 0.070 | 0.115 | 0.235 | 0.210 | 0.145 | 0.085 |    NA |   NA |    NA | 0.060 | ▃▂▃▇▁▇▅▃ |
+| outt1    |    NA | 0.105 | 0.045 | 0.115 | 0.245 | 0.210 | 0.160 | 0.100 |    NA |   NA |    NA | 0.020 | ▃▂▃▇▁▇▅▃ |
+| outt2    |    NA | 0.260 | 0.130 | 0.100 | 0.155 | 0.130 | 0.125 | 0.055 |    NA |   NA |    NA | 0.045 | ▇▃▃▅▁▃▃▂ |
+| outt3    |    NA | 0.105 | 0.070 | 0.115 | 0.245 | 0.185 | 0.130 | 0.115 |    NA |   NA |    NA | 0.035 | ▃▂▃▇▁▆▅▃ |
+| famn1    |    NA | 0.080 | 0.045 | 0.090 | 0.170 | 0.170 | 0.205 | 0.210 |    NA |   NA |    NA | 0.030 | ▃▂▃▆▁▆▇▇ |
+| famn2    |    NA | 0.055 | 0.060 | 0.090 | 0.185 | 0.205 | 0.165 | 0.170 |    NA |   NA |    NA | 0.070 | ▂▂▃▇▁▇▆▆ |
+| famn3    |    NA | 0.090 | 0.065 | 0.085 | 0.270 | 0.160 | 0.160 | 0.150 |    NA |   NA |    NA | 0.020 | ▂▂▂▇▁▅▅▅ |
+| clan1    |    NA | 0.090 | 0.055 | 0.145 | 0.295 | 0.135 | 0.150 | 0.125 |    NA |   NA |    NA | 0.005 | ▂▂▃▇▁▃▅▃ |
+| clan2    |    NA | 0.080 | 0.055 | 0.155 | 0.255 | 0.130 | 0.155 | 0.095 |    NA |   NA |    NA | 0.075 | ▂▂▅▇▁▅▅▃ |
+| clan3    |    NA | 0.090 | 0.075 | 0.140 | 0.250 | 0.215 | 0.135 | 0.080 |    NA |   NA |    NA | 0.015 | ▃▂▅▇▁▇▅▂ |
+| natic1   |    NA | 0.045 | 0.085 | 0.060 | 0.170 | 0.160 | 0.170 | 0.215 |    NA |   NA |    NA | 0.095 | ▂▃▂▆▁▆▆▇ |
+| natic2   |    NA | 0.050 | 0.040 | 0.070 | 0.125 | 0.190 | 0.180 | 0.260 |    NA |   NA |    NA | 0.085 | ▂▁▂▃▁▆▆▇ |
+| natic3   |    NA | 0.035 | 0.040 | 0.050 | 0.115 | 0.080 | 0.150 | 0.510 |    NA |   NA |    NA | 0.020 | ▁▁▁▂▁▁▂▇ |
+| idma1    |    NA | 0.190 | 0.130 | 0.070 | 0.155 | 0.110 | 0.070 | 0.210 |    NA |   NA |    NA | 0.065 | ▇▅▂▆▁▅▂▇ |
+| idma2    |    NA | 0.210 | 0.110 | 0.110 | 0.150 | 0.130 | 0.080 | 0.125 |    NA |   NA |    NA | 0.085 | ▇▅▅▆▁▅▃▅ |
+| idma3    |    NA | 0.245 | 0.105 | 0.075 | 0.125 | 0.125 | 0.075 | 0.175 |    NA |   NA |    NA | 0.075 | ▇▃▂▅▁▅▂▆ |
+| qous1    |    NA | 0.090 | 0.070 | 0.120 | 0.250 | 0.175 | 0.095 | 0.135 |    NA |   NA |    NA | 0.065 | ▃▂▃▇▁▆▃▅ |
+| qous2    |    NA | 0.035 | 0.090 | 0.090 | 0.215 | 0.185 | 0.185 | 0.185 |    NA |   NA |    NA | 0.015 | ▁▃▃▇▁▇▇▇ |
+| qous3    |    NA | 0.045 | 0.085 | 0.075 | 0.160 | 0.155 | 0.170 | 0.250 |    NA |   NA |    NA | 0.060 | ▂▃▂▅▁▅▆▇ |
+| qous4    |    NA | 0.040 | 0.045 | 0.110 | 0.190 | 0.150 | 0.170 | 0.210 |    NA |   NA |    NA | 0.085 | ▂▂▅▇▁▆▆▇ |
+| qous5    |    NA | 0.045 | 0.045 | 0.080 | 0.190 | 0.140 | 0.175 | 0.240 |    NA |   NA |    NA | 0.085 | ▂▂▂▆▁▅▆▇ |
+| goufr    | 0.045 | 0.065 | 0.085 | 0.070 | 0.055 | 0.045 | 0.040 | 0.035 | 0.035 | 0.03 | 0.415 | 0.080 | ▂▂▁▂▁▁▁▇ |
+| sex      |    NA | 0.520 | 0.480 |    NA |    NA |    NA |    NA |    NA |    NA |   NA |    NA |    NA | ▇▁▁▁▁▁▁▇ |
+| region   |    NA | 0.195 | 0.805 |    NA |    NA |    NA |    NA |    NA |    NA |   NA |    NA |    NA | ▂▁▁▁▁▁▁▇ |
+
+``` r
+# revisar la conversion sobre los items de interes
+data_amistad %>%
+  dplyr::select(affo1:outt3) %>%
+r4sda::wide_resp() %>%
+  knitr::kable()
+```
+
+| variable |    01 |    02 |    03 |    04 |    05 |    06 |    07 |    NA | hist     |
+|:---------|------:|------:|------:|------:|------:|------:|------:|------:|:---------|
+| affo1    | 0.020 | 0.025 | 0.040 | 0.175 | 0.175 | 0.290 | 0.230 | 0.045 | ▁▁▁▅▁▅▇▆ |
+| affo2    | 0.130 | 0.040 | 0.115 | 0.205 | 0.160 | 0.130 | 0.125 | 0.095 | ▅▂▅▇▁▆▅▅ |
+| affo3    | 0.080 | 0.070 | 0.115 | 0.235 | 0.210 | 0.145 | 0.085 | 0.060 | ▃▂▃▇▁▇▅▃ |
+| outt1    | 0.105 | 0.045 | 0.115 | 0.245 | 0.210 | 0.160 | 0.100 | 0.020 | ▃▂▃▇▁▇▅▃ |
+| outt2    | 0.260 | 0.130 | 0.100 | 0.155 | 0.130 | 0.125 | 0.055 | 0.045 | ▇▃▃▅▁▃▃▂ |
+| outt3    | 0.105 | 0.070 | 0.115 | 0.245 | 0.185 | 0.130 | 0.115 | 0.035 | ▃▂▃▇▁▆▅▃ |
+
+``` r
+# revisar la conversion sobre los items de interes
+data_test_1 <- data_amistad %>%
+               mutate(aff_1 = r4sda::mean_score(affo1, affo2, affo3)) %>%
+               mutate(out_1 = r4sda::mean_score(outt1, outt2, outt3)) %>%
+               mutate(aff_2 = rowMeans(dplyr::select(., affo1, affo1, affo3))) %>%
+               mutate(out_2 = rowMeans(dplyr::select(., outt1, outt2, outt3))) %>%
+               mutate(aff_3 = with(data_informe,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))) %>%
+               mutate(out_3 = with(data_informe,rowMeans(cbind(outt1,outt2,outt3,na.rm=TRUE))))
+
+
+
+# ver descriptivos
+data_test_1 %>%
+  summarize(
+    mean_aff_1 = mean(aff_1, na.rm = TRUE),
+    max_aff_1 = max(aff_1, na.rm = TRUE),
+    mean_aff_2 = mean(aff_2, na.rm = TRUE),
+    max_aff_2 = max(aff_2, na.rm = TRUE),
+    mean_aff_3 = mean(aff_3, na.rm = TRUE),
+    max_aff_3 = max(aff_3, na.rm = TRUE)
+      ) %>%
+  knitr::kable(., digits = 2)
+```
+
+| mean\_aff\_1 | max\_aff\_1 | mean\_aff\_2 | max\_aff\_2 | mean\_aff\_3 | max\_aff\_3 |
+|-------------:|------------:|-------------:|------------:|-------------:|------------:|
+|         4.63 |           7 |         4.83 |           7 |        -1.46 |         5.5 |
