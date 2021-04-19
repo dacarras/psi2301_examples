@@ -19,6 +19,10 @@ Ejemplos de código empleados en ayudantía y en clases del curso psi2301.
   + identificación de items invertidos, y recodificación
   + https://github.com/dacarras/psi2301_examples/blob/master/foro_preguntas_20210418.md
 
+- Pregunta 20210419
+  + generación de descriptivos por grupo
+  + https://github.com/dacarras/psi2301_examples/blob/master/foro_preguntas_20210419.md
+
 ## Preguntas acerca de ejercicios de ayudantías
 
 - Ayudantia 02, pregunta c
