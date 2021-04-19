@@ -26,7 +26,7 @@ Hola Paula, con los siguientes codigos vamos a generar tablas de descriptivos em
   - alternativa 4: empleando `r4sda::get_desc()`, pero creando tablas de varias medidas por grupo de forma separada
   - alternativa 5: empleando `r4sda::get_desc()`, y aprovechando la función `split`
 
->Nota: la **alternativa 1**, debiera ser la forma más intuitiva de seguir.
+>Nota: la **alternativa 1**, debiera ser la forma más intuitiva de seguir; la **alternativa 2** tiene la ventaja de ser exportable a excel.
 
 ## Preparar datos
 
@@ -118,9 +118,10 @@ datos_desarollo <- datos_desarollo %>%
 # Tablas de descriptivos
 
 - La alternativa 1 debiera ser la más intuitiva de todas las opciones.
-- Las alternativas 3 a 5, son variantes que podrian ser utiles cuando las exigencias del problema a resolver, requiere de más opciones; y donde quieren más control sobre la tabla generada, y el objeto que con esta se genera. Estas alternativas se incluyen  como ilustraciones. 
+- La alternativa 2 les brinda más control, y la posibilidad de guardar los resultados en un excel.
+- Las alternativas 2 a 5, son variantes que podrian ser utiles cuando las exigencias del problema a resolver, requiere de más opciones; y donde quieren más control sobre la tabla generada, y el objeto que con esta se genera. Estas alternativas se incluyen  como ilustraciones. 
 
-## Tabla de Medias y SD con `summarize()`
+## Tabla de descriptivos con `psych::describeBy`
 
 ```{r, echo=TRUE, eval = TRUE}
 
@@ -129,7 +130,7 @@ datos_desarollo <- datos_desarollo %>%
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------
-# crear tabla de descriptivos (medias y sd)
+# crear tabla de descriptivos
 # -----------------------------------------------
 
 psych::describeBy(amp + com ~ nse, data = datos_desarollo )
@@ -137,7 +138,7 @@ psych::describeBy(amp + com ~ nse, data = datos_desarollo )
 ````
 
 
-## Tabla de Medias y SD con `summarize()`
+## Tabla de descriptivos customizada con `dplyr::summarize()`
 
 ```{r, echo=TRUE, eval = TRUE}
 
@@ -187,7 +188,7 @@ openxlsx::write.xlsx(table_descriptives, 'tabla_descriptivos_ejemplo.xlsx')
 
 
 
-## Tabla de Medias y SD con `summarize()`
+## Tabla de descriptivos por variable `summarize()`
 
 ```{r, echo=TRUE, eval = TRUE}
 
@@ -228,7 +229,7 @@ knitr::kable(., digits = 2)
 
 ````
 
-## Tabla de descriptivos con `r4sda::get_desc()`
+## Tabla de descriptivos por grupo `r4sda::get_desc()`
 
 ```{r, echo=TRUE, eval = TRUE}
 
@@ -278,7 +279,7 @@ knitr::kable(., digits = 2)
 
 
 
-## Tabla de descriptivos con `r4sda::get_desc()` y `split`
+## Tabla de descriptivos por grupo empleando `split` y `r4sda::get_desc()`
 
 ```{r, echo=TRUE, eval = TRUE}
 
