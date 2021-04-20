@@ -1,0 +1,189 @@
+---
+title: "tabla de descriptivos por grupo"
+output: github_document
+---
+
+# Pregunta: como generar una tabla de descriptivos por grupo
+
+>Hola, espero que todxs estén bien. Vengo a preguntar la duda que salió en la ayudantía, sobre las tablas de cruce de las variables, incluyendo sus MTC y de dispersión. Al parecer, hay varios grupos que tuvimos problemas al hacer/entender la tabla y/o encontrar el código que permitiera hacer una tabla buena (visiblemente hablando) con los datos que se piden. Se agradecería mucho si nos pudieran aclarar y ayudar, por favor.
+
+
+# Respuesta
+
+Hola Paula, con los siguientes códigos vamos a generar tablas de descriptivos empleando los datos de "desarollo_psicomotor". Hemos incluido ahora las bases de datos de los trabajos, al interior de la libreria `psi2301` de modo que sea más fácil producir ejemplos. En este ejemplo, primer vamos a:
+
+- abrir los datos
+- inspeccionar los datos
+- preparar los datos
+  - emplear nombres en minuscula para facilitar la escritura de codigo
+  - invertir los items que se encuentran en reverso
+    - revisar la inversion de items
+  - crear puntajes de promedios de variables
+- crear tablas de descriptivos
+  - empleando `summarize()`, y generando tablas de n, medias y sd.
+
+## Preparar datos
+
+```{r, echo=TRUE, eval = TRUE}
+# -----------------------------------------------------------------------------
+# abrir dplyr y los datos
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# actualizar psi2301
+# -----------------------------------------------
+
+# credentials::set_github_pat()
+# devtools::install_github("dacarras/psi2301", force = TRUE)
+
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
+
+library(dplyr)
+datos_desarollo <- psi2301::desarollo_psicomotor
+
+# -----------------------------------------------
+# preparar los datos
+# -----------------------------------------------
+
+datos_desarollo <- datos_desarollo %>%
+                   rename_all(tolower) %>%
+                   dplyr::glimpse()
+
+# -----------------------------------------------
+# descriptivo de 
+# -----------------------------------------------
+
+datos_desarollo %>%
+  dplyr::select(a8com1:a8si6) %>%
+  r4sda::wide_resp() %>%
+  knitr::kable(., digits = 2)
+
+# Nota: items invertidos `a8mfin2` y `a8si1`
+
+# -----------------------------------------------
+# invertir items
+# -----------------------------------------------
+
+datos_desarollo <- datos_desarollo %>%
+                   mutate(a8mfin2_raw = a8mfin2) %>%
+                   mutate(a8mfin2 = case_when(
+                     a8mfin2 ==  0 ~ 10,
+                     a8mfin2 ==  5 ~ 5,
+                     a8mfin2 == 10 ~ 0
+                   )) %>% 
+                   mutate(a8si1_raw = a8si1) %>%
+                   mutate(a8si1 = case_when(
+                     a8si1 ==  0 ~ 10,
+                     a8si1 ==  5 ~ 5,
+                     a8si1 == 10 ~ 0
+                   ))
+                      
+# -----------------------------------------------
+# revisar items invertidos
+# -----------------------------------------------
+
+dplyr::count(datos_desarollo, a8mfin2_raw, a8mfin2)
+dplyr::count(datos_desarollo, a8si1_raw, a8si1)
+
+
+# -----------------------------------------------
+# crear puntajes promedios
+# -----------------------------------------------
+
+com_items <- dplyr::select(datos_desarollo, a8com1:a8com6)
+amp_items <- dplyr::select(datos_desarollo, a8mamp1:a8mamp6)
+fin_items <- dplyr::select(datos_desarollo, a8mfin1:a8mfin6)
+pro_items <- dplyr::select(datos_desarollo, a8rp1:a8rp6)
+soc_items <- dplyr::select(datos_desarollo, a8si1:a8si6)
+
+datos_desarollo <- datos_desarollo %>%
+                   mutate(com = psi2301::mean_score(com_items)) %>%
+                   mutate(amp = psi2301::mean_score(amp_items)) %>%
+                   mutate(fin = psi2301::mean_score(fin_items)) %>%
+                   mutate(pro = psi2301::mean_score(pro_items)) %>%
+                   mutate(soc = psi2301::mean_score(soc_items))
+
+# -----------------------------------------------
+# inspeccionar base de datos creada
+# -----------------------------------------------
+
+datos_desarollo %>%
+r4sda::variables_table() %>%
+knitr::kable()
+
+```
+
+
+## Producir tabla de descriptivos
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# alternativa 3
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# crear tabla de descriptivos (medias y sd)
+# -----------------------------------------------
+
+# crear nse con valores interpretable para tabla
+datos_desarollo <- datos_desarollo %>%
+                   mutate(nse_group = case_when(
+                     nse == 1 ~ 'alto',
+                     nse == 2 ~ 'medio',
+                     nse == 3 ~ 'bajo'
+                   ))
+
+
+# tabla de comunicación
+table_com <- datos_desarollo %>%
+               group_by(nse_group) %>%
+               summarize(
+                 n = n(),
+                 media = mean(com, na.rm = TRUE),
+                 desviacion = sd(com, na.rm = TRUE)
+                 ) %>%
+               mutate(variable = 'comunicación') %>%
+               dplyr::select(nse_group, variable, n, media, desviacion)
+
+# tabla de motricidad gruesa
+table_amp <- datos_desarollo %>%
+               group_by(nse_group) %>%
+               summarize(
+                 n = n(),
+                 media = mean(amp, na.rm = TRUE),
+                 desviacion = sd(amp, na.rm = TRUE)
+                 ) %>%
+               mutate(variable = 'movimientos amplios') %>%
+               dplyr::select(nse_group, variable, n, media, desviacion)
+
+# tabla con medias y sd
+table_descriptives <- dplyr::bind_rows(table_com, table_amp)
+
+# guardar a excel
+openxlsx::write.xlsx(table_descriptives, 'tabla_descriptivos_1.xlsx')
+
+````
+
+
+
+## Tabla de descriptivos
+
+- Tabla de descriptivos:
+  - n = cantidad de casos
+  - media = promedio de variables
+  - desviacion = desviación estandar de variables
+- Cada uno de los descriptivos se produce para los diferentes grupos socioeconómicos (nse) presentes en el estudio.
+
+```{r, echo=FALSE, eval = TRUE}
+
+# mostrar tabla
+table_descriptives %>%
+knitr::kable(., digits = 2, caption = 'Tabla 1: Descriptivos de comunicación y movimientos amplios por cada grupo socioeconómico (nse_group)')
+
+````
+
+
+

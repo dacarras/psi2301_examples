@@ -1,0 +1,144 @@
+---
+title: "Preguntas foro 20210420"
+output: github_document
+---
+
+# Códigos de R
+
+## Ejemplos empleados en las slides
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# object examples
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# lists
+# -----------------------------------------------
+
+# listas
+lista_de_numeros <- c(1,2,3,4,5)
+lista_de_numeros
+class(lista_de_numeros)
+
+lista_de_letras <- c('a','b','c')
+lista_de_letras
+class(lista_de_letras)
+
+lista_mixta <- c(1,'b',3,'d')
+lista_mixta
+class(lista_mixta)
+
+# -----------------------------------------------
+# vector
+# -----------------------------------------------
+
+# vectores
+vector_numerico <- c(1,2,3,4,5)
+vector_numerico
+class(vector_numerico)
+
+sequencia_numerica <- 1:5
+sequencia_numerica
+class(sequencia_numerica)
+
+
+# -----------------------------------------------
+# data
+# -----------------------------------------------
+
+# tabla de datos
+tabla_de_datos <- read.table(text = "
+index name
+1     laura
+2     raul
+3     jimena
+4     rodrigo
+5     liliana
+", header = TRUE
+)
+
+tabla_de_datos
+class(tabla_de_datos)
+
+
+# -----------------------------------------------
+# funcion y resultado
+# -----------------------------------------------
+
+# funcion y resultado
+mean(c(1,2,3,4,5))
+
+# -----------------------------------------------
+# funcion asignada
+# -----------------------------------------------
+
+# funcion asignada
+media_de_vector <- mean(c(1,2,3,4,5))
+
+# -----------------------------------------------
+# funcion en una tabla
+# -----------------------------------------------
+
+# función que despliega una tabla
+library(dplyr)
+
+data.frame(
+  n = length(c(1,2,3,4,5)),
+  media = mean(c(1,2,3,4,5), na.rm = TRUE),
+  desviacion = sd(c(1,2,3,4,5), na.rm = TRUE)
+) %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# exportar a excel
+# -----------------------------------------------
+
+# crear tabla y exportar a excel
+tabla_descriptivos <- data.frame(
+  n = length(c(1,2,3,4,5)),
+  media = mean(c(1,2,3,4,5), na.rm = TRUE),
+  desviacion = sd(c(1,2,3,4,5), na.rm = TRUE)
+)
+openxlsx::write.xlsx(tabla_descriptivos,'descriptivos.xlsx')
+
+
+# -----------------------------------------------
+# ejemplo de función aplicada
+# -----------------------------------------------
+
+# abrir datos
+data_amistad <- psi2301::amistad_intergrupal
+
+# crear una media
+data_amistad$affo_score = with(data_amistad,
+                          rowMeans(
+                             cbind(affo1,affo2,affo3),
+                             na.rm=TRUE)
+                             )
+# revisar media creada
+data_amistad[1,c('affo1','affo2','affo3','affo_score')]
+
+# prueba de media
+mean(c(7,3,7))
+
+
+# -----------------------------------------------
+# ejemplo de función con error
+# -----------------------------------------------
+
+# abrir datos
+data_amistad <- psi2301::amistad_intergrupal
+
+# crear media
+data_amistad$affo_score=with(data_amistad,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))
+
+# revisar media creada
+data_amistad[1,c('affo1','affo2','affo3','affo_score')]
+
+# prueba de media
+mean(c(7,3,7))
+
+````
+
