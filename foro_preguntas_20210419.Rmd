@@ -21,12 +21,13 @@ Hola Paula, con los siguientes codigos vamos a generar tablas de descriptivos em
   - crear puntajes de promedios de variables
 - crear tablas de descriptivos
   - alternativa 1: empleando `psych::describeBy()`
-  - alternativa 2: empleando `summarize()`, y generando tablas de n, medias y sd.
-  - alternativa 3: empleando `summarize()`, pero creando tablas de una sola medida, para diferentes variables
-  - alternativa 4: empleando `r4sda::get_desc()`, pero creando tablas de varias medidas por grupo de forma separada
-  - alternativa 5: empleando `r4sda::get_desc()`, y aprovechando la función `split`
+  - alternativa 2: empleando `skimr::skim()`  
+  - alternativa 3: empleando `summarize()`, y generando tablas de n, medias y sd.
+  - alternativa 4: empleando `summarize()`, pero creando tablas de una sola medida, para diferentes variables
+  - alternativa 5: empleando `r4sda::get_desc()`, pero creando tablas de varias medidas por grupo de forma separada
+  - alternativa 6: empleando `r4sda::get_desc()`, y aprovechando la función `split`
 
->Nota: la **alternativa 1**, debiera ser la forma más intuitiva de seguir; la **alternativa 2** tiene la ventaja de ser exportable a excel.
+>Nota: la **alternativa 1**, debiera ser la forma más intuitiva de seguir; la **alternativa 3** tiene la ventaja de ser exportable a excel.
 
 ## Preparar datos
 
@@ -118,8 +119,9 @@ datos_desarollo <- datos_desarollo %>%
 # Tablas de descriptivos
 
 - La alternativa 1 debiera ser la más intuitiva de todas las opciones.
-- La alternativa 2 les brinda más control, y la posibilidad de guardar los resultados en un excel.
-- Las alternativas 2 a 5, son variantes que podrian ser utiles cuando las exigencias del problema a resolver, requiere de más opciones; y donde quieren más control sobre la tabla generada, y el objeto que con esta se genera. Estas alternativas se incluyen  como ilustraciones. 
+- La alternativa 2 es similar a la anterior, pero con `skimr`.
+- La alternativa 3 les brinda más control, y la posibilidad de guardar los resultados en un excel. Esto tambien se puede hacer con skimr, pero requiere más esfuerzos.
+- Las alternativas 2 a 6, son variantes que podrian ser utiles cuando las exigencias del problema a resolver, requiere de más opciones; y donde quieren más control sobre la tabla generada, y el objeto que con esta se genera. Estas alternativas se incluyen  como ilustraciones. 
 
 ## Tabla de descriptivos con `psych::describeBy`
 
@@ -137,13 +139,32 @@ psych::describeBy(amp + com ~ nse, data = datos_desarollo )
 
 ````
 
+## Tabla de descriptivos con `skimr::skim()`
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# alternativa 2
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# crear tabla de descriptivos
+# -----------------------------------------------
+
+datos_desarollo %>%
+  dplyr::select(nse, com, amp) %>%
+  group_by(nse) %>%
+  skimr::skim()
+
+````
+
 
 ## Tabla de descriptivos customizada con `dplyr::summarize()`
 
 ```{r, echo=TRUE, eval = TRUE}
 
 # -----------------------------------------------------------------------------
-# alternativa 2
+# alternativa 3
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------
@@ -193,7 +214,7 @@ openxlsx::write.xlsx(table_descriptives, 'tabla_descriptivos_ejemplo.xlsx')
 ```{r, echo=TRUE, eval = TRUE}
 
 # -----------------------------------------------------------------------------
-# alternativa 3
+# alternativa 4
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------
@@ -234,7 +255,7 @@ knitr::kable(., digits = 2)
 ```{r, echo=TRUE, eval = TRUE}
 
 # -----------------------------------------------------------------------------
-# alternativa 4
+# alternativa 5
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------
@@ -284,7 +305,7 @@ knitr::kable(., digits = 2)
 ```{r, echo=TRUE, eval = TRUE}
 
 # -----------------------------------------------------------------------------
-# alternativa 5
+# alternativa 6
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------

@@ -29,17 +29,18 @@ ejemplo, primer vamos a:
     -   crear puntajes de promedios de variables
 -   crear tablas de descriptivos
     -   alternativa 1: empleando `psych::describeBy()`
-    -   alternativa 2: empleando `summarize()`, y generando tablas de n,
+    -   alternativa 2: empleando `skimr::skim()`  
+    -   alternativa 3: empleando `summarize()`, y generando tablas de n,
         medias y sd.
-    -   alternativa 3: empleando `summarize()`, pero creando tablas de
+    -   alternativa 4: empleando `summarize()`, pero creando tablas de
         una sola medida, para diferentes variables
-    -   alternativa 4: empleando `r4sda::get_desc()`, pero creando
+    -   alternativa 5: empleando `r4sda::get_desc()`, pero creando
         tablas de varias medidas por grupo de forma separada
-    -   alternativa 5: empleando `r4sda::get_desc()`, y aprovechando la
+    -   alternativa 6: empleando `r4sda::get_desc()`, y aprovechando la
         función `split`
 
 > Nota: la **alternativa 1**, debiera ser la forma más intuitiva de
-> seguir; la **alternativa 2** tiene la ventaja de ser exportable a
+> seguir; la **alternativa 3** tiene la ventaja de ser exportable a
 > excel.
 
 ## Preparar datos
@@ -314,9 +315,11 @@ datos_desarollo <- datos_desarollo %>%
 # Tablas de descriptivos
 
 -   La alternativa 1 debiera ser la más intuitiva de todas las opciones.
--   La alternativa 2 les brinda más control, y la posibilidad de guardar
-    los resultados en un excel.
--   Las alternativas 2 a 5, son variantes que podrian ser utiles cuando
+-   La alternativa 2 es similar a la anterior, pero con `skimr`.
+-   La alternativa 3 les brinda más control, y la posibilidad de guardar
+    los resultados en un excel. Esto tambien se puede hacer con skimr,
+    pero requiere más esfuerzos.
+-   Las alternativas 2 a 6, son variantes que podrian ser utiles cuando
     las exigencias del problema a resolver, requiere de más opciones; y
     donde quieren más control sobre la tabla generada, y el objeto que
     con esta se genera. Estas alternativas se incluyen como
@@ -353,11 +356,52 @@ psych::describeBy(amp + com ~ nse, data = datos_desarollo )
     ## amp    1 100 7.39 2.20   7.50    7.60 2.47 0.83  10  9.17 -0.74     0.13 0.22
     ## com    2 100 8.88 1.18   9.17    9.05 1.24 5.83  10  4.17 -0.98     0.18 0.12
 
-## Tabla de descriptivos customizada con `dplyr::summarize()`
+## Tabla de descriptivos con `skimr::skim()`
 
 ``` r
 # -----------------------------------------------------------------------------
 # alternativa 2
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# crear tabla de descriptivos
+# -----------------------------------------------
+
+datos_desarollo %>%
+  dplyr::select(nse, com, amp) %>%
+  group_by(nse) %>%
+  skimr::skim()
+```
+
+|                                                  |            |
+|:-------------------------------------------------|:-----------|
+| Name                                             | Piped data |
+| Number of rows                                   | 250        |
+| Number of columns                                | 3          |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |            |
+| Column type frequency:                           |            |
+| numeric                                          | 2          |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |            |
+| Group variables                                  | nse        |
+
+Data summary
+
+**Variable type: numeric**
+
+| skim\_variable | nse | n\_missing | complete\_rate | mean |   sd |   p0 |  p25 |   p50 |   p75 | p100 | hist  |
+|:---------------|----:|-----------:|---------------:|-----:|-----:|-----:|-----:|------:|------:|-----:|:------|
+| com            |   1 |          0 |              1 | 9.27 | 1.10 | 5.83 | 8.54 | 10.00 | 10.00 |   10 | ▁▂▁▃▇ |
+| com            |   2 |          0 |              1 | 8.69 | 1.69 | 2.50 | 8.33 |  9.17 | 10.00 |   10 | ▁▁▁▂▇ |
+| com            |   3 |          0 |              1 | 8.88 | 1.18 | 5.83 | 8.33 |  9.17 | 10.00 |   10 | ▁▂▁▇▆ |
+| amp            |   1 |          0 |              1 | 7.50 | 2.28 | 1.67 | 6.04 |  8.33 |  9.17 |   10 | ▂▂▃▇▇ |
+| amp            |   2 |          0 |              1 | 7.03 | 2.65 | 0.00 | 5.00 |  7.50 |  9.17 |   10 | ▁▁▃▃▇ |
+| amp            |   3 |          0 |              1 | 7.39 | 2.20 | 0.83 | 5.83 |  7.50 |  9.17 |   10 | ▁▁▃▃▇ |
+
+## Tabla de descriptivos customizada con `dplyr::summarize()`
+
+``` r
+# -----------------------------------------------------------------------------
+# alternativa 3
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------
@@ -413,7 +457,7 @@ openxlsx::write.xlsx(table_descriptives, 'tabla_descriptivos_ejemplo.xlsx')
 
 ``` r
 # -----------------------------------------------------------------------------
-# alternativa 3
+# alternativa 4
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------
@@ -461,7 +505,7 @@ knitr::kable(., digits = 2)
 
 ``` r
 # -----------------------------------------------------------------------------
-# alternativa 4
+# alternativa 5
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------
@@ -522,7 +566,7 @@ knitr::kable(., digits = 2)
 
 ``` r
 # -----------------------------------------------------------------------------
-# alternativa 5
+# alternativa 6
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------
