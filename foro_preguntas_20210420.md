@@ -236,3 +236,31 @@ mean(c(7,3,7))
 ```
 
     ## [1] 5.666667
+
+``` r
+# -----------------------------------------------
+# ejemplo de función con error
+# -----------------------------------------------
+
+# abrir datos
+data_amistad <- psi2301::amistad_intergrupal
+
+# código que no se puede ejecutar
+# data_amistad$affo_score=with(data_amistad,rowMeans(cbind(affo1,affo2,affo3,na.rm=true)))
+data_amistad$affo_score=with(data_amistad,rowMeans(cbind(affo1,affo2,affo3,na.rm=TRUE)))
+
+# revisar media creada
+data_amistad[1,c('affo1','affo2','affo3','affo_score')]
+```
+
+    ## # A tibble: 1 x 4
+    ##   affo1 affo2 affo3 affo_score
+    ##   <dbl> <dbl> <dbl>      <dbl>
+    ## 1     7     3     7        4.5
+
+``` r
+# prueba de media
+mean(c(7,3,7))
+```
+
+    ## [1] 5.666667

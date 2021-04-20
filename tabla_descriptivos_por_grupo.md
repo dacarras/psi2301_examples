@@ -329,12 +329,11 @@ datos_desarollo <- datos_desarollo %>%
                      nse == 3 ~ 'bajo'
                    ))
 
-
 # tabla de comunicación
 table_com <- datos_desarollo %>%
                group_by(nse_group) %>%
                summarize(
-                 n = n(),
+                 n = sum(!is.na(com)),
                  media = mean(com, na.rm = TRUE),
                  desviacion = sd(com, na.rm = TRUE)
                  ) %>%
@@ -345,7 +344,7 @@ table_com <- datos_desarollo %>%
 table_amp <- datos_desarollo %>%
                group_by(nse_group) %>%
                summarize(
-                 n = n(),
+                 n = sum(!is.na(com)),
                  media = mean(amp, na.rm = TRUE),
                  desviacion = sd(amp, na.rm = TRUE)
                  ) %>%
@@ -362,7 +361,7 @@ openxlsx::write.xlsx(table_descriptives, 'tabla_descriptivos_1.xlsx')
 ## Tabla de descriptivos
 
 -   Tabla de descriptivos:
-    -   n = cantidad de casos
+    -   n = cantidad de casos con observaciones validas en la variable
     -   media = promedio de variables
     -   desviacion = desviación estandar de variables
 -   Cada uno de los descriptivos se produce para los diferentes grupos
