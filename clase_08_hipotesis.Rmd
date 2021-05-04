@@ -5,322 +5,87 @@ output: github_document
 
 # Pregunta 20210419
 
->Hola, espero que todxs estén bien. Vengo a preguntar la duda que salió en la ayudantía, sobre las tablas de cruce de las variables, incluyendo sus MTC y de dispersión. Al parecer, hay varios grupos que tuvimos problemas al hacer/entender la tabla y/o encontrar el código que permitiera hacer una tabla buena (visiblemente hablando) con los datos que se piden. Se agradecería mucho si nos pudieran aclarar y ayudar, por favor.
 
 
 # Respuesta
 
-Hola Paula, con los siguientes codigos vamos a generar tablas de descriptivos empleando los datos de "desarollo_psicomotor". Hemos incluido ahora las bases de datos de los trabajos, al interiord de la libreria `psi2301` de modo que sea más fácil producir ejemplos. En este ejemplo, primer vamos a:
-
-- abrir los datos
-- inspeccionar los datos
-- preparar los datos
-  - emplear nombres en minuscula para facilitar la escritura de codigo
-  - invertir los items que se encuentran en reverso
-    - revisar la inversion de items
-  - crear puntajes de promedios de variables
-- crear tablas de descriptivos
-  - alternativa 1: empleando `psych::describeBy()`
-  - alternativa 2: empleando `skimr::skim()`  
-  - alternativa 3: empleando `summarize()`, y generando tablas de n, medias y sd.
-  - alternativa 4: empleando `summarize()`, pero creando tablas de una sola medida, para diferentes variables
-  - alternativa 5: empleando `r4sda::get_desc()`, pero creando tablas de varias medidas por grupo de forma separada
-  - alternativa 6: empleando `r4sda::get_desc()`, y aprovechando la función `split`
 
 >Nota: la **alternativa 1**, debiera ser la forma más intuitiva de seguir; la **alternativa 3** tiene la ventaja de ser exportable a excel.
 
-## Preparar datos
+## Tabla de estadísticos
 
 ```{r, echo=TRUE, eval = TRUE}
-# -----------------------------------------------------------------------------
-# abrir dplyr y los datos
-# -----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# statistics in tables
+#------------------------------------------------------------------------------
 
-# -----------------------------------------------
-# actualizar psi2301
-# -----------------------------------------------
 
-# credentials::set_github_pat()
-# devtools::install_github("dacarras/psi2301", force = TRUE)
+data_corr <- read.csv(url('https://github.com/dacarras/psi2301_examples/tree/master/data/corr_chl_16.csv'))
 
-# -----------------------------------------------
-# abrir datos
-# -----------------------------------------------
-
-library(dplyr)
-datos_desarollo <- psi2301::desarollo_psicomotor
-
-# -----------------------------------------------
-# preparar los datos
-# -----------------------------------------------
-
-datos_desarollo <- datos_desarollo %>%
-                   rename_all(tolower) %>%
-                   dplyr::glimpse()
-
-# -----------------------------------------------
-# descriptivo de 
-# -----------------------------------------------
-
-datos_desarollo %>%
-  dplyr::select(a8com1:a8si6) %>%
-  r4sda::wide_resp() %>%
-  knitr::kable(., digits = 2)
-
-# Nota: items invertidos `a8mfin2` y `a8si1`
-
-# -----------------------------------------------
-# invertir items
-# -----------------------------------------------
-
-datos_desarollo <- datos_desarollo %>%
-                   mutate(a8mfin2_raw = a8mfin2) %>%
-                   mutate(a8mfin2 = case_when(
-                     a8mfin2 ==  0 ~ 10,
-                     a8mfin2 ==  5 ~ 5,
-                     a8mfin2 == 10 ~ 0
-                   )) %>% 
-                   mutate(a8si1_raw = a8si1) %>%
-                   mutate(a8si1 = case_when(
-                     a8si1 ==  0 ~ 10,
-                     a8si1 ==  5 ~ 5,
-                     a8si1 == 10 ~ 0
-                   ))
-                      
-# -----------------------------------------------
-# revisar items invertidos
-# -----------------------------------------------
-
-dplyr::count(datos_desarollo, a8mfin2_raw, a8mfin2)
-dplyr::count(datos_desarollo, a8si1_raw, a8si1)
 
 
 # -----------------------------------------------
-# crear puntajes promedios
+# variable table
 # -----------------------------------------------
 
-com_items <- dplyr::select(datos_desarollo, a8com1:a8com6)
-amp_items <- dplyr::select(datos_desarollo, a8mamp1:a8mamp6)
-fin_items <- dplyr::select(datos_desarollo, a8mfin1:a8mfin6)
-pro_items <- dplyr::select(datos_desarollo, a8rp1:a8rp6)
-soc_items <- dplyr::select(datos_desarollo, a8si1:a8si6)
+data_corr %>%
+r4sda::variables_table() %>%
+dplyr::select(variable, type, labels) %>%
+knitr::kable(., digits = 2)
 
-datos_desarollo <- datos_desarollo %>%
-                   mutate(com = psi2301::mean_score(com_items)) %>%
-                   mutate(amp = psi2301::mean_score(amp_items)) %>%
-                   mutate(fin = psi2301::mean_score(fin_items)) %>%
-                   mutate(pro = psi2301::mean_score(pro_items)) %>%
-                   mutate(soc = psi2301::mean_score(soc_items)) %>%
-                   dplyr::glimpse()
+
+# -----------------------------------------------
+# standard deviation of the population estimate
+# -----------------------------------------------
+
+sd_pop <- function(x){
+n <- length(na.omit(x))
+sqrt((n-1)/n) * sd(x, na.rm = TRUE)
+}
+
+# -----------------------------------------------
+# descriptives
+# -----------------------------------------------
+
+table_null <- data_corr %>%
+  summarize(
+    mean = mean(corr, na.rm = TRUE),
+    sd = sd(corr, na.rm = TRUE),
+    n = n(),
+    se = sd/sqrt(n),
+    ll = mean - 1.96*se,
+    ul = mean + 1.96*se
+  )
+
+table_groups <- data_corr %>%
+  group_by(sof) %>%
+  summarize(
+    mean = mean(corr, na.rm = TRUE),
+    sd = sd(corr, na.rm = TRUE),
+    n = n(),
+    se = sd/sqrt(n),
+    ll = mean - 1.96*se,
+    ul = mean + 1.96*se
+  )
+
+table_desc <- dplyr::bind_rows(
+              table_null, 
+              table_groups
+              ) %>%
+              mutate(groups = c(
+                'total',
+                'menor',
+                'mayor'
+                ))
+
+# -----------------------------------------------
+# display table
+# -----------------------------------------------
+
+table_desc %>%
+dplyr::select(groups, mean, sd, n, se, ll, ul) %>%
+knitr::kable(., digits = 2)
 
 ```
 
-
-# Tablas de descriptivos
-
-- La alternativa 1 debiera ser la más intuitiva de todas las opciones.
-- La alternativa 2 es similar a la anterior, pero con `skimr`.
-- La alternativa 3 les brinda más control, y la posibilidad de guardar los resultados en un excel. Esto tambien se puede hacer con skimr, pero requiere más esfuerzos.
-- Las alternativas 2 a 6, son variantes que podrian ser utiles cuando las exigencias del problema a resolver, requiere de más opciones; y donde quieren más control sobre la tabla generada, y el objeto que con esta se genera. Estas alternativas se incluyen  como ilustraciones. 
-
-## Tabla de descriptivos con `psych::describeBy`
-
-```{r, echo=TRUE, eval = TRUE}
-
-# -----------------------------------------------------------------------------
-# alternativa 1
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------
-# crear tabla de descriptivos
-# -----------------------------------------------
-
-psych::describeBy(amp + com ~ nse, data = datos_desarollo )
-
-````
-
-## Tabla de descriptivos con `skimr::skim()`
-
-```{r, echo=TRUE, eval = TRUE}
-
-# -----------------------------------------------------------------------------
-# alternativa 2
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------
-# crear tabla de descriptivos
-# -----------------------------------------------
-
-datos_desarollo %>%
-  dplyr::select(nse, com, amp) %>%
-  group_by(nse) %>%
-  skimr::skim()
-
-````
-
-
-## Tabla de descriptivos customizada con `dplyr::summarize()`
-
-```{r, echo=TRUE, eval = TRUE}
-
-# -----------------------------------------------------------------------------
-# alternativa 3
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------
-# crear tabla de descriptivos (medias y sd)
-# -----------------------------------------------
-
-# tabla de comunicación
-table_com <- datos_desarollo %>%
-               group_by(nse) %>%
-               summarize(
-                 n = n(),
-                 media = mean(com, na.rm = TRUE),
-                 desviacion = sd(com, na.rm = TRUE)
-                 ) %>%
-               mutate(variable = 'comunicación') %>%
-               dplyr::select(nse, variable, n, media, desviacion)
-
-# tabla de motricidad gruesa
-table_amp <- datos_desarollo %>%
-               group_by(nse) %>%
-               summarize(
-                 n = n(),
-                 media = mean(amp, na.rm = TRUE),
-                 desviacion = sd(amp, na.rm = TRUE)
-                 ) %>%
-               mutate(variable = 'movimientos amplios') %>%
-               dplyr::select(nse, variable, n, media, desviacion)
-
-# tabla con medias y sd
-table_descriptives <- dplyr::bind_rows(table_com, table_amp)
-
-
-# mostrar tabla
-table_descriptives %>%
-knitr::kable(., digits = 2)
-
-# guardar a excel
-openxlsx::write.xlsx(table_descriptives, 'tabla_descriptivos_ejemplo.xlsx')
-
-````
-
-
-
-
-## Tabla de descriptivos por variable `summarize()`
-
-```{r, echo=TRUE, eval = TRUE}
-
-# -----------------------------------------------------------------------------
-# alternativa 4
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------
-# crear tabla de descriptivos (medias y sd)
-# -----------------------------------------------
-
-# tabla de medias
-table_means <- datos_desarollo %>%
-               group_by(nse) %>%
-               summarize(
-                 com = mean(com, na.rm = TRUE),
-                 amp = mean(amp, na.rm = TRUE)
-                 ) %>%
-               tidyr::gather('variable','mean', -nse)
-
-# tabla de sd
-table_sd <- datos_desarollo %>%
-               group_by(nse) %>%
-               summarize(
-                 com = sd(com, na.rm = TRUE),
-                 amp = sd(amp, na.rm = TRUE)
-                 ) %>%
-               tidyr::gather('variable','sd', -nse)
-
-# tabla con medias y sd
-table_mean_sd <- dplyr::left_join(table_means,
-                 table_sd, by = c('nse','variable'))
-
-
-# mostrar tabla
-table_mean_sd %>%
-knitr::kable(., digits = 2)
-
-````
-
-## Tabla de descriptivos por grupo `r4sda::get_desc()`
-
-```{r, echo=TRUE, eval = TRUE}
-
-# -----------------------------------------------------------------------------
-# alternativa 5
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------
-# crear tabla de descriptivos (medias y sd)
-# -----------------------------------------------
-
-# crear tablas por grupo primero
-tabla_nse_1 <- datos_desarollo %>%
-               dplyr::filter(nse == 1) %>%
-               dplyr::select(com, amp) %>%
-               r4sda::get_desc() %>%
-               mutate(nse = 'alto') %>%
-               dplyr::select(nse, var:hist)
-
-tabla_nse_2 <- datos_desarollo %>%
-               dplyr::filter(nse == 2) %>%
-               dplyr::select(com, amp) %>%
-               r4sda::get_desc() %>%
-               mutate(nse = 'medio') %>%
-               dplyr::select(nse, var:hist)
-
-tabla_nse_3 <- datos_desarollo %>%
-               dplyr::filter(nse == 3) %>%
-               dplyr::select(com, amp) %>%
-               r4sda::get_desc() %>%
-               mutate(nse = 'bajo') %>%
-               dplyr::select(nse, var:hist)
-
-# unir y ordenar tablas
-table_mean_sd <- dplyr::bind_rows(
-                 tabla_nse_1,
-                 tabla_nse_2,
-                 tabla_nse_3) %>%
-                 arrange(var)
-                 
-
-# mostrar tabla
-table_mean_sd %>%
-knitr::kable(., digits = 2)
-
-````
-
-
-
-## Tabla de descriptivos por grupo empleando `split` y `r4sda::get_desc()`
-
-```{r, echo=TRUE, eval = TRUE}
-
-# -----------------------------------------------------------------------------
-# alternativa 6
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------
-# crear tabla de descriptivos (medias y sd)
-# -----------------------------------------------
-
-datos_desarollo %>%
-dplyr::select(nse, com, amp) %>%
-split(.$nse) %>%
-purrr::map(~ r4sda::get_desc(.)) %>%
-dplyr::bind_rows(., .id = 'nse') %>%
-dplyr::filter(var != 'nse') %>%
-arrange(var) %>%
-knitr::kable(., digits = 2)
-
-
-````
 
