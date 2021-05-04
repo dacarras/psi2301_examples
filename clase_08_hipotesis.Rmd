@@ -20,13 +20,14 @@ output: github_document
 #------------------------------------------------------------------------------
 
 
-data_corr <- read.csv(url('https://github.com/dacarras/psi2301_examples/tree/master/data/corr_chl_16.csv'))
-
-
+url_file  <-'https://raw.github.com/dacarras/psi2301_examples/master/data/corr_chl_16.rds'
+data_corr <- readRDS(url(url_file))
 
 # -----------------------------------------------
 # variable table
 # -----------------------------------------------
+
+library(dplyr)
 
 data_corr %>%
 r4sda::variables_table() %>%
@@ -88,4 +89,122 @@ knitr::kable(., digits = 2)
 
 ```
 
+
+## Z stat
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# z test for mean differences
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# get data from tolerance of corruption
+# -----------------------------------------------
+
+url_file  <-'https://raw.github.com/dacarras/psi2301_examples/master/data/corr_chl_16.rds'
+data_corr <- readRDS(url(url_file))
+library(dplyr)
+
+
+corr_0 <- data_corr %>%
+          dplyr::filter(sof == 0) %>%
+          dplyr::select(corr) %>%
+          na.omit() %>%
+          pull()
+
+corr_1 <- data_corr %>%
+          dplyr::filter(sof == 1) %>%
+          dplyr::select(corr) %>%
+          na.omit() %>%
+          pull()
+
+# -----------------------------------------------
+# standard deviation of the population estimate
+# -----------------------------------------------
+
+sd_pop <- function(x){
+n <- length(na.omit(x))
+sqrt((n-1)/n) * sd(x, na.rm = TRUE)
+}
+
+# -----------------------------------------------
+# get stats
+# -----------------------------------------------
+
+m_0  <- mean(corr_0)
+m_1  <- mean(corr_1)
+sd_0 <- sd_pop(corr_0)
+sd_1 <- sd_pop(corr_1)
+n_0  <- length(corr_0)
+n_1  <- length(corr_1)
+
+# -----------------------------------------------
+# create components
+# -----------------------------------------------
+
+mean_exp  <- 0
+mean_diff <- m_1 - m_0
+se <- sqrt((sd_0^2/n_0) + (sd_1^2/n_1))
+
+# -----------------------------------------------
+# compute z critical value
+# -----------------------------------------------
+
+z_critic <- qnorm(.975)
+z_critic
+
+# -----------------------------------------------
+# compute z value
+# -----------------------------------------------
+
+z_value <- (mean_diff - mean_exp)/se
+z_value
+
+# -----------------------------------------------
+# compute p value
+# -----------------------------------------------
+
+# options to see more decimals in console
+options(scipen = 9999)
+options(digits = 5)
+
+# calculate p value
+p_value <- 2*pnorm(-abs(z_value))
+p_value
+
+
+
+
+# -----------------------------------------------
+# visualization of p value
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data.frame(x = c(-3, 3)), aes(x)) +
+  stat_function(fun = dnorm, geom = "area") +
+  scale_x_continuous(breaks=seq(-3, 3, 1)) + 
+  geom_vline(xintercept = z_value, color = 'red') +
+  geom_vline(xintercept = - z_value, color = 'red') +
+  geom_vline(xintercept = z_critic, color = 'red', linetype = 'dotted') +
+  geom_vline(xintercept = - z_critic, color = 'red', linetype = 'dotted') +
+  labs(
+    x = 'z scores', 
+    y = 'density') +
+  theme_minimal() +
+  theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank()
+  )
+
+# -----------------------------------------------
+# effect size
+# -----------------------------------------------
+
+psych::cohen.d(data_corr$corr, data_corr$sof,alpha=.05)
+
+```
+
+```
 
