@@ -357,7 +357,7 @@ p_value
 library(ggplot2)
 ggplot(data.frame(x = c(-3, 3)), aes(x)) +
   stat_function(fun = dnorm, geom = "area") +
-  scale_x_continuous(breaks=seq(-3, 3, 1)) + 
+  scale_x_continuous(breaks=seq(-12, 12, 1)) + 
   geom_vline(xintercept = z_value, color = 'red') +
   geom_vline(xintercept = - z_value, color = 'red') +
   geom_vline(xintercept = z_critic, color = 'red', linetype = 'dotted') +
