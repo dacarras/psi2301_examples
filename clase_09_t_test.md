@@ -4,10 +4,10 @@ Prueba t
 ## Resumen
 
 En este clase revisamos cuatro ejemplos de comparaciones de medias.
-Todos estos ejemplos son realizados empleando prueba t. Los dos primeros
-cubren ejemplos de comparaciones de medias de una muestra, en contraste
-a una media poblacional. Los siguientes ejemplos corresponden a una
-prueba t de muestras independientes, y luego una prueba t para
+Todos estos ejemplos son realizados empleando la prueba t. Los dos
+primeros cubren ejemplos de comparaciones de medias de una muestra, en
+contraste a una media poblacional. Los siguientes ejemplos corresponden
+a una prueba t de muestras independientes, y luego una prueba t para
 comparación de muestras dependientes.
 
 > Nota: Cada uno de los códigos incluidos en *chunks*, son redundantes
@@ -16,7 +16,35 @@ comparación de muestras dependientes.
 > código de un solo *chunk*, y reproducirlo en su consola o syntax
 > propio que quiera generar.
 
+# Supuestos de una prueba t
+
+-   La distribución muestral conforma a la distribución normal
+    -   La distribución de diferencia de medias conforma a la normal; no
+        lo puntajes observados.
+-   Los puntajes sometidos al análisis, tienen que al menos estar en una
+    escala intervalar.
+-   Para la prueba de muestras independientes, los puntajes deben
+    provenir de tratamientos independientes
+-   Equivalencia de las varianzas
+    -   Existen correcciones para escenarios de varianzas no similares
+        entre grupos.
+
+> Nota: supuestos enlistados en Field, Miles & Field (2012, p 372).
+
 # Pruebas t de una sola muestra
+
+## Datos
+
+Los datos empleados, provienen del estudio de International Civic and
+Citizenship Education Study’
+(<https://www.iea.nl/data-tools/repository/iccs>) de 2016 (ver Carrasco,
+et al. 2020, para más detalles conceptuales).
+
+-   corr = puntajes de tolerancia a la corrupcion, donde mayor puntaje
+    indica mayor tolerancia a la corrupción (M = 50, SD = 10).
+-   sof\_l = dictomización de puntajes conocimiento cívivo, entre el
+    nivel mayor, y el resto de los niveles (1 = alta sofisticación
+    política, 0 = baja sofisticación política).
 
 ## Prueba t para una muestra (n423)
 
@@ -266,6 +294,23 @@ sqrt(t_value^2/(t_value^2+t_df))
 
 # Pruebas t para dos muestras
 
+# Datos
+
+Los datos que analizaremos en este ejemplo provienen de Curran et al
+(1997). Este estudio tiene medidas de consumo de alcohol, y de
+antecedentes de alcoholismo de los entornos familiares de jovenes de 14
+años. Los datos que analizaremos, son 82 casos que entregan respuestas a
+los 14, 15 y 16 años. En particular, emplearemos los datos empleados por
+Singer & Willet (2003), en el capitulo 4 de su libro (ver
+<https://stats.idre.ucla.edu/other/examples/alda/>).
+
+Las variables presentes en la base de datos que emplearemos son:
+
+-   alcuse = escala de 8 puntos, de uso de alcohol (0 = nada, 7 = todos
+    los días)
+-   coa = antecentes de alcohol en los padres (1 = hijo de padre o
+    padres alcoholicos, 0 = sin antecedentes de alcoholismo familiar).
+
 ## Pruebas t para dos muestras independientes
 
 ``` r
@@ -319,9 +364,11 @@ t_critic
 
 ``` r
 # ----------------------------------------------- 
-# separate data per wave
+# t test
 # -----------------------------------------------
 
+# t_test con formula
+# variable_dependiente "condicionado por" variable_independiente
 
 t.test(formula = alcuse ~ coa,
        data = data_alc1,
@@ -345,6 +392,54 @@ t.test(formula = alcuse ~ coa,
     ##       0.2903221       1.0441549
 
 ``` r
+# t_test con vectores por grupo
+t.test(x = data_alc1[data_alc1$coa==0,'alcuse'], # sin alcoholismo familiar
+       y = data_alc1[data_alc1$coa==1,'alcuse'], # con alcoholismo familiar
+       data = data_alc1,
+       alternative = c("two.sided"),
+       mu = 0, 
+       paired = FALSE, 
+       var.equal = TRUE,
+       conf.level = 0.95)
+```
+
+    ## 
+    ##  Two Sample t-test
+    ## 
+    ## data:  data_alc1[data_alc1$coa == 0, "alcuse"] and data_alc1[data_alc1$coa == 1, "alcuse"]
+    ## t = -3.9267, df = 80, p-value = 0.0001815
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -1.1358802 -0.3717854
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.2903221 1.0441549
+
+``` r
+# t_test asumiendo otro valor de diferencia a la población
+t.test(x = data_alc2[data_alc2$coa==0,'alcuse'], # sin alcoholismo familiar
+       y = data_alc2[data_alc2$coa==1,'alcuse'], # con alcoholismo familiar
+       data = data_alc2,
+       alternative = c("two.sided"),
+       mu = 1, 
+       paired = FALSE, 
+       var.equal = TRUE,
+       conf.level = 0.95)
+```
+
+    ## 
+    ##  Two Sample t-test
+    ## 
+    ## data:  data_alc2[data_alc2$coa == 0, "alcuse"] and data_alc2[data_alc2$coa == 1, "alcuse"]
+    ## t = -7.5521, df = 80, p-value = 6.063e-11
+    ## alternative hypothesis: true difference in means is not equal to 1
+    ## 95 percent confidence interval:
+    ##  -1.113273 -0.231808
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.6601661 1.3327066
+
+``` r
 # -----------------------------------------------
 # compute t test
 # -----------------------------------------------
@@ -354,7 +449,7 @@ t_value <- t.test(formula = alcuse ~ coa,
            alternative = c("two.sided"),
            mu = 0, 
            paired = FALSE, 
-           var.equal = FALSE,
+           var.equal = TRUE,
            conf.level = 0.95) %>%
            broom::tidy() %>%
            dplyr::select(statistic) %>%
@@ -395,7 +490,7 @@ ggplot(data.frame(x = c(-5, 5)), aes(x)) +
 sqrt(t_value^2/(t_value^2+t_df))
 ```
 
-    ## [1] 0.3854077
+    ## [1] 0.4019831
 
 ## Pruebas t para dos muestras dependientes
 
@@ -452,14 +547,82 @@ t_critic
 
 ``` r
 # ----------------------------------------------- 
-# separate data per wave
+# t test
 # -----------------------------------------------
 
+# t_test asumiendo varianzas equivalentes (honocedasticidad de varianzas)
 t.test(formula = alcuse ~ age_14,
        data = data_paired,
        alternative = c("two.sided"),
        paired = TRUE, 
        var.equal = TRUE,
+       conf.level = 0.95)
+```
+
+    ## 
+    ##  Paired t-test
+    ## 
+    ## data:  alcuse by age_14
+    ## t = -3.5468, df = 81, p-value = 0.0006517
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.5200632 -0.1462634
+    ## sample estimates:
+    ## mean of the differences 
+    ##              -0.3331633
+
+``` r
+# t_test empleando vectores
+t.test(x = data_paired[data_paired$age_14==0,'alcuse'], # sin alcoholismo familiar
+       y = data_paired[data_paired$age_14==1,'alcuse'], # con alcoholismo familiar
+       alternative = c("two.sided"),
+       paired = TRUE, 
+       var.equal = TRUE,
+       conf.level = 0.95)
+```
+
+    ## 
+    ##  Paired t-test
+    ## 
+    ## data:  data_paired[data_paired$age_14 == 0, "alcuse"] and data_paired[data_paired$age_14 == 1, "alcuse"]
+    ## t = -3.5468, df = 81, p-value = 0.0006517
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.5200632 -0.1462634
+    ## sample estimates:
+    ## mean of the differences 
+    ##              -0.3331633
+
+``` r
+# t_test asumiendo varianzas no equivalentes (heterocedasticidad de varianzas)
+t.test(formula = alcuse ~ age_14,
+       data = data_paired,
+       alternative = c("two.sided"),
+       paired = TRUE, 
+       var.equal = FALSE,
+       conf.level = 0.95)
+```
+
+    ## 
+    ##  Paired t-test
+    ## 
+    ## data:  alcuse by age_14
+    ## t = -3.5468, df = 81, p-value = 0.0006517
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.5200632 -0.1462634
+    ## sample estimates:
+    ## mean of the differences 
+    ##              -0.3331633
+
+``` r
+# t_test "by default" asume varianzas no equivalentes, y 
+#        prueba t de Welch
+t.test(formula = alcuse ~ age_14,
+       data = data_paired,
+       alternative = c("two.sided"),
+       paired = TRUE, 
+#       var.equal = FALSE,
        conf.level = 0.95)
 ```
 
@@ -489,16 +652,6 @@ knitr::kable(., digits = 2)
 |:------------|---------:|----------:|----------:|--------:|
 | (Intercept) |     0.63 |      0.11 |      5.74 |    0.00 |
 | age\_14     |     0.33 |      0.16 |      2.14 |    0.03 |
-
-``` r
-lm(alcuse ~ age_14, data = data_paired) %>%
-broom::glance() %>%
-knitr::kable(., digits = 2)
-```
-
-| r.squared | adj.r.squared | sigma | statistic | p.value |  df |  logLik |    AIC |    BIC | deviance | df.residual | nobs |
-|----------:|--------------:|------:|----------:|--------:|----:|--------:|-------:|-------:|---------:|------------:|-----:|
-|      0.03 |          0.02 |  0.99 |       4.6 |    0.03 |   1 | -230.82 | 467.63 | 476.93 |   160.26 |         162 |  164 |
 
 ``` r
 # -----------------------------------------------
@@ -571,3 +724,22 @@ sqrt(t_value^2/(t_value^2+t_df))
 ```
 
     ## [1] 0.366642
+
+# Referencias
+
+Carrasco, D., Banerjee, R., Treviño, E., & Villalobos, C. (2020). Civic
+knowledge and open classroom discussion: explaining tolerance of
+corruption among 8th-grade students in Latin America. Educational
+Psychology, 40(2), 186–206.
+<https://doi.org/10.1080/01443410.2019.1699907>
+
+Curran, P. J., Stice, E., & Chassin, L. (1997). The relation between
+adolescent alcohol use and peer alcohol use: A longitudinal random
+coefficients model. Journal of Consulting and Clinical Psychology,
+65(1), 130–140. <https://doi.org/10.1037/0022-006X.65.1.130>
+
+Field, A., Miles, J., & Field, Z. (2012). Discovering Statistics using
+R. SAGE Publications Ltd.
+
+Singer, J. D., & Willett, J. B. (2003). Applied longitudinal data
+analysis: modeling change and event occurrence. Oxford University Press.
