@@ -1,0 +1,287 @@
+Prueba t
+================
+
+## Resumen
+
+En este clase revisamos dos ejemplos de comparaciones de medias. El
+primero es empleando prueba Z de comparaciones de medias, y el segundo
+es de prueba t para comparaciones de medias, para muestras dependientes.
+
+En clases, el primer ejemplo se desarolla para ilustrar paso a paso, los
+seis componentes más tradicionales que incluye el contraste de
+hipótesis:
+
+-   1.  Definir la hipótesis nula
+
+-   2.  Establecer la hipótesis alternativa
+
+-   3.  Seleccionar el nivel de significancia
+
+-   4.  Recoger y resumir los datos de una muestra
+
+-   5.  Definir el criterio para evaluar la evidencia
+
+-   6.  Realizar una decisión respecto a rechazar o retener la hipótesis
+        nula
+
+El segundo ejemplo, fue mucho más resumido, donde se aplica directamente
+una prueba t para muestras independientes, sobre datos diferentes.
+
+En el presente documento se incluyen los códigos empleados, y ademas se
+agrega un anexo final acerca de comparaciones de medias.
+
+> Nota: Cada uno de los códigos incluidos en *chunks*, son redundantes
+> entre sí, de modo que cada uno sea reproducible en sí mismo. Lo
+> anterior quiere decir que, un usuario puede copiar y pegar todo el
+> código de un solo *chunk*, y reproducirlo en su consola o syntax
+> propio que quiera generar.
+
+# Pruebas t
+
+## Prueba t para una muestra (n423)
+
+``` r
+#------------------------------------------------------------------------------
+# t test for a single sample
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# get data from tolerance of corruption
+# -----------------------------------------------
+
+url_file  <-'https://raw.github.com/dacarras/psi2301_examples/master/data/corr_chl_16.rds'
+data_corr <- readRDS(url(url_file))
+library(dplyr)
+
+# -----------------------------------------------
+# get data from target group
+# -----------------------------------------------
+
+corr_0 <- data_corr %>%
+          dplyr::filter(sof == 0) %>%
+          dplyr::select(corr) %>%
+          na.omit() %>%
+          pull()
+
+
+# -----------------------------------------------
+# get number of observations
+# -----------------------------------------------
+
+n <- length(corr_0)
+
+# -----------------------------------------------
+# get degrees of freedom
+# -----------------------------------------------
+
+t_df <- n-1
+
+# -----------------------------------------------
+# compute t critical value
+# -----------------------------------------------
+
+t_critic <- qt(.975, df = t_df)
+t_critic
+```
+
+    ## [1] 1.965601
+
+``` r
+# -----------------------------------------------
+# compute t test
+# -----------------------------------------------
+
+t.test(x = corr_0,
+       alternative = c("two.sided"),
+       mu = 50, 
+       paired = FALSE, 
+       var.equal = FALSE,
+       conf.level = 0.95)
+```
+
+    ## 
+    ##  One Sample t-test
+    ## 
+    ## data:  corr_0
+    ## t = 3.6426, df = 422, p-value = 0.0003035
+    ## alternative hypothesis: true mean is not equal to 50
+    ## 95 percent confidence interval:
+    ##  50.83271 52.78474
+    ## sample estimates:
+    ## mean of x 
+    ##  51.80872
+
+``` r
+# -----------------------------------------------
+# compute t test
+# -----------------------------------------------
+
+t_value <- t.test(x = corr_0,
+           alternative = c("two.sided"),
+           mu = 50, 
+           paired = FALSE, 
+           var.equal = FALSE,
+           conf.level = 0.95) %>%
+           broom::tidy() %>%
+           dplyr::select(statistic) %>%
+           pull() %>%
+           abs() %>%
+           as.numeric()
+
+# -----------------------------------------------
+# visualization of p value
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data.frame(x = c(-5, 5)), aes(x)) +
+  stat_function(fun = dt, args = list(df = t_df), geom = "area") +
+  scale_x_continuous(breaks=seq(-3, 3, 1)) + 
+  geom_vline(xintercept = t_value, color = 'red') +
+  geom_vline(xintercept = - t_value, color = 'red') +
+  geom_vline(xintercept = t_critic, color = 'red', linetype = 'dotted') +
+  geom_vline(xintercept = - t_critic, color = 'red', linetype = 'dotted') +
+  labs(
+    x = 't scores', 
+    y = 'density') +
+  theme_minimal() +
+  theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank()
+  )
+```
+
+![](clase_09_t_test_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+``` r
+# -----------------------------------------------
+# effect size
+# -----------------------------------------------
+
+# as r
+sqrt(t_value^2/(t_value^2+t_df))
+```
+
+    ## [1] 0.1745947
+
+## Prueba t para una muestra (n30)
+
+``` r
+#------------------------------------------------------------------------------
+# t test for a single sample
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# get data from tolerance of corruption
+# -----------------------------------------------
+
+url_file  <-'https://raw.github.com/dacarras/psi2301_examples/master/data/corr_n60.rds'
+data_corr_n60 <- readRDS(url(url_file))
+library(dplyr)
+
+# -----------------------------------------------
+# get data from target group
+# -----------------------------------------------
+
+corr_0 <- na.omit(data_corr_n60[data_corr_n60$sof==0,'corr'])$corr %>%
+          as.numeric()
+
+# -----------------------------------------------
+# get number of observations
+# -----------------------------------------------
+
+n <- length(corr_0)
+
+# -----------------------------------------------
+# get degrees of freedom
+# -----------------------------------------------
+
+t_df <- n-1
+
+# -----------------------------------------------
+# compute t critical value
+# -----------------------------------------------
+
+t_critic <- qt(.975, df = t_df)
+t_critic
+```
+
+    ## [1] 2.04523
+
+``` r
+# -----------------------------------------------
+# compute t test
+# -----------------------------------------------
+
+t.test(x = corr_0,
+       alternative = c("two.sided"),
+       mu = 50, 
+       paired = FALSE, 
+       var.equal = FALSE,
+       conf.level = 0.95)
+```
+
+    ## 
+    ##  One Sample t-test
+    ## 
+    ## data:  corr_0
+    ## t = -0.42118, df = 29, p-value = 0.6767
+    ## alternative hypothesis: true mean is not equal to 50
+    ## 95 percent confidence interval:
+    ##  44.10700 53.88033
+    ## sample estimates:
+    ## mean of x 
+    ##  48.99367
+
+``` r
+# -----------------------------------------------
+# compute t test
+# -----------------------------------------------
+
+t_value <- t.test(x = corr_0,
+           alternative = c("two.sided"),
+           mu = 50, 
+           paired = FALSE, 
+           var.equal = FALSE,
+           conf.level = 0.95) %>%
+           broom::tidy() %>%
+           dplyr::select(statistic) %>%
+           pull() %>%
+           abs() %>%
+           as.numeric()
+
+# -----------------------------------------------
+# visualization of p value
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data.frame(x = c(-5, 5)), aes(x)) +
+  stat_function(fun = dt, args = list(df = t_df), geom = "area") +
+  scale_x_continuous(breaks=seq(-3, 3, 1)) + 
+  geom_vline(xintercept = t_value, color = 'red') +
+  geom_vline(xintercept = - t_value, color = 'red') +
+  geom_vline(xintercept = t_critic, color = 'red', linetype = 'dotted') +
+  geom_vline(xintercept = - t_critic, color = 'red', linetype = 'dotted') +
+  labs(
+    x = 't scores', 
+    y = 'density') +
+  theme_minimal() +
+  theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank()
+  )
+```
+
+![](clase_09_t_test_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+``` r
+# -----------------------------------------------
+# effect size
+# -----------------------------------------------
+
+# as r
+sqrt(t_value^2/(t_value^2+t_df))
+```
+
+    ## [1] 0.07797364
