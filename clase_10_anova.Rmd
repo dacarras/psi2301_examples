@@ -1,0 +1,366 @@
+---
+title: "ANOVA comparación de medias de varios grupos"
+subtitle: "Clase 10"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dpi=300,fig.width=7)
+```
+
+
+
+## Data example
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# minimal anova example
+#------------------------------------------------------------------------------
+
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+data_anx <- read.table(text = "
+id_i      id_j outcome
+1      placebo     0.5
+2      placebo     0.3
+3      placebo     0.1
+4     anxifree     0.6
+5     anxifree     0.4
+6     anxifree     0.2
+7     joyzepam     1.4
+8     joyzepam     1.7
+9     joyzepam     1.3
+10     placebo     0.6
+11     placebo     0.9
+12     placebo     0.3
+13    anxifree     1.1
+14    anxifree     0.8
+15    anxifree     1.2
+16    joyzepam     1.8
+17    joyzepam     1.3
+18    joyzepam     1.4
+", header = TRUE)
+
+# -----------------------------------------------
+# means with confidence intervals
+# -----------------------------------------------
+
+library(dplyr)
+library(srvyr)
+data_anx_srs <- data_anx %>% 
+                as_survey_design(ids = 1)
+
+
+data_anx_srs %>%
+group_by(id_j) %>%
+summarize(
+  mood = survey_mean(outcome, vartype = "ci")
+) %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# generic print
+# -----------------------------------------------
+
+aov(outcome ~ id_j, data = data_anx)
+
+# -----------------------------------------------
+# F table
+# -----------------------------------------------
+
+library(dplyr)
+aov(outcome ~ id_j, data = data_anx) %>%
+summary()
+
+# -----------------------------------------------
+# F table as an actual table
+# -----------------------------------------------
+
+library(dplyr)
+aov(outcome ~ id_j, data = data_anx) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+
+# -----------------------------------------------
+# effect size
+# -----------------------------------------------
+
+anova_example <- aov(outcome ~ id_j, data = data_anx)
+lsr::etaSquared( x = anova_example)
+
+```
+
+
+## Calculando las sumas de cuadrados
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# minimal anova example
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+data_anx <- read.table(text = "
+id_i      id_j outcome
+1      placebo     0.5
+2      placebo     0.3
+3      placebo     0.1
+4     anxifree     0.6
+5     anxifree     0.4
+6     anxifree     0.2
+7     joyzepam     1.4
+8     joyzepam     1.7
+9     joyzepam     1.3
+10     placebo     0.6
+11     placebo     0.9
+12     placebo     0.3
+13    anxifree     1.1
+14    anxifree     0.8
+15    anxifree     1.2
+16    joyzepam     1.8
+17    joyzepam     1.3
+18    joyzepam     1.4
+", header = TRUE)
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+data_f <- data_anx %>%
+          mutate(all = 1) %>%
+          mutate(out_g = r4sda::c_mean(outcome, all )) %>%
+          mutate(out_c = r4sda::c_mean(outcome, id_j)) %>%
+          mutate(out_w = outcome - out_c) %>%
+          mutate(out_b = out_c - out_g) %>%
+          mutate(s_w = out_w^2) %>%
+          mutate(s_b = out_b^2) %>%
+          arrange(id_j, outcome)
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+data_f %>%
+  knitr::kable()
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+ss_w <- sum(data_f$s_w)
+ss_b <- sum(data_f$s_b)
+
+ss_t <- ss_w + ss_b
+
+# -----------------------------------------------
+# effect size as R2 (eta squared)
+# -----------------------------------------------
+
+ss_b/ss_t
+
+# -----------------------------------------------
+# effect size as R (eta)
+# -----------------------------------------------
+
+sqrt(ss_b/ss_t)
+
+```
+
+
+## ANOVA como modelo lineal
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# ANOVA as lineal model
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# effect size from linear model
+# -----------------------------------------------
+
+aov(lm(outcome ~ as.factor(id_j), data = data_anx))
+
+# -----------------------------------------------
+# effect size from linear model
+# -----------------------------------------------
+
+lm(outcome ~ as.factor(id_j), data = data_anx) %>%
+  broom::glance()
+
+# -----------------------------------------------
+# expected means from lineal model
+# -----------------------------------------------
+
+data_anx %>%
+mutate(order = case_when(
+  id_j == 'placebo'  ~ 1,
+  id_j == 'anxifree' ~ 2,
+  id_j == 'joyzepam' ~ 3)) %>%
+arrange(order, outcome) %>%
+mutate(treatment = forcats::as_factor(id_j)) %>%
+lm(outcome ~ treatment, data = .) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+
+```
+
+
+## Visualización de valor F
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# minimal anova example
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# f value
+# -----------------------------------------------
+
+f_value <- aov(outcome ~ id_j, data = data_anx) %>%
+           broom::tidy() %>%
+           dplyr::filter(term == 'id_j') %>%
+           dplyr::select(statistic) %>%
+           pull() %>%
+           as.numeric()
+
+# -----------------------------------------------
+# p value
+# -----------------------------------------------
+
+pf(f_value, df1 = 2, df2 = 15, lower.tail = FALSE)
+
+
+# -----------------------------------------------
+# f critic
+# -----------------------------------------------
+
+f_critic <- qf(.975, df1 = 2, df2 = 15)
+
+
+# -----------------------------------------------
+# visualization
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data.frame(x = c(0, 20)), aes(x)) +
+  stat_function(fun = df, args = list(df1 = 2, df2 = 15), geom = "area") +
+  geom_vline(xintercept = f_value, color = 'red') +
+  geom_vline(xintercept = f_critic, color = 'red', linetype = 'dotted') +
+  scale_x_continuous(breaks=seq(0, 20, 1)) + 
+  # xlim(0,10) +
+  ylim(0,1) +
+  labs(
+    x = 'F Ratio', 
+    y = 'density') +
+  theme_minimal() +
+  theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank()
+  )
+
+
+```
+
+## Supuestos
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# minimal anova example
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+data_anx <- read.table(text = "
+id_i      id_j outcome
+1      placebo     0.5
+2      placebo     0.3
+3      placebo     0.1
+4     anxifree     0.6
+5     anxifree     0.4
+6     anxifree     0.2
+7     joyzepam     1.4
+8     joyzepam     1.7
+9     joyzepam     1.3
+10     placebo     0.6
+11     placebo     0.9
+12     placebo     0.3
+13    anxifree     1.1
+14    anxifree     0.8
+15    anxifree     1.2
+16    joyzepam     1.8
+17    joyzepam     1.3
+18    joyzepam     1.4
+", header = TRUE)
+
+# -----------------------------------------------
+# normality
+# -----------------------------------------------
+
+anova_model <- lm(outcome ~ as.factor(id_j), data = data_anx)
+shapiro.test(residuals(anova_model))
+
+# -----------------------------------------------
+# homocesdasticity
+# -----------------------------------------------
+
+car::leveneTest(
+  outcome ~ as.factor(id_j), 
+  data = data_anx, 
+  center = 'mean')
+
+
+```
+
+
+# Anexos
+
+## F distribution plot
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# distribution plot
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# plot for F Ratio distribution
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data.frame(x = c(0, 50)), aes(x)) +
+  stat_function(fun = df, args = list(df1 = 8, df2 = 30), geom = "line") +
+  stat_function(fun = df, args = list(df1 = 8, df2 = 30, ncp = 5), geom = "line") +
+  stat_function(fun = df, args = list(df1 = 8, df2 = 30, ncp = 10), geom = "line") +
+  stat_function(fun = df, args = list(df1 = 8, df2 = 30, ncp = 20), geom = "line") +
+  stat_function(fun = df, args = list(df1 = 8, df2 = 30, ncp = 30), geom = "line") +
+  stat_function(fun = df, args = list(df1 = 8, df2 = 30, ncp = 40), geom = "line") +
+  stat_function(fun = df, args = list(df1 = 8, df2 = 30, ncp = 50), geom = "line") +
+  scale_x_continuous(breaks=seq(0, 100, 1)) + 
+  xlim(0,20) +
+  ylim(0,1) +
+  labs(
+    x = 'F Ratio', 
+    y = 'density') +
+  theme_minimal() +
+  theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank()
+  )
+
+```
