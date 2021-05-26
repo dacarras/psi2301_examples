@@ -1,6 +1,12 @@
 ANOVA comparación de medias de varios grupos
 ================
 
+# ANOVA de un solo factor
+
+ANOVA es un acrónimo de “Aanalysis of Variance”, el cual en castellano
+es traducido como “análisis de varianza”. Esta es una prueba estadística
+que sirve para hacer inferencias sobre componentes de varianza.
+
 ## Data example
 
 ``` r
@@ -14,7 +20,7 @@ ANOVA comparación de medias de varios grupos
 # -----------------------------------------------
 
 data_anx <- read.table(text = "
-id_i      id_j outcome
+id_i    groups outcome
 1      placebo     0.5
 2      placebo     0.3
 3      placebo     0.1
@@ -70,32 +76,32 @@ data_anx_srs <- data_anx %>%
 
 
 data_anx_srs %>%
-group_by(id_j) %>%
+group_by(groups) %>%
 summarize(
-  mood = survey_mean(outcome, vartype = "ci")
+  mood = survey_mean(outcome, vartype = c('ci', 'se'))
 ) %>%
 knitr::kable(., digits = 2)
 ```
 
-| id\_j    | mood | mood\_low | mood\_upp |
-|:---------|-----:|----------:|----------:|
-| anxifree | 0.72 |      0.40 |      1.03 |
-| joyzepam | 1.48 |      1.31 |      1.66 |
-| placebo  | 0.45 |      0.22 |      0.68 |
+| groups   | mood | mood\_low | mood\_upp | mood\_se |
+|:---------|-----:|----------:|----------:|---------:|
+| anxifree | 0.72 |      0.40 |      1.03 |     0.15 |
+| joyzepam | 1.48 |      1.31 |      1.66 |     0.08 |
+| placebo  | 0.45 |      0.22 |      0.68 |     0.11 |
 
 ``` r
 # -----------------------------------------------
 # generic print
 # -----------------------------------------------
 
-aov(outcome ~ id_j, data = data_anx)
+aov(outcome ~ groups, data = data_anx)
 ```
 
     ## Call:
-    ##    aov(formula = outcome ~ id_j, data = data_anx)
+    ##    aov(formula = outcome ~ groups, data = data_anx)
     ## 
     ## Terms:
-    ##                     id_j Residuals
+    ##                   groups Residuals
     ## Sum of Squares  3.453333  1.391667
     ## Deg. of Freedom        2        15
     ## 
@@ -108,12 +114,12 @@ aov(outcome ~ id_j, data = data_anx)
 # -----------------------------------------------
 
 library(dplyr)
-aov(outcome ~ id_j, data = data_anx) %>%
+aov(outcome ~ groups, data = data_anx) %>%
 summary()
 ```
 
     ##             Df Sum Sq Mean Sq F value   Pr(>F)    
-    ## id_j         2  3.453  1.7267   18.61 8.65e-05 ***
+    ## groups       2  3.453  1.7267   18.61 8.65e-05 ***
     ## Residuals   15  1.392  0.0928                     
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -124,14 +130,14 @@ summary()
 # -----------------------------------------------
 
 library(dplyr)
-aov(outcome ~ id_j, data = data_anx) %>%
+aov(outcome ~ groups, data = data_anx) %>%
 broom::tidy() %>%
 knitr::kable(., digits = 2)
 ```
 
 | term      |  df | sumsq | meansq | statistic | p.value |
 |:----------|----:|------:|-------:|----------:|--------:|
-| id\_j     |   2 |  3.45 |   1.73 |     18.61 |       0 |
+| groups    |   2 |  3.45 |   1.73 |     18.61 |       0 |
 | Residuals |  15 |  1.39 |   0.09 |        NA |      NA |
 
 ``` r
@@ -139,12 +145,12 @@ knitr::kable(., digits = 2)
 # effect size
 # -----------------------------------------------
 
-anova_example <- aov(outcome ~ id_j, data = data_anx)
+anova_example <- aov(outcome ~ groups, data = data_anx)
 lsr::etaSquared( x = anova_example)
 ```
 
-    ##         eta.sq eta.sq.part
-    ## id_j 0.7127623   0.7127623
+    ##           eta.sq eta.sq.part
+    ## groups 0.7127623   0.7127623
 
 ## Calculando las sumas de cuadrados
 
@@ -158,7 +164,7 @@ lsr::etaSquared( x = anova_example)
 # -----------------------------------------------
 
 data_anx <- read.table(text = "
-id_i      id_j outcome
+id_i    groups outcome
 1      placebo     0.5
 2      placebo     0.3
 3      placebo     0.1
@@ -183,48 +189,65 @@ id_i      id_j outcome
 # data example
 # -----------------------------------------------
 
+library(dplyr)
 data_f <- data_anx %>%
           mutate(all = 1) %>%
           mutate(out_g = r4sda::c_mean(outcome, all )) %>%
-          mutate(out_c = r4sda::c_mean(outcome, id_j)) %>%
+          mutate(out_c = r4sda::c_mean(outcome, groups)) %>%
           mutate(out_w = outcome - out_c) %>%
           mutate(out_b = out_c - out_g) %>%
           mutate(s_w = out_w^2) %>%
           mutate(s_b = out_b^2) %>%
-          arrange(id_j, outcome)
+          arrange(groups, outcome)
+
+
 
 # -----------------------------------------------
-# data example
+# orthogonal components
 # -----------------------------------------------
 
-data_f %>%
-  knitr::kable()
+cor(data_f$out_w, data_f$out_b) %>%
+r4sda::decimal(., 2) %>%
+knitr::kable()
 ```
 
-| id\_i | id\_j    | outcome | all |    out\_g |    out\_c |     out\_w |     out\_b |      s\_w |      s\_b |
-|------:|:---------|--------:|----:|----------:|----------:|-----------:|-----------:|----------:|----------:|
-|     6 | anxifree |     0.2 |   1 | 0.8833333 | 0.7166667 | -0.5166667 | -0.1666667 | 0.2669444 | 0.0277778 |
-|     5 | anxifree |     0.4 |   1 | 0.8833333 | 0.7166667 | -0.3166667 | -0.1666667 | 0.1002778 | 0.0277778 |
-|     4 | anxifree |     0.6 |   1 | 0.8833333 | 0.7166667 | -0.1166667 | -0.1666667 | 0.0136111 | 0.0277778 |
-|    14 | anxifree |     0.8 |   1 | 0.8833333 | 0.7166667 |  0.0833333 | -0.1666667 | 0.0069444 | 0.0277778 |
-|    13 | anxifree |     1.1 |   1 | 0.8833333 | 0.7166667 |  0.3833333 | -0.1666667 | 0.1469444 | 0.0277778 |
-|    15 | anxifree |     1.2 |   1 | 0.8833333 | 0.7166667 |  0.4833333 | -0.1666667 | 0.2336111 | 0.0277778 |
-|     9 | joyzepam |     1.3 |   1 | 0.8833333 | 1.4833333 | -0.1833333 |  0.6000000 | 0.0336111 | 0.3600000 |
-|    17 | joyzepam |     1.3 |   1 | 0.8833333 | 1.4833333 | -0.1833333 |  0.6000000 | 0.0336111 | 0.3600000 |
-|     7 | joyzepam |     1.4 |   1 | 0.8833333 | 1.4833333 | -0.0833333 |  0.6000000 | 0.0069444 | 0.3600000 |
-|    18 | joyzepam |     1.4 |   1 | 0.8833333 | 1.4833333 | -0.0833333 |  0.6000000 | 0.0069444 | 0.3600000 |
-|     8 | joyzepam |     1.7 |   1 | 0.8833333 | 1.4833333 |  0.2166667 |  0.6000000 | 0.0469444 | 0.3600000 |
-|    16 | joyzepam |     1.8 |   1 | 0.8833333 | 1.4833333 |  0.3166667 |  0.6000000 | 0.1002778 | 0.3600000 |
-|     3 | placebo  |     0.1 |   1 | 0.8833333 | 0.4500000 | -0.3500000 | -0.4333333 | 0.1225000 | 0.1877778 |
-|     2 | placebo  |     0.3 |   1 | 0.8833333 | 0.4500000 | -0.1500000 | -0.4333333 | 0.0225000 | 0.1877778 |
-|    12 | placebo  |     0.3 |   1 | 0.8833333 | 0.4500000 | -0.1500000 | -0.4333333 | 0.0225000 | 0.1877778 |
-|     1 | placebo  |     0.5 |   1 | 0.8833333 | 0.4500000 |  0.0500000 | -0.4333333 | 0.0025000 | 0.1877778 |
-|    10 | placebo  |     0.6 |   1 | 0.8833333 | 0.4500000 |  0.1500000 | -0.4333333 | 0.0225000 | 0.1877778 |
-|    11 | placebo  |     0.9 |   1 | 0.8833333 | 0.4500000 |  0.4500000 | -0.4333333 | 0.2025000 | 0.1877778 |
+| x    |
+|:-----|
+| 0.00 |
 
 ``` r
 # -----------------------------------------------
-# data example
+# display table
+# -----------------------------------------------
+
+data_f %>%
+  knitr::kable(., digits = 2)
+```
+
+| id\_i | groups   | outcome | all | out\_g | out\_c | out\_w | out\_b | s\_w | s\_b |
+|------:|:---------|--------:|----:|-------:|-------:|-------:|-------:|-----:|-----:|
+|     6 | anxifree |     0.2 |   1 |   0.88 |   0.72 |  -0.52 |  -0.17 | 0.27 | 0.03 |
+|     5 | anxifree |     0.4 |   1 |   0.88 |   0.72 |  -0.32 |  -0.17 | 0.10 | 0.03 |
+|     4 | anxifree |     0.6 |   1 |   0.88 |   0.72 |  -0.12 |  -0.17 | 0.01 | 0.03 |
+|    14 | anxifree |     0.8 |   1 |   0.88 |   0.72 |   0.08 |  -0.17 | 0.01 | 0.03 |
+|    13 | anxifree |     1.1 |   1 |   0.88 |   0.72 |   0.38 |  -0.17 | 0.15 | 0.03 |
+|    15 | anxifree |     1.2 |   1 |   0.88 |   0.72 |   0.48 |  -0.17 | 0.23 | 0.03 |
+|     9 | joyzepam |     1.3 |   1 |   0.88 |   1.48 |  -0.18 |   0.60 | 0.03 | 0.36 |
+|    17 | joyzepam |     1.3 |   1 |   0.88 |   1.48 |  -0.18 |   0.60 | 0.03 | 0.36 |
+|     7 | joyzepam |     1.4 |   1 |   0.88 |   1.48 |  -0.08 |   0.60 | 0.01 | 0.36 |
+|    18 | joyzepam |     1.4 |   1 |   0.88 |   1.48 |  -0.08 |   0.60 | 0.01 | 0.36 |
+|     8 | joyzepam |     1.7 |   1 |   0.88 |   1.48 |   0.22 |   0.60 | 0.05 | 0.36 |
+|    16 | joyzepam |     1.8 |   1 |   0.88 |   1.48 |   0.32 |   0.60 | 0.10 | 0.36 |
+|     3 | placebo  |     0.1 |   1 |   0.88 |   0.45 |  -0.35 |  -0.43 | 0.12 | 0.19 |
+|     2 | placebo  |     0.3 |   1 |   0.88 |   0.45 |  -0.15 |  -0.43 | 0.02 | 0.19 |
+|    12 | placebo  |     0.3 |   1 |   0.88 |   0.45 |  -0.15 |  -0.43 | 0.02 | 0.19 |
+|     1 | placebo  |     0.5 |   1 |   0.88 |   0.45 |   0.05 |  -0.43 | 0.00 | 0.19 |
+|    10 | placebo  |     0.6 |   1 |   0.88 |   0.45 |   0.15 |  -0.43 | 0.02 | 0.19 |
+|    11 | placebo  |     0.9 |   1 |   0.88 |   0.45 |   0.45 |  -0.43 | 0.20 | 0.19 |
+
+``` r
+# -----------------------------------------------
+# sum of squares
 # -----------------------------------------------
 
 ss_w <- sum(data_f$s_w)
@@ -262,16 +285,16 @@ sqrt(ss_b/ss_t)
 # effect size from linear model
 # -----------------------------------------------
 
-aov(lm(outcome ~ as.factor(id_j), data = data_anx))
+aov(lm(outcome ~ as.factor(groups), data = data_anx))
 ```
 
     ## Call:
-    ##    aov(formula = lm(outcome ~ as.factor(id_j), data = data_anx))
+    ##    aov(formula = lm(outcome ~ as.factor(groups), data = data_anx))
     ## 
     ## Terms:
-    ##                 as.factor(id_j) Residuals
-    ## Sum of Squares         3.453333  1.391667
-    ## Deg. of Freedom               2        15
+    ##                 as.factor(groups) Residuals
+    ## Sum of Squares           3.453333  1.391667
+    ## Deg. of Freedom                 2        15
     ## 
     ## Residual standard error: 0.3045944
     ## Estimated effects may be unbalanced
@@ -281,7 +304,7 @@ aov(lm(outcome ~ as.factor(id_j), data = data_anx))
 # effect size from linear model
 # -----------------------------------------------
 
-lm(outcome ~ as.factor(id_j), data = data_anx) %>%
+lm(outcome ~ as.factor(groups), data = data_anx) %>%
   broom::glance()
 ```
 
@@ -298,11 +321,11 @@ lm(outcome ~ as.factor(id_j), data = data_anx) %>%
 
 data_anx %>%
 mutate(order = case_when(
-  id_j == 'placebo'  ~ 1,
-  id_j == 'anxifree' ~ 2,
-  id_j == 'joyzepam' ~ 3)) %>%
+  groups == 'placebo'  ~ 1,
+  groups == 'anxifree' ~ 2,
+  groups == 'joyzepam' ~ 3)) %>%
 arrange(order, outcome) %>%
-mutate(treatment = forcats::as_factor(id_j)) %>%
+mutate(treatment = forcats::as_factor(groups)) %>%
 lm(outcome ~ treatment, data = .) %>%
 broom::tidy() %>%
 knitr::kable(., digits = 2)
@@ -325,9 +348,9 @@ knitr::kable(., digits = 2)
 # f value
 # -----------------------------------------------
 
-f_value <- aov(outcome ~ id_j, data = data_anx) %>%
+f_value <- aov(outcome ~ groups, data = data_anx) %>%
            broom::tidy() %>%
-           dplyr::filter(term == 'id_j') %>%
+           dplyr::filter(term == 'groups') %>%
            dplyr::select(statistic) %>%
            pull() %>%
            as.numeric()
@@ -340,6 +363,13 @@ pf(f_value, df1 = 2, df2 = 15, lower.tail = FALSE)
 ```
 
     ## [1] 8.645912e-05
+
+``` r
+pf(f_value, df1 = 2, df2 = 15, lower.tail = FALSE) %>%
+r4sda::decimal(., 2)
+```
+
+    ## [1] "0.00"
 
 ``` r
 # -----------------------------------------------
@@ -386,7 +416,7 @@ ggplot(data.frame(x = c(0, 20)), aes(x)) +
 # -----------------------------------------------
 
 data_anx <- read.table(text = "
-id_i      id_j outcome
+id_i    groups outcome
 1      placebo     0.5
 2      placebo     0.3
 3      placebo     0.1
@@ -411,7 +441,7 @@ id_i      id_j outcome
 # normality
 # -----------------------------------------------
 
-anova_model <- lm(outcome ~ as.factor(id_j), data = data_anx)
+anova_model <- lm(outcome ~ as.factor(groups), data = data_anx)
 shapiro.test(residuals(anova_model))
 ```
 
@@ -423,11 +453,21 @@ shapiro.test(residuals(anova_model))
 
 ``` r
 # -----------------------------------------------
+# visualización de residuales
+# -----------------------------------------------
+
+hist(residuals(anova_model))
+```
+
+![](clase_10_anova_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+``` r
+# -----------------------------------------------
 # homocesdasticity
 # -----------------------------------------------
 
 car::leveneTest(
-  outcome ~ as.factor(id_j), 
+  outcome ~ as.factor(groups), 
   data = data_anx, 
   center = 'mean')
 ```

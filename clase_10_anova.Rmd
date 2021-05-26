@@ -8,7 +8,9 @@ output: github_document
 knitr::opts_chunk$set(dpi=300,fig.width=7)
 ```
 
+# ANOVA de un solo factor
 
+ANOVA es un acrónimo de "Aanalysis of Variance", el cual en castellano es traducido como "análisis de varianza". Esta es una prueba estadística que sirve para hacer inferencias sobre componentes de varianza. 
 
 ## Data example
 
@@ -24,7 +26,7 @@ knitr::opts_chunk$set(dpi=300,fig.width=7)
 # -----------------------------------------------
 
 data_anx <- read.table(text = "
-id_i      id_j outcome
+id_i    groups outcome
 1      placebo     0.5
 2      placebo     0.3
 3      placebo     0.1
@@ -56,9 +58,9 @@ data_anx_srs <- data_anx %>%
 
 
 data_anx_srs %>%
-group_by(id_j) %>%
+group_by(groups) %>%
 summarize(
-  mood = survey_mean(outcome, vartype = "ci")
+  mood = survey_mean(outcome, vartype = c('ci', 'se'))
 ) %>%
 knitr::kable(., digits = 2)
 
@@ -66,14 +68,14 @@ knitr::kable(., digits = 2)
 # generic print
 # -----------------------------------------------
 
-aov(outcome ~ id_j, data = data_anx)
+aov(outcome ~ groups, data = data_anx)
 
 # -----------------------------------------------
 # F table
 # -----------------------------------------------
 
 library(dplyr)
-aov(outcome ~ id_j, data = data_anx) %>%
+aov(outcome ~ groups, data = data_anx) %>%
 summary()
 
 # -----------------------------------------------
@@ -81,7 +83,7 @@ summary()
 # -----------------------------------------------
 
 library(dplyr)
-aov(outcome ~ id_j, data = data_anx) %>%
+aov(outcome ~ groups, data = data_anx) %>%
 broom::tidy() %>%
 knitr::kable(., digits = 2)
 
@@ -90,7 +92,7 @@ knitr::kable(., digits = 2)
 # effect size
 # -----------------------------------------------
 
-anova_example <- aov(outcome ~ id_j, data = data_anx)
+anova_example <- aov(outcome ~ groups, data = data_anx)
 lsr::etaSquared( x = anova_example)
 
 ```
@@ -109,7 +111,7 @@ lsr::etaSquared( x = anova_example)
 # -----------------------------------------------
 
 data_anx <- read.table(text = "
-id_i      id_j outcome
+id_i    groups outcome
 1      placebo     0.5
 2      placebo     0.3
 3      placebo     0.1
@@ -134,25 +136,37 @@ id_i      id_j outcome
 # data example
 # -----------------------------------------------
 
+library(dplyr)
 data_f <- data_anx %>%
           mutate(all = 1) %>%
           mutate(out_g = r4sda::c_mean(outcome, all )) %>%
-          mutate(out_c = r4sda::c_mean(outcome, id_j)) %>%
+          mutate(out_c = r4sda::c_mean(outcome, groups)) %>%
           mutate(out_w = outcome - out_c) %>%
           mutate(out_b = out_c - out_g) %>%
           mutate(s_w = out_w^2) %>%
           mutate(s_b = out_b^2) %>%
-          arrange(id_j, outcome)
+          arrange(groups, outcome)
+
+
 
 # -----------------------------------------------
-# data example
+# orthogonal components
+# -----------------------------------------------
+
+cor(data_f$out_w, data_f$out_b) %>%
+r4sda::decimal(., 2) %>%
+knitr::kable()
+
+
+# -----------------------------------------------
+# display table
 # -----------------------------------------------
 
 data_f %>%
-  knitr::kable()
+  knitr::kable(., digits = 2)
 
 # -----------------------------------------------
-# data example
+# sum of squares
 # -----------------------------------------------
 
 ss_w <- sum(data_f$s_w)
@@ -187,13 +201,13 @@ sqrt(ss_b/ss_t)
 # effect size from linear model
 # -----------------------------------------------
 
-aov(lm(outcome ~ as.factor(id_j), data = data_anx))
+aov(lm(outcome ~ as.factor(groups), data = data_anx))
 
 # -----------------------------------------------
 # effect size from linear model
 # -----------------------------------------------
 
-lm(outcome ~ as.factor(id_j), data = data_anx) %>%
+lm(outcome ~ as.factor(groups), data = data_anx) %>%
   broom::glance()
 
 # -----------------------------------------------
@@ -202,11 +216,11 @@ lm(outcome ~ as.factor(id_j), data = data_anx) %>%
 
 data_anx %>%
 mutate(order = case_when(
-  id_j == 'placebo'  ~ 1,
-  id_j == 'anxifree' ~ 2,
-  id_j == 'joyzepam' ~ 3)) %>%
+  groups == 'placebo'  ~ 1,
+  groups == 'anxifree' ~ 2,
+  groups == 'joyzepam' ~ 3)) %>%
 arrange(order, outcome) %>%
-mutate(treatment = forcats::as_factor(id_j)) %>%
+mutate(treatment = forcats::as_factor(groups)) %>%
 lm(outcome ~ treatment, data = .) %>%
 broom::tidy() %>%
 knitr::kable(., digits = 2)
@@ -227,9 +241,9 @@ knitr::kable(., digits = 2)
 # f value
 # -----------------------------------------------
 
-f_value <- aov(outcome ~ id_j, data = data_anx) %>%
+f_value <- aov(outcome ~ groups, data = data_anx) %>%
            broom::tidy() %>%
-           dplyr::filter(term == 'id_j') %>%
+           dplyr::filter(term == 'groups') %>%
            dplyr::select(statistic) %>%
            pull() %>%
            as.numeric()
@@ -239,6 +253,10 @@ f_value <- aov(outcome ~ id_j, data = data_anx) %>%
 # -----------------------------------------------
 
 pf(f_value, df1 = 2, df2 = 15, lower.tail = FALSE)
+
+
+pf(f_value, df1 = 2, df2 = 15, lower.tail = FALSE) %>%
+r4sda::decimal(., 2)
 
 
 # -----------------------------------------------
@@ -286,7 +304,7 @@ ggplot(data.frame(x = c(0, 20)), aes(x)) +
 # -----------------------------------------------
 
 data_anx <- read.table(text = "
-id_i      id_j outcome
+id_i    groups outcome
 1      placebo     0.5
 2      placebo     0.3
 3      placebo     0.1
@@ -311,15 +329,22 @@ id_i      id_j outcome
 # normality
 # -----------------------------------------------
 
-anova_model <- lm(outcome ~ as.factor(id_j), data = data_anx)
+anova_model <- lm(outcome ~ as.factor(groups), data = data_anx)
 shapiro.test(residuals(anova_model))
+
+# -----------------------------------------------
+# visualización de residuales
+# -----------------------------------------------
+
+hist(residuals(anova_model))
+
 
 # -----------------------------------------------
 # homocesdasticity
 # -----------------------------------------------
 
 car::leveneTest(
-  outcome ~ as.factor(id_j), 
+  outcome ~ as.factor(groups), 
   data = data_anx, 
   center = 'mean')
 

@@ -383,7 +383,40 @@ sqrt(t_value^2/(t_value^2+t_df))
 
 ```
 
-## Pruebas t para dos muestras dependientes
+# Pruebas t para dos muestras dependientes
+
+## Sobre la estructura de datos en estudios longitudinales
+
+Existen dos formas de construir bases de datos para estudios longitudinales. Estos formatos reciben diversos nombres, uno de ellos es el formato "stacked" y el otro es el formato "wide" (Hofman, 2015). En el primer caso, se incluye una fila por cada ocasión de medición. De tal manera, que si un estudio posee tres ocasiones, entonces un mismo caso posee tres filas en la base de datos. Esto se vería de la siguiente forma:
+
+```text
+
+# datos en formato stacked
+
+    id time  alcuse   
+1    1    1  1.73
+2    1    2  2.00
+3    1    3  2.00
+
+```
+
+En contraste, los datos en forma "wide", incluyen una sola fila por cada sujeto. Además, este tipo de datos suprimen la información del tiempo, y emplean tantas columnas como sea necesario para registrar los valores de las medidas repetidas. Los datos anteriores, en formato "wide" se ven de la siguiente forma.
+
+```text
+
+# datos en formato wide
+
+    id alc1  alc2  alc3
+1    1 1.73  2.00  2.00
+
+
+```
+
+
+En las siguientes lineas de código se ilustra como aplicar una prueba t para muestras dependientes, primero en formato **stacked**, y luego en format **wide**.
+
+
+## Pruebas t para dos muestras dependientes (datos en **stacked**)
 
 ```{r, echo=TRUE}
 
@@ -438,7 +471,7 @@ t_critic
 # t test
 # -----------------------------------------------
 
-# t_test asumiendo varianzas equivalentes (honocedasticidad de varianzas)
+# t_test asumiendo varianzas equivalentes (homocedasticidad de varianzas)
 t.test(formula = alcuse ~ age_14,
        data = data_paired,
        alternative = c("two.sided"),
@@ -540,6 +573,119 @@ sqrt(t_value^2/(t_value^2+t_df))
 
 ```
 
+## Pruebas t para dos muestras dependientes (datos en **wide**)
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# t test for a single sample
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# get data from tolerance of corruption
+# -----------------------------------------------
+
+data_alcohol <- read.table("https://stats.idre.ucla.edu/stat/r/examples/alda/data/alcohol1_pp.txt", 
+                header=TRUE, sep=",")
+library(dplyr)
+
+# ----------------------------------------------- 
+# separate data per wave
+# -----------------------------------------------
+
+library(dplyr)
+data_w1 <- data_alcohol %>%
+           dplyr::filter(age_14 == 0) %>%
+           mutate(alcuse_1 = alcuse) %>%
+           dplyr::select(id, alcuse_1)
+
+data_w2 <- data_alcohol %>%
+           dplyr::filter(age_14 == 1) %>%
+           mutate(alcuse_2 = alcuse) %>%
+           dplyr::select(id, alcuse_2)
+
+
+data_wide <- dplyr::left_join(data_w1, data_w2, by = 'id')
+
+# ----------------------------------------------- 
+# t test
+# -----------------------------------------------
+
+# t_test asumiendo varianzas equivalentes (homocedasticidad de varianzas)
+t.test(x = data_wide$alcuse_1,
+       y = data_wide$alcuse_2,
+       alternative = c("two.sided"),
+       paired = TRUE, 
+       var.equal = TRUE,
+       conf.level = 0.95)
+
+# t_test asumiendo varianzas no equivalentes (heterocedasticidad de varianzas)
+t.test(x = data_wide$alcuse_1,
+       y = data_wide$alcuse_2,
+       alternative = c("two.sided"),
+       paired = TRUE, 
+       var.equal = FALSE,
+       conf.level = 0.95)
+
+```
+
+
+## Comparación de resultados de las prueba t para datos en **stacked** y datos **wide**
+
+A continuación se pegan los datos de consola sobre el texto, y se muestra que se obtienen los mismos resultados para los datos en cada formato empleado. Tanto los datos analizados en formato **stacked**, y los datos en formato **wide**, producen los mismos resultados.
+
+```text
+
+# ----------------------------------------------- 
+# t test formato stacked
+# -----------------------------------------------
+
+> t.test(formula = alcuse ~ age_14,
++        data = data_paired,
++        alternative = c("two.sided"),
++        paired = TRUE, 
++        var.equal = TRUE,
++        conf.level = 0.95)
+
+	Paired t-test
+
+data:  alcuse by age_14
+t = -3.5468, df = 81, p-value = 0.0006517
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.5200632 -0.1462634
+sample estimates:
+mean of the differences 
+             -0.3331633 
+
+# ----------------------------------------------- 
+# t test formato wide
+# -----------------------------------------------
+
+> # t_test asumiendo varianzas equivalentes (homocedasticidad de varianzas)
+> t.test(x = data_wide$alcuse_1,
++        y = data_wide$alcuse_2,
++        alternative = c("two.sided"),
++        paired = TRUE, 
++        var.equal = TRUE,
++        conf.level = 0.95)
+
+	Paired t-test
+
+data:  data_wide$alcuse_1 and data_wide$alcuse_2
+t = -3.5468, df = 81, p-value = 0.0006517
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.5200632 -0.1462634
+sample estimates:
+mean of the differences 
+             -0.3331633 
+             
+```
+
+>Nota: cuando los datos se encuentran en **stacked** para que puedar ser analizados por la funcion t.test() asume que la longitud del vector de la primera y la segunda ocasión de medición tiene el mismo largo. Es decir, que si en el tiempo 1 hubo 40 casos, se espera que en el tiempo 2 tambien hayan 40 casos. En caso de que se observen datos perdidos entre las ocasiones de medición del estudio, la funcion t.test() requiere que ingresemos al análisis solo los casos que se encuentran en ambas ocasiones. Esto comúnmente se le llama "listwise". En contraste, cuando los datos se encuentran en formato **wide**, la función t.test() aplica un "listwise", y solo analiza a los datos que poseen observaciones tanto en el tiempo 1 como en el tiempo 2.
+
+
 # Referencias
 
 Carrasco, D., Banerjee, R., Treviño, E., & Villalobos, C. (2020). Civic knowledge and open classroom discussion: explaining tolerance of corruption among 8th-grade students in Latin America. Educational Psychology, 40(2), 186–206. https://doi.org/10.1080/01443410.2019.1699907
@@ -547,5 +693,7 @@ Carrasco, D., Banerjee, R., Treviño, E., & Villalobos, C. (2020). Civic knowled
 Curran, P. J., Stice, E., & Chassin, L. (1997). The relation between adolescent alcohol use and peer alcohol use: A longitudinal random coefficients model. Journal of Consulting and Clinical Psychology, 65(1), 130–140. https://doi.org/10.1037/0022-006X.65.1.130
 
 Field, A., Miles, J., & Field, Z. (2012). Discovering Statistics using R. SAGE Publications Ltd.
+
+Hoffman, L. (2015). Longitudinal Analysis: Modeling Within-Person Fluctuation and Change. Psychology Press. http://www.pilesofvariance.com/
 
 Singer, J. D., & Willett, J. B. (2003). Applied longitudinal data analysis: modeling change and event occurrence. Oxford University Press.
