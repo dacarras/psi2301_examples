@@ -1,0 +1,458 @@
+---
+title: "Asociación entre variables"
+subtitle: "Clase 12: chi squared"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dpi=300,fig.width=7)
+```
+
+# Asociación entre variables
+
+- Ejemplos de $\chi^2$
+
+
+## Prueba de $\chi^2$ para una sola muestra
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# Sammarco & Konecny (2010) example
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+data_surv <- data.frame(
+  ethnic   = c(rep("caucassian", 2+179), rep("latina", 13+84)),
+  psych_ill  = c(rep("yes",2),rep("no",179),rep("yes",13),rep("no",84))
+    )
+
+# -----------------------------------------------
+# show table
+# -----------------------------------------------
+
+library(dplyr)
+data_surv %>%
+dplyr::sample_n(20) %>%
+knitr::kable()
+
+# -----------------------------------------------
+# observed frequency
+# -----------------------------------------------
+
+freq_latina <- data_surv %>%
+               dplyr::filter(ethnic == 'latina') %>%
+               table()
+# -----------------------------------------------
+# display table
+# -----------------------------------------------
+
+freq_latina
+
+# -----------------------------------------------
+# one sample chi square test
+# -----------------------------------------------
+
+chisq.test(freq_latina, p = c(0.95, .05), correct = FALSE)
+
+
+```
+
+
+
+## Prueba de $\chi^2$ de independiencia
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# Sammarco & Konecny (2010) example
+#------------------------------------------------------------------------------
+
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+data_surv <- data.frame(
+  ethnic   = c(rep("caucassian", 2+179), rep("latina", 13+84)),
+  psych_ill  = c(rep("yes",2),rep("no",179),rep("yes",13),rep("no",84))
+    )
+
+# -----------------------------------------------
+# display table
+# -----------------------------------------------
+
+xtabs(~ psych_ill + ethnic, data = data_surv)
+
+# -----------------------------------------------
+# apply chi square test
+# -----------------------------------------------
+
+cross_table <- xtabs(~ psych_ill + ethnic, data = data_surv)
+chisq.test(cross_table, correct = FALSE)
+
+# -----------------------------------------------
+# apply chi square test summary as a table
+# -----------------------------------------------
+
+library(dplyr)
+cross_table %>%
+chisq.test() %>%
+broom::tidy() %>%
+knitr::kable()
+
+
+# -----------------------------------------------
+# chi square obsserved value
+# -----------------------------------------------
+
+chi_value  <- cross_table %>%
+              chisq.test(., correct = FALSE) %>%
+              broom::tidy() %>%
+              dplyr::select(statistic) %>%
+              pull()
+
+# -----------------------------------------------
+# chi square critical value
+# -----------------------------------------------
+
+chi_critic <- qchisq(.95, df=1)
+
+# -----------------------------------------------
+# plot for Chi square distribution
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data.frame(x = c(0, 50)), aes(x)) +
+  stat_function(fun = dchisq, args = list(df = 1), geom = "area") +
+  geom_vline(xintercept = chi_value, color = 'red') +
+  geom_vline(xintercept = chi_critic, color = 'red', linetype = 'dotted') +  
+  scale_x_continuous(breaks=seq(0, 100, 1)) + 
+  xlim(0,25) +
+  ylim(0,1) +
+  labs(
+    x = 'Chi square', 
+    y = 'density') +
+  theme_minimal() +
+  theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank()
+  )
+
+
+# -----------------------------------------------
+# one sample chi square test
+# -----------------------------------------------
+
+
+freq_latina <- data_surv %>%
+               dplyr::filter(ethnic == 'latina') %>%
+               table()
+
+chisq.test(freq_latina, p = c(0.95, .05), correct = FALSE)
+
+
+```
+
+## Diferentes tamaños de$\chi^2$ como indicadores de discrepancia
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# Sammarco & Konecny (2010) example
+#------------------------------------------------------------------------------
+
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+chisq.test(c(50, 50), p = c(0.50, .50), correct = FALSE)
+chisq.test(c(55, 45), p = c(0.50, .50), correct = FALSE)
+chisq.test(c(60, 40), p = c(0.50, .50), correct = FALSE)
+chisq.test(c(65, 45), p = c(0.50, .50), correct = FALSE)
+chisq.test(c(70, 30), p = c(0.50, .50), correct = FALSE)
+
+
+```
+
+## $\chi^2$ como prueba de independencia para más de dos categorias
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# Sandoval & Carrasco (2021)
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+dem_16 <- psi2301::dem_16
+
+# -----------------------------------------------
+# check data
+# -----------------------------------------------
+
+r4sda::variables_table(dem_16)
+
+# -----------------------------------------------
+# prepare data
+# -----------------------------------------------
+
+dem_16 <- dem_16 %>%
+          mutate(dem_order = case_when(
+            dem_group == 'complex' ~ 3,
+            dem_group == 'minimalist' ~ 2,
+            dem_group == 'limited' ~ 1
+            )) %>%
+          mutate(dem_lab = forcats::as_factor(dem_group)) %>%
+          mutate(dem_lab = forcats::fct_reorder(dem_lab, dem_order)) %>%
+          mutate(level_lab = forcats::as_factor(level_lab)) %>%
+          mutate(level_lab = forcats::fct_reorder(level_lab, level))
+
+# -----------------------------------------------
+# data for plot
+# -----------------------------------------------
+
+data_plot <- dem_16 %>%
+             dplyr::select(dem_lab, level_lab) %>%
+             na.omit()
+             
+# -----------------------------------------------
+# mosaic plot
+# -----------------------------------------------
+             
+library(ggmosaic)
+data_plot %>% 
+ggplot() +
+  geom_mosaic(aes(x = product(dem_lab, level_lab), fill = dem_lab)) +
+  theme_mosaic() +
+  scale_fill_manual(
+      values = c( 'red', 'grey80', 'grey20')
+      ) +
+  theme(
+  axis.ticks = element_blank(),
+  legend.title = element_blank(),
+  axis.title.x = element_text(margin = unit(c(t = 9, r = 9, b = 9, l = 9), "mm")),
+  axis.title.y = element_text(margin = unit(c(t = 9, r = 9, b = 9, l = 9), "mm"))
+  ) +
+  labs(
+    x = 'Political Sophistication levels',
+    y = 'Concepts of democracy',
+    title = "Concept of democracy by political sophistication"
+    )             
+             
+# -----------------------------------------------
+# save plot
+# -----------------------------------------------
+
+ggplot2::ggsave(
+  last_plot(), 
+  filename = "dem_by_level.jpg",
+  units  = 'cm', 
+  scale  = 1.5, 
+  width  = 14, 
+  height = 14, 
+  dpi    = 400
+  )
+
+# -----------------------------------------------
+# display table
+# -----------------------------------------------
+
+xtabs(~ dem_lab + level_lab, data = dem_16) %>%
+prop.table(1) %>%
+knitr::kable(., digits = 2)
+
+# Nota: filas de porcentajes suman 100%
+
+# -----------------------------------------------
+# apply chi square test
+# -----------------------------------------------
+
+cross_table <- xtabs(~ dem_lab + level_lab, data = dem_16)
+chisq.test(cross_table, correct = FALSE)
+
+# -----------------------------------------------
+# effect size
+# -----------------------------------------------
+
+rcompanion::cramerV(cross_table)
+
+
+```
+
+## Cómo serían los resultados, si los datos fueran independientes
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# Sammarco & Konecny (2010) example
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+data_null <- data.frame(
+  dem_lab    = c(rep("limited", 165), rep("minimalist", 170), rep("complex", 165)),
+  level_lab  = c(
+    rep("level 0",41),rep("level 1",41),rep("levlel 2",41),rep("level 3",41),
+    rep("level 0",43),rep("level 1",43),rep("levlel 2",43),rep("level 3",43),
+    rep("level 0",41),rep("level 1",41),rep("levlel 2",41),rep("level 3",41))
+    ) %>%
+    mutate(dem_order = case_when(
+            dem_lab == 'complex' ~ 3,
+            dem_lab == 'minimalist' ~ 2,
+            dem_lab == 'limited' ~ 1
+            )) %>%
+    mutate(level_order = case_when(
+            level_lab == 'level 3' ~ 3,
+            level_lab == 'level 2' ~ 2,
+            level_lab == 'level 1' ~ 1,
+            level_lab == 'level 0' ~ 0
+            )) %>%
+          mutate(dem_lab = forcats::as_factor(dem_lab)) %>%
+          mutate(dem_lab = forcats::fct_reorder(dem_lab, dem_order)) %>%
+          mutate(level_lab = forcats::as_factor(level_lab)) %>%
+          mutate(level_lab = forcats::fct_reorder(level_lab, level_order))
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+
+library(ggmosaic)
+data_null %>% 
+ggplot() +
+  geom_mosaic(aes(x = product(dem_lab, level_lab), fill = dem_lab)) +
+  theme_mosaic() +
+  scale_fill_manual(
+      values = c( 'red', 'grey80', 'grey20')
+      ) +
+  theme(
+  axis.ticks = element_blank(),
+  legend.title = element_blank(),
+  axis.title.x = element_text(margin = unit(c(t = 9, r = 9, b = 9, l = 9), "mm")),
+  axis.title.y = element_text(margin = unit(c(t = 9, r = 9, b = 9, l = 9), "mm"))
+  ) +
+  labs(
+    x = 'Political Sophistication levels',
+    y = 'Concepts of democracy',
+    title = "Concept of democracy by political sophistication"
+    )      
+
+
+# -----------------------------------------------
+# display table
+# -----------------------------------------------
+
+xtabs(~ dem_lab + level_lab, data = data_null) %>%
+prop.table(1) %>%
+knitr::kable(., digits = 2)
+
+# Nota: filas de porcentajes suman 100%
+
+# -----------------------------------------------
+# apply chi square test
+# -----------------------------------------------
+
+cross_table <- xtabs(~ dem_lab + level_lab, data = data_null)
+chisq.test(cross_table, correct = FALSE)
+
+# -----------------------------------------------
+# effect size
+# -----------------------------------------------
+
+rcompanion::cramerV(cross_table)
+
+
+```
+
+
+## Prueba de $\chi^2$ de independiencia
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# discrimination example
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+data_hires <- data.frame(
+  sex    = c(rep("male", 24+7), rep("female", 16+16)),
+  hired  = c(rep("yes",24),rep("no",7),rep("yes",16),rep("no",16))
+    )
+
+# -----------------------------------------------
+# cross table
+# -----------------------------------------------
+
+xtabs(~ hired + sex, data = data_hires)
+
+# -----------------------------------------------
+# chi square
+# -----------------------------------------------
+
+cross_table <- xtabs(~ hired + sex, data = data_hires)
+chisq.test(cross_table, correct = FALSE)
+
+# -----------------------------------------------
+# references
+# -----------------------------------------------
+
+# Steinpreis et al. (1999) The impact of gender on the review of the curricula vitae of job applicants and tenure candidates
+
+```
+
+
+# Anexos
+
+## $\chi^2$ distribution plot
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# distribution plot
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# plot for Chi square distribution
+# -----------------------------------------------
+
+
+library(ggplot2)
+ggplot(data.frame(x = c(0, 50)), aes(x)) +
+  stat_function(fun = dchisq, args = list(df = 1), geom = "line") +
+  stat_function(fun = dchisq, args = list(df = 2), geom = "line") +
+  stat_function(fun = dchisq, args = list(df = 3), geom = "line") +
+  stat_function(fun = dchisq, args = list(df = 4), geom = "line") +
+  stat_function(fun = dchisq, args = list(df = 5), geom = "line") +
+  stat_function(fun = dchisq, args = list(df = 6), geom = "line") +
+  stat_function(fun = dchisq, args = list(df = 7), geom = "line") +
+  stat_function(fun = dchisq, args = list(df = 8), geom = "line") +
+  stat_function(fun = dchisq, args = list(df = 9), geom = "line") +
+  stat_function(fun = dchisq, args = list(df = 10), geom = "line") +
+  scale_x_continuous(breaks=seq(0, 100, 1)) + 
+  xlim(0,25) +
+  ylim(0,1) +
+  labs(
+    x = 'Chi square', 
+    y = 'density') +
+  theme_minimal() +
+  theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank()
+  )
+
+
+```
