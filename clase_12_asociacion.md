@@ -1,9 +1,21 @@
 Asociación entre variables
 ================
 
-# Asociación entre variables
+# Asociación entre variables: Chi Square
 
--   Ejemplos de *χ*<sup>2</sup>
+-   Ejemplos de aplicaciones *χ*<sup>2</sup> sobre tablas de
+    contingencia
+    -   para una tabla de frecuecia, respecto a un esperado conocido
+    -   para dos grupos, y una variable de dos valores
+    -   para cuatro grupos, y una variable de tres valores
+
+## Supuestos
+
+-   Independencia de las observaciones
+-   Las frecuencias esperadas deben ser mayores a 5 unidades
+    -   en caso de encontrarse en este escenario (celdas con frecuencias
+        esperadas menores a 5 unidades), emplear *Fisher’s Exact Test*.
+    -   ver ejemplo con `gmodels::CrossTable()`
 
 ## Prueba de *χ*<sup>2</sup> para una sola muestra
 
@@ -50,23 +62,23 @@ knitr::kable()
 | caucassian | no         |
 | caucassian | no         |
 | caucassian | no         |
-| latina     | no         |
-| latina     | no         |
-| latina     | no         |
 | caucassian | no         |
-| latina     | no         |
 | latina     | no         |
 | caucassian | no         |
 | caucassian | no         |
 | latina     | no         |
 | latina     | no         |
 | caucassian | no         |
+| latina     | no         |
+| caucassian | no         |
+| caucassian | no         |
+| caucassian | no         |
+| caucassian | no         |
+| caucassian | no         |
+| caucassian | no         |
 | caucassian | no         |
 | latina     | no         |
-| latina     | no         |
-| latina     | yes        |
 | caucassian | no         |
-| latina     | no         |
 
 ``` r
 # -----------------------------------------------
@@ -104,6 +116,72 @@ chisq.test(freq_latina, p = c(0.95, .05), correct = FALSE)
     ## data:  freq_latina
     ## X-squared = 14.416, df = 1, p-value = 0.0001465
 
+``` r
+# -----------------------------------------------
+# one sample chi square test, with a different
+# population parameter.
+# -----------------------------------------------
+
+chisq.test(freq_latina, p = c(0.85, .15), correct = FALSE)
+```
+
+    ## 
+    ##  Chi-squared test for given probabilities
+    ## 
+    ## data:  freq_latina
+    ## X-squared = 0.19426, df = 1, p-value = 0.6594
+
+``` r
+# -----------------------------------------------
+# one sample chi square test
+# -----------------------------------------------
+
+# x2 = 14.416, p = 0.0001465
+chisq.test(freq_latina, p = c(0.95, .05), correct = FALSE)
+```
+
+    ## Warning in chisq.test(freq_latina, p = c(0.95, 0.05), correct = FALSE): Chi-
+    ## squared approximation may be incorrect
+
+    ## 
+    ##  Chi-squared test for given probabilities
+    ## 
+    ## data:  freq_latina
+    ## X-squared = 14.416, df = 1, p-value = 0.0001465
+
+``` r
+# x2 = 14.416, p = 0.0001465
+chisq.test(freq_latina, p = c(0.95, .05), correct = TRUE)
+```
+
+    ## Warning in chisq.test(freq_latina, p = c(0.95, 0.05), correct = TRUE): Chi-
+    ## squared approximation may be incorrect
+
+    ## 
+    ##  Chi-squared test for given probabilities
+    ## 
+    ## data:  freq_latina
+    ## X-squared = 14.416, df = 1, p-value = 0.0001465
+
+``` r
+# x2 = 14.416, p = 0.0001465
+chisq.test(freq_latina, p = c(0.95, .05))
+```
+
+    ## Warning in chisq.test(freq_latina, p = c(0.95, 0.05)): Chi-squared approximation
+    ## may be incorrect
+
+    ## 
+    ##  Chi-squared test for given probabilities
+    ## 
+    ## data:  freq_latina
+    ## X-squared = 14.416, df = 1, p-value = 0.0001465
+
+``` r
+# Nota: la corrección de Yates, no tiene efecto sobre
+#       la prueba de Chi Cuadrado de una sola muestra.
+```
+
 ## Prueba de *χ*<sup>2</sup> de independiencia
 
 ``` r
@@ -135,9 +213,10 @@ xtabs(~ psych_ill + ethnic, data = data_surv)
 
 ``` r
 # -----------------------------------------------
-# apply chi square test
+# apply chi square test, without correction
 # -----------------------------------------------
 
+# X-squared = 18.709, df = 1, p-value = 1.523e-05
 cross_table <- xtabs(~ psych_ill + ethnic, data = data_surv)
 chisq.test(cross_table, correct = FALSE)
 ```
@@ -150,19 +229,35 @@ chisq.test(cross_table, correct = FALSE)
 
 ``` r
 # -----------------------------------------------
+# apply chi square test, with correction
+# -----------------------------------------------
+
+# X-squared = 16.378, df = 1, p-value = 5.189e-05
+cross_table <- xtabs(~ psych_ill + ethnic, data = data_surv)
+chisq.test(cross_table, correct = TRUE)
+```
+
+    ## 
+    ##  Pearson's Chi-squared test with Yates' continuity correction
+    ## 
+    ## data:  cross_table
+    ## X-squared = 16.378, df = 1, p-value = 5.189e-05
+
+``` r
+# -----------------------------------------------
 # apply chi square test summary as a table
 # -----------------------------------------------
 
 library(dplyr)
 cross_table %>%
-chisq.test() %>%
+chisq.test(., correct = FALSE) %>%
 broom::tidy() %>%
-knitr::kable()
+knitr::kable(., digits = 2)
 ```
 
-| statistic |  p.value | parameter | method                                                       |
-|----------:|---------:|----------:|:-------------------------------------------------------------|
-|   16.3776 | 5.19e-05 |         1 | Pearson’s Chi-squared test with Yates’ continuity correction |
+| statistic | p.value | parameter | method                     |
+|----------:|--------:|----------:|:---------------------------|
+|     18.71 |       0 |         1 | Pearson’s Chi-squared test |
 
 ``` r
 # -----------------------------------------------
@@ -211,25 +306,91 @@ ggplot(data.frame(x = c(0, 50)), aes(x)) +
 
 ``` r
 # -----------------------------------------------
-# one sample chi square test
+# tabel with CrossTable
 # -----------------------------------------------
 
+# Nota: la siguiente función entrega de forma simultánea
+#       el estadistico de chi cuadrado, la prueba exacta de Fisher, 
+#       y el chi cuadrado con la corrección de Yates.
 
-freq_latina <- data_surv %>%
-               dplyr::filter(ethnic == 'latina') %>%
-               table()
-
-chisq.test(freq_latina, p = c(0.95, .05), correct = FALSE)
+gmodels::CrossTable(
+  data_surv$ethnic, 
+  data_surv$psych_ill, 
+  fisher= TRUE, 
+  chisq = TRUE, 
+  expected = TRUE, 
+  sresid = TRUE, 
+  format = "SAS")
 ```
 
-    ## Warning in chisq.test(freq_latina, p = c(0.95, 0.05), correct = FALSE): Chi-
-    ## squared approximation may be incorrect
-
     ## 
-    ##  Chi-squared test for given probabilities
+    ##  
+    ##    Cell Contents
+    ## |-------------------------|
+    ## |                       N |
+    ## |              Expected N |
+    ## | Chi-square contribution |
+    ## |           N / Row Total |
+    ## |           N / Col Total |
+    ## |         N / Table Total |
+    ## |-------------------------|
     ## 
-    ## data:  freq_latina
-    ## X-squared = 14.416, df = 1, p-value = 0.0001465
+    ##  
+    ## Total Observations in Table:  278 
+    ## 
+    ##  
+    ##                  | data_surv$psych_ill 
+    ## data_surv$ethnic |        no |       yes | Row Total | 
+    ## -----------------|-----------|-----------|-----------|
+    ##       caucassian |       179 |         2 |       181 | 
+    ##                  |   171.234 |     9.766 |           | 
+    ##                  |     0.352 |     6.176 |           | 
+    ##                  |     0.989 |     0.011 |     0.651 | 
+    ##                  |     0.681 |     0.133 |           | 
+    ##                  |     0.644 |     0.007 |           | 
+    ## -----------------|-----------|-----------|-----------|
+    ##           latina |        84 |        13 |        97 | 
+    ##                  |    91.766 |     5.234 |           | 
+    ##                  |     0.657 |    11.524 |           | 
+    ##                  |     0.866 |     0.134 |     0.349 | 
+    ##                  |     0.319 |     0.867 |           | 
+    ##                  |     0.302 |     0.047 |           | 
+    ## -----------------|-----------|-----------|-----------|
+    ##     Column Total |       263 |        15 |       278 | 
+    ##                  |     0.946 |     0.054 |           | 
+    ## -----------------|-----------|-----------|-----------|
+    ## 
+    ##  
+    ## Statistics for All Table Factors
+    ## 
+    ## 
+    ## Pearson's Chi-squared test 
+    ## ------------------------------------------------------------
+    ## Chi^2 =  18.70909     d.f. =  1     p =  1.522546e-05 
+    ## 
+    ## Pearson's Chi-squared test with Yates' continuity correction 
+    ## ------------------------------------------------------------
+    ## Chi^2 =  16.3776     d.f. =  1     p =  5.189496e-05 
+    ## 
+    ##  
+    ## Fisher's Exact Test for Count Data
+    ## ------------------------------------------------------------
+    ## Sample estimate odds ratio:  13.72682 
+    ## 
+    ## Alternative hypothesis: true odds ratio is not equal to 1
+    ## p =  3.404437e-05 
+    ## 95% confidence interval:  3.00451 128.1738 
+    ## 
+    ## Alternative hypothesis: true odds ratio is less than 1
+    ## p =  0.9999978 
+    ## 95% confidence interval:  0 86.90339 
+    ## 
+    ## Alternative hypothesis: true odds ratio is greater than 1
+    ## p =  3.404437e-05 
+    ## 95% confidence interval:  3.593427 Inf 
+    ## 
+    ## 
+    ## 
 
 ## Diferentes tamaños de*χ*<sup>2</sup> como indicadores de discrepancia
 
@@ -273,14 +434,14 @@ chisq.test(c(60, 40), p = c(0.50, .50), correct = FALSE)
     ## X-squared = 4, df = 1, p-value = 0.0455
 
 ``` r
-chisq.test(c(65, 45), p = c(0.50, .50), correct = FALSE)
+chisq.test(c(65, 35), p = c(0.50, .50), correct = FALSE)
 ```
 
     ## 
     ##  Chi-squared test for given probabilities
     ## 
-    ## data:  c(65, 45)
-    ## X-squared = 3.6364, df = 1, p-value = 0.05653
+    ## data:  c(65, 35)
+    ## X-squared = 9, df = 1, p-value = 0.0027
 
 ``` r
 chisq.test(c(70, 30), p = c(0.50, .50), correct = FALSE)
@@ -438,6 +599,10 @@ chisq.test(cross_table, correct = FALSE)
 rcompanion::cramerV(cross_table)
 ```
 
+    ## Registered S3 method overwritten by 'DescTools':
+    ##   method         from 
+    ##   reorder.factor gdata
+
     ## Cramer V 
     ##   0.2935
 
@@ -445,7 +610,7 @@ rcompanion::cramerV(cross_table)
 
 ``` r
 #------------------------------------------------------------------------------
-# Sammarco & Konecny (2010) example
+# Sandoval & Carrasco (2021)
 #------------------------------------------------------------------------------
 
 # -----------------------------------------------
@@ -564,7 +729,7 @@ data_hires <- data.frame(
     )
 
 # -----------------------------------------------
-# cross table
+# cross table in frequency
 # -----------------------------------------------
 
 xtabs(~ hired + sex, data = data_hires)
@@ -574,6 +739,21 @@ xtabs(~ hired + sex, data = data_hires)
     ## hired female male
     ##   no      16    7
     ##   yes     16   24
+
+``` r
+# -----------------------------------------------
+# cross table in percentages
+# -----------------------------------------------
+
+xtabs(~ hired + sex, data = data_hires) %>%
+prop.table(1) %>%
+knitr::kable(., digits = 2)
+```
+
+|     | female | male |
+|:----|-------:|-----:|
+| no  |    0.7 |  0.3 |
+| yes |    0.4 |  0.6 |
 
 ``` r
 # -----------------------------------------------
@@ -642,3 +822,29 @@ ggplot(data.frame(x = c(0, 50)), aes(x)) +
     ## replace the existing scale.
 
 ![](clase_12_asociacion_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+## Formula de *χ*<sup>2</sup> de Pearson
+
+![](chi_2.svg)
+
+## Formula de corrección de Yates
+
+![](chi_2_yates.svg)
+
+## Referencias
+
+Huck, S. W. (2012). Reading Statistics and Research (6th ed.). Pearson
+Education.
+
+Field, A., Miles, J., & Field, Z. (2012). Discovering Statistics using
+R. SAGE Publications Ltd.
+
+Sandoval-Hernández, A., & Carrasco, D. (2020). A Measurement Strategy
+for SDG Thematic Indicators 4.7.4 and 4.7.5 Using International Large
+Scale Assessments in Education.
+<http://tcg.uis.unesco.org/wp-content/uploads/sites/4/2020/06/Measurement-Strategy-for-474-and-475-using-ILSA_20200625.pdf>
+
+Sammarco, A., & Konecny, L. M. (2010). Quality of Life, Social Support,
+and Uncertainty Among Latina and Caucasian Breast Cancer Survivors: A
+Comparative Study. Oncology Nursing Forum, 37(1), 93–99.
+<https://doi.org/10.1188/10.ONF.93-99>
