@@ -1,0 +1,291 @@
+---
+title: "Asociación entre variables"
+subtitle: "Clase 13: correlación"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dpi=300,fig.width=7)
+```
+
+# Asociación entre variables
+
+- Ejemplos de $\text{r}$
+
+## Correlación entre Conocimiento Cívico y Tolerancia a la Corrupción
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# Carrasco & Pavón (2021)
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+
+
+``
+
+
+## Correlación entre Conocimiento Cívico y Tolerancia a la Corrupción
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# Carrasco & Pavón (2021)
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+set.seed(12345678)
+library(dplyr)
+data_tol <- psi2301::iccs_16_lat %>%
+            group_by(COUNTRY) %>%
+            dplyr::sample_n(100, weights = ws) %>%
+            ungroup()
+
+
+# Nota: tomamos una muestra aleatoria de 100 casos por país
+#       de los datos de ICCS 2016, de latinoamérica.
+
+#------------------------------------------------
+# correlation via stats::cor()
+#------------------------------------------------
+
+cor(x = data_tol$L_ATTCORR, 
+    y = data_tol$PV1CIV,
+    use = 'complete.obs',
+    method = 'pearson')
+
+#------------------------------------------------
+# correlation via stats::cor(), get p value
+#------------------------------------------------
+
+cor.test(
+    x = data_tol$L_ATTCORR, 
+    y = data_tol$PV1CIV,
+    use = 'complete.obs',
+    method = 'pearson',
+    conf.level = .95)
+
+#------------------------------------------------
+# get amount of observations
+#------------------------------------------------
+
+data_tol %>%
+dplyr::select(L_ATTCORR, PV1CIV) %>%
+na.omit() %>%
+nrow()
+
+
+#------------------------------------------------
+# correlation via corrr::correlate()
+#------------------------------------------------
+
+data_tol %>%
+dplyr::select(L_ATTCORR, PV1CIV) %>%
+r4sda::remove_labels() %>%
+corrr::correlate() %>%
+knitr::kable(., digits = 2)
+
+```
+
+## Generación de matrices de correlación
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# Carrasco & Pavón (2021)
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+set.seed(12345678)
+library(dplyr)
+data_tol <- psi2301::iccs_16_lat %>%
+            group_by(COUNTRY) %>%
+            dplyr::sample_n(100, weights = ws) %>%
+            ungroup()
+
+
+# Nota: tomamos una muestra aleatoria de 100 casos por país
+#       de los datos de ICCS 2016, de latinoamérica.
+
+#------------------------------------------------
+# tabla de variables
+#------------------------------------------------
+
+data_tol %>%
+r4sda::variables_table() %>%
+knitr::kable()
+
+#------------------------------------------------
+# variables elegidas
+#------------------------------------------------
+
+# L_ATTCORR = Tolerancia a la corrupción (M = 50, SD = 10)
+# L_AUTGOV = Autoritarismo (M = 50, SD = 10)
+# S_NISB = Nivel Socioeconómico (M = 0, SD = 1)
+# PV1CIV = Conocimiento Cívico (M = 500, SD = 100)
+
+# S_OPDISC  = Apertura a la discusión en la sala de clases (M = 50, SD = 10)
+# S_CIVLRN  = Educación Cívica (M = 50, SD = 10)
+# S_POLDISC = Discusión Política  (M = 50, SD = 10)
+# S_SOCMED  = Frecuencia de uso de redes sociales para compartir contenidos políticos (M = 50, SD = 10)
+
+
+#------------------------------------------------
+# matriz general
+#------------------------------------------------
+
+data_tol %>%
+dplyr::select(
+  L_ATTCORR, L_AUTGOV, S_NISB, PV1CIV, 
+  S_CIVLRN, S_OPDISC, S_POLDISC, S_SOCMED
+  ) %>%
+r4sda::remove_labels() %>%
+corrr::correlate() %>%
+knitr::kable(., digits = 2)
+
+#------------------------------------------------
+# matriz general, diagonal
+#------------------------------------------------
+
+data_tol %>%
+dplyr::select(
+  L_ATTCORR, L_AUTGOV, S_NISB, PV1CIV, 
+  S_CIVLRN, S_OPDISC, S_POLDISC, S_SOCMED
+  ) %>%
+r4sda::remove_labels() %>%
+corrr::correlate() %>%
+corrr::shave() %>%
+knitr::kable(., digits = 2)
+
+
+#------------------------------------------------
+# matriz general, pares de correlaciones
+#------------------------------------------------
+
+data_tol %>%
+dplyr::select(
+  L_ATTCORR, L_AUTGOV, S_NISB, PV1CIV, 
+  S_CIVLRN, S_OPDISC, S_POLDISC, S_SOCMED
+  ) %>%
+r4sda::remove_labels() %>%
+corrr::correlate() %>%
+corrr::stretch() %>%
+knitr::kable(., digits = 2)
+
+
+#------------------------------------------------
+# matriz general, pares de correlaciones
+#------------------------------------------------
+
+data_tol %>%
+dplyr::select(
+  L_ATTCORR, L_AUTGOV, S_NISB, PV1CIV, 
+  S_CIVLRN, S_OPDISC, S_POLDISC, S_SOCMED
+  ) %>%
+r4sda::remove_labels() %>%
+corrr::correlate() %>%
+corrr::rplot()
+
+
+#------------------------------------------------
+# matriz general, pares de correlaciones
+#------------------------------------------------
+
+data_tol %>%
+dplyr::select(
+  L_ATTCORR, L_AUTGOV, S_NISB, PV1CIV, 
+  S_CIVLRN, S_OPDISC, S_POLDISC, S_SOCMED
+  ) %>%
+r4sda::remove_labels() %>%
+corrr::correlate() %>%
+corrr::network_plot()
+
+```
+
+## Ejemplo de relación No lineal
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# relación curva
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# data example
+# -----------------------------------------------
+
+# -----------------------------------------------
+# observed frequency
+# -----------------------------------------------
+
+data_curved <- readr::read_csv('curved_y_x.csv')
+
+# -----------------------------------------------
+# scatter plot
+# -----------------------------------------------
+
+plot(data_curved$x, data_curved$y,
+  ylab = 'y score',
+  xlab = 'x score')
+
+# -----------------------------------------------
+# correlation
+# -----------------------------------------------
+
+cor(data_curved$x, data_curved$y)
+
+
+# -----------------------------------------------
+# linear model
+# -----------------------------------------------
+
+# estimates
+data_curved %>%
+mutate(x1 = psi2301::z_score(x)) %>%
+lm(y ~ x1, data = .) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+# model fit
+data_curved %>%
+mutate(x1 = psi2301::z_score(x)) %>%
+lm(y ~ x1, data = .) %>%
+broom::glance() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# linear model with quadratic and cubir effects
+# -----------------------------------------------
+
+# estimates
+data_curved %>%
+mutate(x1 = psi2301::z_score(x)) %>%
+mutate(x2 = x1*x1) %>%
+mutate(x3 = x1*x1*x1) %>%
+lm(y ~ x1 + x2 + x3, data = .) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+
+# model fit
+data_curved %>%
+mutate(x1 = psi2301::z_score(x)) %>%
+mutate(x2 = x1*x1) %>%
+mutate(x3 = x1*x1*x1) %>%
+lm(y ~ x1 + x2 + x3, data = .) %>%
+broom::glance() %>%
+knitr::kable(., digits = 2)
+
+
+```
+
