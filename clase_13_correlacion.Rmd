@@ -12,21 +12,78 @@ knitr::opts_chunk$set(dpi=300,fig.width=7)
 
 - Ejemplos de $\text{r}$
 
-## Correlación entre Conocimiento Cívico y Tolerancia a la Corrupción
+## Correlación
+
+- Calculo de correlación por pasos
 
 ```{r, echo=TRUE}
 
 #------------------------------------------------------------------------------
-# Carrasco & Pavón (2021)
+# correlation by steps
 #------------------------------------------------------------------------------
 
 # -----------------------------------------------
-# data example
+# load data
 # -----------------------------------------------
 
+url_file <- 'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/correlation_example.csv'
+data_correlation <- readr::read_csv(url_file)
+
+# -----------------------------------------------
+# display data
+# -----------------------------------------------
+
+data_correlation[1:10,] %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# generate components
+# -----------------------------------------------
+
+data_corr <- data_correlation %>%
+             # mean of x
+             mutate(x_bar = mean(x, na.rm = TRUE)) %>%
+             # mean of y
+             mutate(y_bar = mean(y, na.rm = TRUE)) %>%
+             # deviations from x             
+             mutate(x_dev = x - x_bar) %>%
+             # deviations from y     
+             mutate(y_dev = y - y_bar) %>%
+             # cross products of deviations     
+             mutate(cross = x_dev*y_dev) %>%
+             # square of x_dev             
+             mutate(x_var = x_dev^2) %>%
+             # square of y_dev           
+             mutate(y_var = y_dev^2)
+
+# -----------------------------------------------
+# display components
+# -----------------------------------------------
+
+data_corr[1:10,] %>%
+knitr::kable(., digits = 2)
 
 
-``
+# -----------------------------------------------
+# terms of correlation formula
+# -----------------------------------------------
+
+covariance  <- sum(data_corr$cross)
+denominator <- sqrt(sum(data_corr$x_var)*sum(data_corr$y_var))
+
+# -----------------------------------------------
+# get correlation
+# -----------------------------------------------
+
+covariance/denominator
+
+# -----------------------------------------------
+# get correlation via stats::cor()
+# -----------------------------------------------
+
+cor(data_corr$y, data_corr$x)
+
+```
 
 
 ## Correlación entre Conocimiento Cívico y Tolerancia a la Corrupción
@@ -212,23 +269,23 @@ corrr::network_plot()
 
 ```
 
+# Anexos
+
 ## Ejemplo de relación No lineal
 
 ```{r, echo=TRUE}
 
 #------------------------------------------------------------------------------
-# relación curva
+# curve relation
 #------------------------------------------------------------------------------
 
-# -----------------------------------------------
-# data example
-# -----------------------------------------------
 
 # -----------------------------------------------
-# observed frequency
+# load data
 # -----------------------------------------------
 
-data_curved <- readr::read_csv('curved_y_x.csv')
+url_file <- 'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/curved_y_x.csv'
+data_curved <- readr::read_csv(url_file)
 
 # -----------------------------------------------
 # scatter plot
@@ -243,7 +300,6 @@ plot(data_curved$x, data_curved$y,
 # -----------------------------------------------
 
 cor(data_curved$x, data_curved$y)
-
 
 # -----------------------------------------------
 # linear model
@@ -288,4 +344,10 @@ knitr::kable(., digits = 2)
 
 
 ```
+
+
+# Referencias
+
+Carrasco, D., & Pavón, A. (2021). Tolerance of corruption among students in Latin America. In E. Treviño, D. Carrasco, E. Claes, & K. Kennedy (Eds.), Good Citizenship for the Next Generation. A Global Perspective Using IEA ICCS 2016 Data. Springer International.
+
 
