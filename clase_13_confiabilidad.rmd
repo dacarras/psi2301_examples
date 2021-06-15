@@ -1,0 +1,315 @@
+---
+title: "Asociación entre variables"
+subtitle: "Clase 13: confiabilidad"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dpi=300,fig.width=7)
+```
+
+# Confiabilidad de puntajes
+
+- Ejemplos de $\alpha$ de Cronbach
+
+## Amenazas a la democracia
+
+- Hay varias maneras de obtener un estimado de Alpha
+- En el siguiente código se ilustran tres formas:
+  - Las forma mas convencional, empleando la librería psych
+  - Empleando la matriz de correlaciones, usando la librería psych
+  - Empleando la media de correlaciones usando una formula
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# threats to democracy
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# load data
+# -----------------------------------------------
+
+data_lat <- psi2301::iccs_16_lat
+
+# -----------------------------------------------
+# items table
+# -----------------------------------------------
+
+
+items_table <- read.table(
+text="
+final_selection var_name  variable  item_text
+yes IS3G22A td1 '[R] Political leaders give government jobs to their family members.'
+yes IS3G22B td2 '[R] One company or the government owns all newspapers in a country.'
+yes IS3G22C td3 'People are allowed to publicly criticize the government.'
+yes IS3G22D td4 'All adult citizens have the right to elect their political leaders.'
+yes IS3G22E td5 'People are able to protest if they think a law is unfair.'
+yes IS3G22F td6 '[R] The police have the right to hold people suspected of threatening national security in jail without trial.'
+no  IS3G22G td7 'Differences in income between poor and rich people are small.'
+yes IS3G22H td8 '[R] The government influences decisions by courts of justice.'
+yes IS3G22I td9 'All <ethnic/racial> groups in the country have the same rights.'
+",
+header=TRUE, stringsAsFactors = FALSE)
+
+# -----------------------------------------------
+# display item table
+# -----------------------------------------------
+
+knitr::kable(items_table)
+
+# -----------------------------------------------
+# response values
+# -----------------------------------------------
+
+response_values <- read.table(
+text="
+value response_label
+1     'Good for democracy'
+2     'Neither good nor bad for democracy'
+3     'Bad for democracy'
+",
+header=TRUE, stringsAsFactors = FALSE)
+
+
+# -----------------------------------------------
+# display response values
+# -----------------------------------------------
+
+knitr::kable(response_values)
+
+#------------------------------------------------
+# desired names for merge
+#------------------------------------------------
+
+merge_names <- items_table %>%
+               dplyr::select(variable) %>%
+               .$variable %>%
+               as.character()
+
+# -----------------------------------------------
+# get item names
+# -----------------------------------------------
+
+original_names <- names(dplyr::select(data_lat, starts_with('IS3G22')))
+
+# -----------------------------------------------
+# recode functions
+# -----------------------------------------------
+
+rec_2 <- function(x){
+dplyr::case_when(
+#  variable == old ~ new
+  x == 1 ~ 1,
+  x == 2 ~ 0,
+  x == 3 ~ 0,
+  TRUE ~ as.numeric(x))
+# Note: it recodes ordinal items,
+#       where 1 is good for democracy (1)
+#       and zero is neither good or bad (2) and bad for democracy(3)
+}
+
+rec_3 <- function(x){
+dplyr::case_when(
+#  variable == old ~ new
+  x == 1 ~ 0,
+  x == 2 ~ 0,
+  x == 3 ~ 1,
+  TRUE ~ as.numeric(x))
+# Note: it recodes ordinal items, that are reverse coded,
+#       where 1 is bad for democracy (1)
+#       and zero is neither good or bad (2) and good for democracy(3)
+}
+
+
+#------------------------------------------------
+# recode items, general recode
+#------------------------------------------------
+
+items_data <- data_lat %>%
+              # replace original names for merge names
+              rename_at(vars(original_names), ~paste0(merge_names)) %>%
+              # dichotomization of items
+              mutate(td1 = rec_3(td1)) %>%
+              mutate(td2 = rec_3(td2)) %>%
+              mutate(td3 = rec_2(td3)) %>%
+              mutate(td4 = rec_2(td4)) %>%
+              mutate(td5 = rec_2(td5)) %>%
+              mutate(td6 = rec_3(td6)) %>%
+              mutate(td7 = rec_2(td7)) %>%
+              mutate(td8 = rec_3(td8)) %>%
+              mutate(td9 = rec_2(td9)) %>%
+              # remove labels 
+              r4sda::remove_labels() %>%
+              # select recoded data only
+              dplyr::select(id_i, td1:td9)
+
+
+#------------------------------------------------
+# display ten cases
+#------------------------------------------------
+
+items_data[1:10,] %>%
+knitr::kable()
+
+# -----------------------------------------------------------------------------
+# alpha computes
+# -----------------------------------------------------------------------------
+
+#------------------------------------------------
+# alpha with psych
+#------------------------------------------------
+
+items_data %>%
+dplyr::select(-id_i) %>%
+psych::alpha()
+
+
+#------------------------------------------------
+# alpha with psych over correlation
+#------------------------------------------------
+
+items_data %>%
+dplyr::select(-id_i) %>%
+cor(., use = 'pairwise') %>%
+psych::alpha()
+
+#------------------------------------------------
+# alpha with average correlations
+#------------------------------------------------
+
+k <- 9
+r <- items_data %>%
+     dplyr::select(-id_i) %>%
+     corrr::correlate(., 
+      method = 'pearson',
+      use = 'pairwise') %>%
+     corrr::shave() %>%
+     corrr::stretch() %>%
+     na.omit() %>%
+     .$r %>%
+     mean()
+
+alpha <- (k * r) / ( 1 + (k - 1) * r)
+alpha
+
+
+
+#------------------------------------------------
+# comparison
+#------------------------------------------------
+
+alpha_method_1 <- items_data %>%
+                  dplyr::select(-id_i) %>%
+                  psych::alpha() %>%
+                  purrr::pluck('total') %>%
+                  pull('raw_alpha')
+
+alpha_method_2 <- items_data %>%
+                  dplyr::select(-id_i) %>%
+                  cor(., use = 'pairwise') %>%
+                  psych::alpha() %>%
+                  purrr::pluck('total') %>%
+                  pull('raw_alpha')
+
+alpha_method_3 <- alpha
+
+
+
+data.frame(
+  method = c('conventional','correlations','average correlation'),
+  estimate = c(
+    alpha_method_1,
+    alpha_method_2,
+    alpha_method_3)
+    ) %>%
+  knitr::kable(., digits = 5)
+
+
+```
+
+>Nota: el Alpha obtenido es más bajo de lo esperado (alpha < .7). Bajo la convención de que puntajes con alpha menor .7 no debieran ser generados, no es recomendable generar un puntaje total con las respuestas a estos ítems.
+
+## Autoritarismo
+
+- Ejemplo de escala con un mejor alpha
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# threats to democracy
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# load data
+# -----------------------------------------------
+
+data_aut <- psi2301::iccs_16_lat %>%
+            mutate(au1 = r4sda::reverse(LS3G01A)) %>%
+            mutate(au2 = r4sda::reverse(LS3G01B)) %>%
+            mutate(au3 = r4sda::reverse(LS3G01C)) %>%
+            mutate(au4 = r4sda::reverse(LS3G01D)) %>%
+            mutate(au5 = r4sda::reverse(LS3G01E)) %>%
+            mutate(au6 = r4sda::reverse(LS3G01F)) %>%
+            mutate(au7 = r4sda::reverse(LS3G02A)) %>%
+            mutate(au8 = r4sda::reverse(LS3G02B)) %>%
+            mutate(au9 = r4sda::reverse(LS3G02C)) %>%
+            dplyr::select(id_i, au1:au9)
+
+# -----------------------------------------------
+# items table
+# -----------------------------------------------
+
+# au1   !Es mejor que los líderes del gobierno tomen decisiones sin consultar a na
+# au2   !Los gobernantes deben hacer valer su autoridad aunque violen los derechos
+# au3   !Los gobernantes pierden su autoridad cuando reconocen sus errores. 
+# au4   !Las personas que tengan opiniones diferentes al gobierno deben ser consid
+# au5   !La opinión más importante del país debe ser la de presidente. 
+# au6   !Es justo que el gobierno no cumpla con las leyes cuando lo crea necesario
+# au7   !La concentración del poder en una sola persona garantiza el orden.
+# au8   !El gobierno debería cerrar los medios de comunicación que lo critiquen. 
+# au9   !Si el presidente no está de acuerdo con el <congreso>, debería <disolverl
+
+#------------------------------------------------
+# display ten cases
+#------------------------------------------------
+
+data_aut[1:10,] %>%
+knitr::kable()
+
+# -----------------------------------------------------------------------------
+# alpha computes
+# -----------------------------------------------------------------------------
+
+#------------------------------------------------
+# alpha with psych
+#------------------------------------------------
+
+data_aut %>%
+dplyr::select(-id_i) %>%
+psych::alpha()
+
+
+
+```
+
+>Nota: el Alpha obtenido esta por sobre lo esperado (alpha > .7). Puntajes totales generados con las respuestas a estos nuevos 9 items, presentan una alta confiabilidad.
+
+
+# Anexos
+
+## Componentes del output de un psych::alpha
+
+- Raw_alpha: basado en covarianzas
+- Std.alpha: basado en correlaciones
+- G6(smc): Indice de Guttman
+- Average_r: Correlación media inter item
+- Ase: error estándar de la escala
+- Mean: Promedio de la escala
+- Sd: desviación estándar de la escala
+- raw.r : Correlación item-test
+- std.r: correlacion estandarizada
+- r.cor: Correlación con la escala controlando la interacción con otros ítems
+- r.drop: Correlación ítem con la escala que se arma sin ese ítem
+- mean: Promedio del ítem
+- sd: desviación estándar del ítem
