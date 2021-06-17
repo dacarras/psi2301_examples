@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="data:text/css,%0A%40font%2Dface%20%7B%0Afont%2Dfamily%3A%20octicons%2Dlink%3B%0Asrc%3A%20url%28data%3Afont%2Fwoff%3Bcharset%3Dutf%2D8%3Bbase64%2Cd09GRgABAAAAAAZwABAAAAAACFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEU0lHAAAGaAAAAAgAAAAIAAAAAUdTVUIAAAZcAAAACgAAAAoAAQAAT1MvMgAAAyQAAABJAAAAYFYEU3RjbWFwAAADcAAAAEUAAACAAJThvmN2dCAAAATkAAAABAAAAAQAAAAAZnBnbQAAA7gAAACyAAABCUM%2B8IhnYXNwAAAGTAAAABAAAAAQABoAI2dseWYAAAFsAAABPAAAAZwcEq9taGVhZAAAAsgAAAA0AAAANgh4a91oaGVhAAADCAAAABoAAAAkCA8DRGhtdHgAAAL8AAAADAAAAAwGAACfbG9jYQAAAsAAAAAIAAAACABiATBtYXhwAAACqAAAABgAAAAgAA8ASm5hbWUAAAToAAABQgAAAlXu73sOcG9zdAAABiwAAAAeAAAAME3QpOBwcmVwAAAEbAAAAHYAAAB%2FaFGpk3jaTY6xa8JAGMW%2FO62BDi0tJLYQincXEypYIiGJjSgHniQ6umTsUEyLm5BV6NDBP8Tpts6F0v%2Bk%2F0an2i%2BitHDw3v2%2B9%2BDBKTzsJNnWJNTgHEy4BgG3EMI9DCEDOGEXzDADU5hBKMIgNPZqoD3SilVaXZCER3%2FI7AtxEJLtzzuZfI%2BVVkprxTlXShWKb3TBecG11rwoNlmmn1P2WYcJczl32etSpKnziC7lQyWe1smVPy%2FLt7Kc%2B0vWY%2FgAgIIEqAN9we0pwKXreiMasxvabDQMM4riO%2BqxM2ogwDGOZTXxwxDiycQIcoYFBLj5K3EIaSctAq2kTYiw%2Bymhce7vwM9jSqO8JyVd5RH9gyTt2%2BJ%2FyUmYlIR0s04n6%2B7Vm1ozezUeLEaUjhaDSuXHwVRgvLJn1tQ7xiuVv%2FocTRF42mNgZGBgYGbwZOBiAAFGJBIMAAizAFoAAABiAGIAznjaY2BkYGAA4in8zwXi%2BW2%2BMjCzMIDApSwvXzC97Z4Ig8N%2FBxYGZgcgl52BCSQKAA3jCV8CAABfAAAAAAQAAEB42mNgZGBg4f3vACQZQABIMjKgAmYAKEgBXgAAeNpjYGY6wTiBgZWBg2kmUxoDA4MPhGZMYzBi1AHygVLYQUCaawqDA4PChxhmh%2F8ODDEsvAwHgMKMIDnGL0x7gJQCAwMAJd4MFwAAAHjaY2BgYGaA4DAGRgYQkAHyGMF8NgYrIM3JIAGVYYDT%2BAEjAwuDFpBmA9KMDEwMCh9i%2Fv8H8sH0%2F4dQc1iAmAkALaUKLgAAAHjaTY9LDsIgEIbtgqHUPpDi3gPoBVyRTmTddOmqTXThEXqrob2gQ1FjwpDvfwCBdmdXC5AVKFu3e5MfNFJ29KTQT48Ob9%2FlqYwOGZxeUelN2U2R6%2BcArgtCJpauW7UQBqnFkUsjAY%2FkOU1cP%2BDAgvxwn1chZDwUbd6CFimGXwzwF6tPbFIcjEl%2BvvmM%2FbyA48e6tWrKArm4ZJlCbdsrxksL1AwWn%2FyBSJKpYbq8AXaaTb8AAHja28jAwOC00ZrBeQNDQOWO%2F%2FsdBBgYGRiYWYAEELEwMTE4uzo5Zzo5b2BxdnFOcALxNjA6b2ByTswC8jYwg0VlNuoCTWAMqNzMzsoK1rEhNqByEyerg5PMJlYuVueETKcd%2F89uBpnpvIEVomeHLoMsAAe1Id4AAAAAAAB42oWQT07CQBTGv0JBhagk7HQzKxca2sJCE1hDt4QF%2B9JOS0nbaaYDCQfwCJ7Au3AHj%2BLO13FMmm6cl7785vven0kBjHCBhfpYuNa5Ph1c0e2Xu3jEvWG7UdPDLZ4N92nOm%2BEBXuAbHmIMSRMs%2B4aUEd4Nd3CHD8NdvOLTsA2GL8M9PODbcL%2BhD7C1xoaHeLJSEao0FEW14ckxC%2BTU8TxvsY6X0eLPmRhry2WVioLpkrbp84LLQPGI7c6sOiUzpWIWS5GzlSgUzzLBSikOPFTOXqly7rqx0Z1Q5BAIoZBSFihQYQOOBEdkCOgXTOHA07HAGjGWiIjaPZNW13%2F%2Blm6S9FT7rLHFJ6fQbkATOG1j2OFMucKJJsxIVfQORl%2B9Jyda6Sl1dUYhSCm1dyClfoeDve4qMYdLEbfqHf3O%2FAdDumsjAAB42mNgYoAAZQYjBmyAGYQZmdhL8zLdDEydARfoAqIAAAABAAMABwAKABMAB%2F%2F%2FAA8AAQAAAAAAAAAAAAAAAAABAAAAAA%3D%3D%29%20format%28%27woff%27%29%3B%0A%7D%0Abody%20%7B%0A%2Dwebkit%2Dtext%2Dsize%2Dadjust%3A%20100%25%3B%0Atext%2Dsize%2Dadjust%3A%20100%25%3B%0Acolor%3A%20%23333%3B%0Afont%2Dfamily%3A%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20%22Segoe%20UI%22%2C%20Arial%2C%20freesans%2C%20sans%2Dserif%2C%20%22Apple%20Color%20Emoji%22%2C%20%22Segoe%20UI%20Emoji%22%2C%20%22Segoe%20UI%20Symbol%22%3B%0Afont%2Dsize%3A%2016px%3B%0Aline%2Dheight%3A%201%2E6%3B%0Aword%2Dwrap%3A%20break%2Dword%3B%0A%7D%0Aa%20%7B%0Abackground%2Dcolor%3A%20transparent%3B%0A%7D%0Aa%3Aactive%2C%0Aa%3Ahover%20%7B%0Aoutline%3A%200%3B%0A%7D%0Astrong%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah1%20%7B%0Afont%2Dsize%3A%202em%3B%0Amargin%3A%200%2E67em%200%3B%0A%7D%0Aimg%20%7B%0Aborder%3A%200%3B%0A%7D%0Ahr%20%7B%0Abox%2Dsizing%3A%20content%2Dbox%3B%0Aheight%3A%200%3B%0A%7D%0Apre%20%7B%0Aoverflow%3A%20auto%3B%0A%7D%0Acode%2C%0Akbd%2C%0Apre%20%7B%0Afont%2Dfamily%3A%20monospace%2C%20monospace%3B%0Afont%2Dsize%3A%201em%3B%0A%7D%0Ainput%20%7B%0Acolor%3A%20inherit%3B%0Afont%3A%20inherit%3B%0Amargin%3A%200%3B%0A%7D%0Ahtml%20input%5Bdisabled%5D%20%7B%0Acursor%3A%20default%3B%0A%7D%0Ainput%20%7B%0Aline%2Dheight%3A%20normal%3B%0A%7D%0Ainput%5Btype%3D%22checkbox%22%5D%20%7B%0Abox%2Dsizing%3A%20border%2Dbox%3B%0Apadding%3A%200%3B%0A%7D%0Atable%20%7B%0Aborder%2Dcollapse%3A%20collapse%3B%0Aborder%2Dspacing%3A%200%3B%0A%7D%0Atd%2C%0Ath%20%7B%0Apadding%3A%200%3B%0A%7D%0A%2A%20%7B%0Abox%2Dsizing%3A%20border%2Dbox%3B%0A%7D%0Ainput%20%7B%0Afont%3A%2013px%20%2F%201%2E4%20Helvetica%2C%20arial%2C%20nimbussansl%2C%20liberationsans%2C%20freesans%2C%20clean%2C%20sans%2Dserif%2C%20%22Apple%20Color%20Emoji%22%2C%20%22Segoe%20UI%20Emoji%22%2C%20%22Segoe%20UI%20Symbol%22%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%234078c0%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%2C%0Aa%3Aactive%20%7B%0Atext%2Ddecoration%3A%20underline%3B%0A%7D%0Ahr%20%7B%0Aheight%3A%200%3B%0Amargin%3A%2015px%200%3B%0Aoverflow%3A%20hidden%3B%0Abackground%3A%20transparent%3B%0Aborder%3A%200%3B%0Aborder%2Dbottom%3A%201px%20solid%20%23ddd%3B%0A%7D%0Ahr%3Abefore%20%7B%0Adisplay%3A%20table%3B%0Acontent%3A%20%22%22%3B%0A%7D%0Ahr%3Aafter%20%7B%0Adisplay%3A%20table%3B%0Aclear%3A%20both%3B%0Acontent%3A%20%22%22%3B%0A%7D%0Ah1%2C%0Ah2%2C%0Ah3%2C%0Ah4%2C%0Ah5%2C%0Ah6%20%7B%0Amargin%2Dtop%3A%2015px%3B%0Amargin%2Dbottom%3A%2015px%3B%0Aline%2Dheight%3A%201%2E1%3B%0A%7D%0Ah1%20%7B%0Afont%2Dsize%3A%2030px%3B%0A%7D%0Ah2%20%7B%0Afont%2Dsize%3A%2021px%3B%0A%7D%0Ah3%20%7B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0Ah4%20%7B%0Afont%2Dsize%3A%2014px%3B%0A%7D%0Ah5%20%7B%0Afont%2Dsize%3A%2012px%3B%0A%7D%0Ah6%20%7B%0Afont%2Dsize%3A%2011px%3B%0A%7D%0Ablockquote%20%7B%0Amargin%3A%200%3B%0A%7D%0Aul%2C%0Aol%20%7B%0Apadding%3A%200%3B%0Amargin%2Dtop%3A%200%3B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Aol%20ol%2C%0Aul%20ol%20%7B%0Alist%2Dstyle%2Dtype%3A%20lower%2Droman%3B%0A%7D%0Aul%20ul%20ol%2C%0Aul%20ol%20ol%2C%0Aol%20ul%20ol%2C%0Aol%20ol%20ol%20%7B%0Alist%2Dstyle%2Dtype%3A%20lower%2Dalpha%3B%0A%7D%0Add%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20%22Liberation%20Mono%22%2C%20Menlo%2C%20Courier%2C%20monospace%3B%0Afont%2Dsize%3A%2012px%3B%0A%7D%0Apre%20%7B%0Amargin%2Dtop%3A%200%3B%0Amargin%2Dbottom%3A%200%3B%0Afont%3A%2012px%20Consolas%2C%20%22Liberation%20Mono%22%2C%20Menlo%2C%20Courier%2C%20monospace%3B%0A%7D%0A%2Eselect%3A%3A%2Dms%2Dexpand%20%7B%0Aopacity%3A%200%3B%0A%7D%0A%2Eocticon%20%7B%0Afont%3A%20normal%20normal%20normal%2016px%2F1%20octicons%2Dlink%3B%0Adisplay%3A%20inline%2Dblock%3B%0Atext%2Ddecoration%3A%20none%3B%0Atext%2Drendering%3A%20auto%3B%0A%2Dwebkit%2Dfont%2Dsmoothing%3A%20antialiased%3B%0A%2Dmoz%2Dosx%2Dfont%2Dsmoothing%3A%20grayscale%3B%0A%2Dwebkit%2Duser%2Dselect%3A%20none%3B%0A%2Dmoz%2Duser%2Dselect%3A%20none%3B%0A%2Dms%2Duser%2Dselect%3A%20none%3B%0Auser%2Dselect%3A%20none%3B%0A%7D%0A%2Eocticon%2Dlink%3Abefore%20%7B%0Acontent%3A%20%27%5Cf05c%27%3B%0A%7D%0A%2Emarkdown%2Dbody%3Abefore%20%7B%0Adisplay%3A%20table%3B%0Acontent%3A%20%22%22%3B%0A%7D%0A%2Emarkdown%2Dbody%3Aafter%20%7B%0Adisplay%3A%20table%3B%0Aclear%3A%20both%3B%0Acontent%3A%20%22%22%3B%0A%7D%0A%2Emarkdown%2Dbody%3E%2A%3Afirst%2Dchild%20%7B%0Amargin%2Dtop%3A%200%20%21important%3B%0A%7D%0A%2Emarkdown%2Dbody%3E%2A%3Alast%2Dchild%20%7B%0Amargin%2Dbottom%3A%200%20%21important%3B%0A%7D%0Aa%3Anot%28%5Bhref%5D%29%20%7B%0Acolor%3A%20inherit%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0A%2Eanchor%20%7B%0Adisplay%3A%20inline%2Dblock%3B%0Apadding%2Dright%3A%202px%3B%0Amargin%2Dleft%3A%20%2D18px%3B%0A%7D%0A%2Eanchor%3Afocus%20%7B%0Aoutline%3A%20none%3B%0A%7D%0Ah1%2C%0Ah2%2C%0Ah3%2C%0Ah4%2C%0Ah5%2C%0Ah6%20%7B%0Amargin%2Dtop%3A%201em%3B%0Amargin%2Dbottom%3A%2016px%3B%0Afont%2Dweight%3A%20bold%3B%0Aline%2Dheight%3A%201%2E4%3B%0A%7D%0Ah1%20%2Eocticon%2Dlink%2C%0Ah2%20%2Eocticon%2Dlink%2C%0Ah3%20%2Eocticon%2Dlink%2C%0Ah4%20%2Eocticon%2Dlink%2C%0Ah5%20%2Eocticon%2Dlink%2C%0Ah6%20%2Eocticon%2Dlink%20%7B%0Acolor%3A%20%23000%3B%0Avertical%2Dalign%3A%20middle%3B%0Avisibility%3A%20hidden%3B%0A%7D%0Ah1%3Ahover%20%2Eanchor%2C%0Ah2%3Ahover%20%2Eanchor%2C%0Ah3%3Ahover%20%2Eanchor%2C%0Ah4%3Ahover%20%2Eanchor%2C%0Ah5%3Ahover%20%2Eanchor%2C%0Ah6%3Ahover%20%2Eanchor%20%7B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Ah1%3Ahover%20%2Eanchor%20%2Eocticon%2Dlink%2C%0Ah2%3Ahover%20%2Eanchor%20%2Eocticon%2Dlink%2C%0Ah3%3Ahover%20%2Eanchor%20%2Eocticon%2Dlink%2C%0Ah4%3Ahover%20%2Eanchor%20%2Eocticon%2Dlink%2C%0Ah5%3Ahover%20%2Eanchor%20%2Eocticon%2Dlink%2C%0Ah6%3Ahover%20%2Eanchor%20%2Eocticon%2Dlink%20%7B%0Avisibility%3A%20visible%3B%0A%7D%0Ah1%20%7B%0Apadding%2Dbottom%3A%200%2E3em%3B%0Afont%2Dsize%3A%202%2E25em%3B%0Aline%2Dheight%3A%201%2E2%3B%0Aborder%2Dbottom%3A%201px%20solid%20%23eee%3B%0A%7D%0Ah1%20%2Eanchor%20%7B%0Aline%2Dheight%3A%201%3B%0A%7D%0Ah2%20%7B%0Apadding%2Dbottom%3A%200%2E3em%3B%0Afont%2Dsize%3A%201%2E75em%3B%0Aline%2Dheight%3A%201%2E225%3B%0Aborder%2Dbottom%3A%201px%20solid%20%23eee%3B%0A%7D%0Ah2%20%2Eanchor%20%7B%0Aline%2Dheight%3A%201%3B%0A%7D%0Ah3%20%7B%0Afont%2Dsize%3A%201%2E5em%3B%0Aline%2Dheight%3A%201%2E43%3B%0A%7D%0Ah3%20%2Eanchor%20%7B%0Aline%2Dheight%3A%201%2E2%3B%0A%7D%0Ah4%20%7B%0Afont%2Dsize%3A%201%2E25em%3B%0A%7D%0Ah4%20%2Eanchor%20%7B%0Aline%2Dheight%3A%201%2E2%3B%0A%7D%0Ah5%20%7B%0Afont%2Dsize%3A%201em%3B%0A%7D%0Ah5%20%2Eanchor%20%7B%0Aline%2Dheight%3A%201%2E1%3B%0A%7D%0Ah6%20%7B%0Afont%2Dsize%3A%201em%3B%0Acolor%3A%20%23777%3B%0A%7D%0Ah6%20%2Eanchor%20%7B%0Aline%2Dheight%3A%201%2E1%3B%0A%7D%0Ap%2C%0Ablockquote%2C%0Aul%2C%0Aol%2C%0Adl%2C%0Atable%2C%0Apre%20%7B%0Amargin%2Dtop%3A%200%3B%0Amargin%2Dbottom%3A%2016px%3B%0A%7D%0Ahr%20%7B%0Aheight%3A%204px%3B%0Apadding%3A%200%3B%0Amargin%3A%2016px%200%3B%0Abackground%2Dcolor%3A%20%23e7e7e7%3B%0Aborder%3A%200%20none%3B%0A%7D%0Aul%2C%0Aol%20%7B%0Apadding%2Dleft%3A%202em%3B%0A%7D%0Aul%20ul%2C%0Aul%20ol%2C%0Aol%20ol%2C%0Aol%20ul%20%7B%0Amargin%2Dtop%3A%200%3B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Ali%3Ep%20%7B%0Amargin%2Dtop%3A%2016px%3B%0A%7D%0Adl%20%7B%0Apadding%3A%200%3B%0A%7D%0Adl%20dt%20%7B%0Apadding%3A%200%3B%0Amargin%2Dtop%3A%2016px%3B%0Afont%2Dsize%3A%201em%3B%0Afont%2Dstyle%3A%20italic%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Adl%20dd%20%7B%0Apadding%3A%200%2016px%3B%0Amargin%2Dbottom%3A%2016px%3B%0A%7D%0Ablockquote%20%7B%0Apadding%3A%200%2015px%3B%0Acolor%3A%20%23777%3B%0Aborder%2Dleft%3A%204px%20solid%20%23ddd%3B%0A%7D%0Ablockquote%3E%3Afirst%2Dchild%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Ablockquote%3E%3Alast%2Dchild%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Atable%20%7B%0Adisplay%3A%20block%3B%0Awidth%3A%20100%25%3B%0Aoverflow%3A%20auto%3B%0Aword%2Dbreak%3A%20normal%3B%0Aword%2Dbreak%3A%20keep%2Dall%3B%0A%7D%0Atable%20th%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Atable%20th%2C%0Atable%20td%20%7B%0Apadding%3A%206px%2013px%3B%0Aborder%3A%201px%20solid%20%23ddd%3B%0A%7D%0Atable%20tr%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Aborder%2Dtop%3A%201px%20solid%20%23ccc%3B%0A%7D%0Atable%20tr%3Anth%2Dchild%282n%29%20%7B%0Abackground%2Dcolor%3A%20%23f8f8f8%3B%0A%7D%0Aimg%20%7B%0Amax%2Dwidth%3A%20100%25%3B%0Abox%2Dsizing%3A%20content%2Dbox%3B%0Abackground%2Dcolor%3A%20%23fff%3B%0A%7D%0Acode%20%7B%0Apadding%3A%200%3B%0Apadding%2Dtop%3A%200%2E2em%3B%0Apadding%2Dbottom%3A%200%2E2em%3B%0Amargin%3A%200%3B%0Afont%2Dsize%3A%2085%25%3B%0Abackground%2Dcolor%3A%20rgba%280%2C0%2C0%2C0%2E04%29%3B%0Aborder%2Dradius%3A%203px%3B%0A%7D%0Acode%3Abefore%2C%0Acode%3Aafter%20%7B%0Aletter%2Dspacing%3A%20%2D0%2E2em%3B%0Acontent%3A%20%22%5C00a0%22%3B%0A%7D%0Apre%3Ecode%20%7B%0Apadding%3A%200%3B%0Amargin%3A%200%3B%0Afont%2Dsize%3A%20100%25%3B%0Aword%2Dbreak%3A%20normal%3B%0Awhite%2Dspace%3A%20pre%3B%0Abackground%3A%20transparent%3B%0Aborder%3A%200%3B%0A%7D%0A%2Ehighlight%20%7B%0Amargin%2Dbottom%3A%2016px%3B%0A%7D%0A%2Ehighlight%20pre%2C%0Apre%20%7B%0Apadding%3A%2016px%3B%0Aoverflow%3A%20auto%3B%0Afont%2Dsize%3A%2085%25%3B%0Aline%2Dheight%3A%201%2E45%3B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0A%7D%0A%2Ehighlight%20pre%20%7B%0Amargin%2Dbottom%3A%200%3B%0Aword%2Dbreak%3A%20normal%3B%0A%7D%0Apre%20%7B%0Aword%2Dwrap%3A%20normal%3B%0A%7D%0Apre%20code%20%7B%0Adisplay%3A%20inline%3B%0Amax%2Dwidth%3A%20initial%3B%0Apadding%3A%200%3B%0Amargin%3A%200%3B%0Aoverflow%3A%20initial%3B%0Aline%2Dheight%3A%20inherit%3B%0Aword%2Dwrap%3A%20normal%3B%0Abackground%2Dcolor%3A%20transparent%3B%0Aborder%3A%200%3B%0A%7D%0Apre%20code%3Abefore%2C%0Apre%20code%3Aafter%20%7B%0Acontent%3A%20normal%3B%0A%7D%0Akbd%20%7B%0Adisplay%3A%20inline%2Dblock%3B%0Apadding%3A%203px%205px%3B%0Afont%2Dsize%3A%2011px%3B%0Aline%2Dheight%3A%2010px%3B%0Acolor%3A%20%23555%3B%0Avertical%2Dalign%3A%20middle%3B%0Abackground%2Dcolor%3A%20%23fcfcfc%3B%0Aborder%3A%20solid%201px%20%23ccc%3B%0Aborder%2Dbottom%2Dcolor%3A%20%23bbb%3B%0Aborder%2Dradius%3A%203px%3B%0Abox%2Dshadow%3A%20inset%200%20%2D1px%200%20%23bbb%3B%0A%7D%0A%2Epl%2Dc%20%7B%0Acolor%3A%20%23969896%3B%0A%7D%0A%2Epl%2Dc1%2C%0A%2Epl%2Ds%20%2Epl%2Dv%20%7B%0Acolor%3A%20%230086b3%3B%0A%7D%0A%2Epl%2De%2C%0A%2Epl%2Den%20%7B%0Acolor%3A%20%23795da3%3B%0A%7D%0A%2Epl%2Ds%20%2Epl%2Ds1%2C%0A%2Epl%2Dsmi%20%7B%0Acolor%3A%20%23333%3B%0A%7D%0A%2Epl%2Dent%20%7B%0Acolor%3A%20%2363a35c%3B%0A%7D%0A%2Epl%2Dk%20%7B%0Acolor%3A%20%23a71d5d%3B%0A%7D%0A%2Epl%2Dpds%2C%0A%2Epl%2Ds%2C%0A%2Epl%2Ds%20%2Epl%2Dpse%20%2Epl%2Ds1%2C%0A%2Epl%2Dsr%2C%0A%2Epl%2Dsr%20%2Epl%2Dcce%2C%0A%2Epl%2Dsr%20%2Epl%2Dsra%2C%0A%2Epl%2Dsr%20%2Epl%2Dsre%20%7B%0Acolor%3A%20%23183691%3B%0A%7D%0A%2Epl%2Dv%20%7B%0Acolor%3A%20%23ed6a43%3B%0A%7D%0A%2Epl%2Did%20%7B%0Acolor%3A%20%23b52a1d%3B%0A%7D%0A%2Epl%2Dii%20%7B%0Abackground%2Dcolor%3A%20%23b52a1d%3B%0Acolor%3A%20%23f8f8f8%3B%0A%7D%0A%2Epl%2Dsr%20%2Epl%2Dcce%20%7B%0Acolor%3A%20%2363a35c%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0A%2Epl%2Dml%20%7B%0Acolor%3A%20%23693a17%3B%0A%7D%0A%2Epl%2Dmh%2C%0A%2Epl%2Dmh%20%2Epl%2Den%2C%0A%2Epl%2Dms%20%7B%0Acolor%3A%20%231d3e81%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0A%2Epl%2Dmq%20%7B%0Acolor%3A%20%23008080%3B%0A%7D%0A%2Epl%2Dmi%20%7B%0Acolor%3A%20%23333%3B%0Afont%2Dstyle%3A%20italic%3B%0A%7D%0A%2Epl%2Dmb%20%7B%0Acolor%3A%20%23333%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0A%2Epl%2Dmd%20%7B%0Abackground%2Dcolor%3A%20%23ffecec%3B%0Acolor%3A%20%23bd2c00%3B%0A%7D%0A%2Epl%2Dmi1%20%7B%0Abackground%2Dcolor%3A%20%23eaffea%3B%0Acolor%3A%20%2355a532%3B%0A%7D%0A%2Epl%2Dmdr%20%7B%0Acolor%3A%20%23795da3%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0A%2Epl%2Dmo%20%7B%0Acolor%3A%20%231d3e81%3B%0A%7D%0Akbd%20%7B%0Adisplay%3A%20inline%2Dblock%3B%0Apadding%3A%203px%205px%3B%0Afont%3A%2011px%20Consolas%2C%20%22Liberation%20Mono%22%2C%20Menlo%2C%20Courier%2C%20monospace%3B%0Aline%2Dheight%3A%2010px%3B%0Acolor%3A%20%23555%3B%0Avertical%2Dalign%3A%20middle%3B%0Abackground%2Dcolor%3A%20%23fcfcfc%3B%0Aborder%3A%20solid%201px%20%23ccc%3B%0Aborder%2Dbottom%2Dcolor%3A%20%23bbb%3B%0Aborder%2Dradius%3A%203px%3B%0Abox%2Dshadow%3A%20inset%200%20%2D1px%200%20%23bbb%3B%0A%7D%0A%2Etask%2Dlist%2Ditem%20%7B%0Alist%2Dstyle%2Dtype%3A%20none%3B%0A%7D%0A%2Etask%2Dlist%2Ditem%2B%2Etask%2Dlist%2Ditem%20%7B%0Amargin%2Dtop%3A%203px%3B%0A%7D%0A%2Etask%2Dlist%2Ditem%20input%20%7B%0Amargin%3A%200%200%2E35em%200%2E25em%20%2D1%2E6em%3B%0Avertical%2Dalign%3A%20middle%3B%0A%7D%0A%3Achecked%2B%2Eradio%2Dlabel%20%7B%0Az%2Dindex%3A%201%3B%0Aposition%3A%20relative%3B%0Aborder%2Dcolor%3A%20%234078c0%3B%0A%7D%0A%2EsourceLine%20%7B%0Adisplay%3A%20inline%2Dblock%3B%0A%7D%0Acode%20%2Ekw%20%7B%20color%3A%20%23000000%3B%20%7D%0Acode%20%2Edt%20%7B%20color%3A%20%23ed6a43%3B%20%7D%0Acode%20%2Edv%20%7B%20color%3A%20%23009999%3B%20%7D%0Acode%20%2Ebn%20%7B%20color%3A%20%23009999%3B%20%7D%0Acode%20%2Efl%20%7B%20color%3A%20%23009999%3B%20%7D%0Acode%20%2Ech%20%7B%20color%3A%20%23009999%3B%20%7D%0Acode%20%2Est%20%7B%20color%3A%20%23183691%3B%20%7D%0Acode%20%2Eco%20%7B%20color%3A%20%23969896%3B%20%7D%0Acode%20%2Eot%20%7B%20color%3A%20%230086b3%3B%20%7D%0Acode%20%2Eal%20%7B%20color%3A%20%23a61717%3B%20%7D%0Acode%20%2Efu%20%7B%20color%3A%20%2363a35c%3B%20%7D%0Acode%20%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%0Acode%20%2Ewa%20%7B%20color%3A%20%23000000%3B%20%7D%0Acode%20%2Ecn%20%7B%20color%3A%20%23008080%3B%20%7D%0Acode%20%2Esc%20%7B%20color%3A%20%23008080%3B%20%7D%0Acode%20%2Evs%20%7B%20color%3A%20%23183691%3B%20%7D%0Acode%20%2Ess%20%7B%20color%3A%20%23183691%3B%20%7D%0Acode%20%2Eim%20%7B%20color%3A%20%23000000%3B%20%7D%0Acode%20%2Eva%20%7Bcolor%3A%20%23008080%3B%20%7D%0Acode%20%2Ecf%20%7B%20color%3A%20%23000000%3B%20%7D%0Acode%20%2Eop%20%7B%20color%3A%20%23000000%3B%20%7D%0Acode%20%2Ebu%20%7B%20color%3A%20%23000000%3B%20%7D%0Acode%20%2Eex%20%7B%20color%3A%20%23000000%3B%20%7D%0Acode%20%2Epp%20%7B%20color%3A%20%23999999%3B%20%7D%0Acode%20%2Eat%20%7B%20color%3A%20%23008080%3B%20%7D%0Acode%20%2Edo%20%7B%20color%3A%20%23969896%3B%20%7D%0Acode%20%2Ean%20%7B%20color%3A%20%23008080%3B%20%7D%0Acode%20%2Ecv%20%7B%20color%3A%20%23008080%3B%20%7D%0Acode%20%2Ein%20%7B%20color%3A%20%23008080%3B%20%7D%0A">
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="anova-f-y-p-value">ANOVA: F y p value</h1>
+<h1 id="pregunta-homocedasticidad-de-varianzas">Pregunta: homocedasticidad de varianzas</h1>
+<p>¡Buenas tardes Pablo y Profesor!</p>
+<p>Espero estén muy bien, les escribo porque a raíz de la pregunta que hizo Jorge en clases sobre el incumplimiento del supuesto de homocedasticidad, realicé la corrección mediante el siguiente código: anova1 = oneway.test(c_contac ~ factor(amig_exog), data=a_ig, var.equal =FALSE) anova1</p>
+<p>y me arrojó lo siguiente: One-way analysis of means (not assuming equal variances) data:  c_contac and factor(amig_exog) F = 3.3803, num df = 2.00, denom df = 73.98, p-value = 0.03937</p>
+<p>Sin embargo, me parece que no me entrega todos los datos necesarios para completar la tabla de anova (como por ejemplo, la suma de cuadrados), en esta misma línea me gustaría saber si num df y denom df son los grados de libertad inter e intragrupal, respectivamente.</p>
+<p>Por otro lado, al igual que a mi compañero, no me permite calcular la prueba de Tukey y muestra el siguiente error</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Post hoc Tukey</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>tukey_test <span class="ot">=</span> <span class="fu">TukeyHSD</span>(anova1)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>tukey_test</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Error in UseMethod(&quot;TukeyHSD&quot;) :</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># no applicable method for &#39;TukeyHSD&#39; applied to an object of class &quot;htest&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># tukey_test</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Error: objeto &#39;tukey_test&#39; no encontrado</span></span></code></pre></div>
+<p>Quedo atenta a su respuesta y agradezco desde ya su disposición :) ¡Saludos!</p>
+<p>Carolina.</p>
+<h1 id="respuesta">Respuesta</h1>
+<p>Un F de 2, para una distribución F de 3 grupos, y de 180 casos en total (i.e. df1 = 2, df2 = 177), es menor al F critico esperado (F = 3.05), para una prueba con un alpha de .05.</p>
+<p>Dependiendo de la cantidad de casos, y de la cantidad de grupos comparados, cual es el valor de F crítico, para rechazar la hipotesis nula, y argumentar que hay diferencias entre los grupos respecto a la variable dependiente o de respuesta.</p>
+<p>En este caso, si bien las medias de estos grupos pueden ser nominalmente diferentes, la diferencia entre estas es muy pequeña, como para que afirmar que los grupos etarios generados explica las medias de los puntajes de confianza.</p>
+<p>A a continuación, se incluyen los siguientes códigos:</p>
+<ul>
+<li>códigos que preparan los datos para conducir el ANOVA en cuestión</li>
+<li>el calculo de la tabla de ANOVA</li>
+<li>una visualización que compara el F observado, en relacion al F critico, en una distribucion de F de 2 y 177 grados de libertad.</li>
+<li>un plot que compara los puntajes de confianza entre los grupos etarios generados</li>
+<li>un tabla de medias para cada grupo etario</li>
+</ul>
+<h2 id="preparar-datos">Preparar datos</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># abrir dplyr y los datos</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># actualizar psi2301</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># credentials::set_github_pat()</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github(&quot;dacarras/psi2301&quot;, force = TRUE)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># abrir datos</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>datos_amistad <span class="ot">&lt;-</span> psi2301<span class="sc">::</span>amistad_intergrupal <span class="sc">%&gt;%</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">rename_all</span>(tolower) <span class="sc">%&gt;%</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                 dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
+<pre><code>## Rows: 200
+## Columns: 29
+## $ id     &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, …
+## $ affo1  &lt;dbl&gt; 7, 6, 5, 4, 4, 6, 6, -99, 5, -99, 4, 6, 4, 6, 2, 5, 5, 4, 6, 6,…
+## $ affo2  &lt;dbl&gt; 3, 7, 4, 4, 3, 7, 3, 3, 4, 5, 4, 6, 7, 7, -99, 4, 6, 7, 7, -99,…
+## $ affo3  &lt;dbl&gt; 7, 7, 5, 4, 2, 5, 1, 4, 4, 4, 3, 5, 7, 5, 1, 2, 5, 5, 1, 4, 4, …
+## $ outt1  &lt;dbl&gt; 7, 6, 4, 4, 3, 5, 5, 6, 3, 4, 3, 5, 4, 6, 1, 5, 1, 4, 3, 4, 2, …
+## $ outt2  &lt;dbl&gt; 3, 1, 2, 2, 3, 2, 1, 1, 1, 4, 2, 1, 1, 1, 4, 3, 2, 3, 1, 4, 5, …
+## $ outt3  &lt;dbl&gt; 7, 6, 4, 4, 4, 3, 5, 4, 2, 4, 3, 4, 7, 7, 1, 5, 3, 3, 2, 4, 4, …
+## $ famn1  &lt;dbl&gt; 7, 7, 5, 7, 1, 6, 7, 4, 6, 5, 4, 5, 4, 6, 4, 3, 4, 4, 7, 5, 4, …
+## $ famn2  &lt;dbl&gt; 7, 6, 6, 4, 2, 5, 7, 3, 7, 5, 3, 6, 4, 6, 4, 3, -99, 4, 7, 5, 4…
+## $ famn3  &lt;dbl&gt; 7, 6, 5, 4, 4, 6, 1, 4, 7, 5, 2, 5, 4, 4, 1, 3, 4, 5, 7, -99, -…
+## $ clan1  &lt;dbl&gt; 4, 6, 5, 4, 4, 6, 1, 4, 2, 4, 3, 6, 4, 3, 1, 3, 6, 7, 4, 2, 5, …
+## $ clan2  &lt;dbl&gt; 3, 6, 5, 4, 3, 4, 7, 3, 2, 4, 3, 6, 4, 4, 1, 3, 5, 4, 4, 4, 4, …
+## $ clan3  &lt;dbl&gt; 5, 6, 5, 4, 4, 6, 1, 4, 2, 4, 2, 5, 4, 4, 6, 3, 5, 4, 4, 4, 5, …
+## $ natic1 &lt;dbl&gt; 5, 6, 5, 4, 5, 7, 1, 3, 4, 5, 2, 5, 4, 7, -99, 2, 4, 4, 7, 4, 4…
+## $ natic2 &lt;dbl&gt; 6, -99, 6, -99, 6, 6, 1, 5, 5, 5, 1, 5, 4, 7, 3, 3, -99, 4, 7, …
+## $ natic3 &lt;dbl&gt; 7, 7, 7, 4, -99, -99, 1, 4, 6, 7, 2, 7, 7, 7, 4, 7, 6, 4, 7, 7,…
+## $ idma1  &lt;dbl&gt; 7, 7, 1, 1, 2, 7, 1, 2, 4, 4, 2, 4, 1, 7, 1, 2, 2, 2, 7, 1, 4, …
+## $ idma2  &lt;dbl&gt; 7, 7, 1, 1, -99, 6, 1, 3, 4, 3, 1, 4, -99, 5, -99, 1, 5, -99, 7…
+## $ idma3  &lt;dbl&gt; 7, 7, 1, 1, -99, 6, 1, 2, 4, 3, 2, 4, 1, 6, 1, 2, -99, 4, 7, 1,…
+## $ qous1  &lt;dbl&gt; 7, 2, 4, 4, 4, 5, 6, 5, 5, 4, 4, 6, 2, 5, 1, 1, 4, 3, 5, 5, 4, …
+## $ qous2  &lt;dbl&gt; 6, 3, 4, 4, 3, 6, 7, 4, 6, 4, 5, 6, 2, 5, 1, -99, 6, 3, 5, 4, 4…
+## $ qous3  &lt;dbl&gt; 7, 6, 4, 4, 2, 5, -99, 5, 7, 4, 6, -99, 2, 5, 1, 2, 7, 3, 6, 4,…
+## $ qous4  &lt;dbl&gt; 7, 6, 4, 4, 4, 5, 7, 3, 7, 4, 4, 7, 2, 4, 1, 2, 6, 3, 5, 3, 4, …
+## $ qous5  &lt;dbl&gt; 6, 6, 4, -99, 3, 6, 7, 4, 7, 4, 7, 6, 3, 4, 1, 2, 7, 4, 7, 2, 5…
+## $ goufr  &lt;dbl&gt; 10, 10, 1, 10, 5, 10, 0, 3, 10, 3, 10, 3, 2, 1, 2, 2, 7, 0, 10,…
+## $ ethnia &lt;chr&gt; &quot;CHI&quot;, &quot;CHI&quot;, &quot;CHI&quot;, &quot;CHI&quot;, &quot;CHI&quot;, &quot;CHI&quot;, &quot;CHI&quot;, &quot;CHI&quot;, &quot;CHI&quot;, …
+## $ sex    &lt;dbl&gt; 2, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, …
+## $ region &lt;dbl&gt; 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 1, …
+## $ age    &lt;dbl&gt; 16, 15, 14, 14, 15, 14, 15, 15, 14, 14, 14, 15, 16, 17, 14, 15,…</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># valores de sin respuesta</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># descriptivos de todas las variables numericas</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>datos_amistad <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>ethnia) <span class="sc">%&gt;%</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  r4sda<span class="sc">::</span><span class="fu">get_desc</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(., <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">var</th>
+<th align="right">missing</th>
+<th align="right">complete</th>
+<th align="right">n</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">min</th>
+<th align="right">p25</th>
+<th align="right">median</th>
+<th align="right">p75</th>
+<th align="right">max</th>
+<th align="right">skew</th>
+<th align="right">kurt</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">id</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">100.50</td>
+<td align="right">57.88</td>
+<td align="right">1</td>
+<td align="right">51</td>
+<td align="right">100.5</td>
+<td align="right">150.2</td>
+<td align="right">200</td>
+<td align="right">0.00</td>
+<td align="right">1.8</td>
+<td align="left">▇▇▇▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">affo1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">0.66</td>
+<td align="right">21.73</td>
+<td align="right">-99</td>
+<td align="right">4</td>
+<td align="right">6.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-4.36</td>
+<td align="right">20.1</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">affo2</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-5.58</td>
+<td align="right">30.40</td>
+<td align="right">-99</td>
+<td align="right">2</td>
+<td align="right">4.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-2.74</td>
+<td align="right">8.6</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">affo3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-1.92</td>
+<td align="right">24.64</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">4.0</td>
+<td align="right">5.0</td>
+<td align="right">7</td>
+<td align="right">-3.68</td>
+<td align="right">14.6</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">outt1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">2.25</td>
+<td align="right">14.60</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">4.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-6.71</td>
+<td align="right">46.7</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">outt2</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-1.23</td>
+<td align="right">21.36</td>
+<td align="right">-99</td>
+<td align="right">1</td>
+<td align="right">3.0</td>
+<td align="right">5.0</td>
+<td align="right">7</td>
+<td align="right">-4.33</td>
+<td align="right">19.9</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">outt3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">0.62</td>
+<td align="right">19.10</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">4.0</td>
+<td align="right">5.0</td>
+<td align="right">7</td>
+<td align="right">-4.99</td>
+<td align="right">26.2</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">famn1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">1.70</td>
+<td align="right">17.84</td>
+<td align="right">-99</td>
+<td align="right">4</td>
+<td align="right">5.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-5.42</td>
+<td align="right">30.7</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">famn2</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-2.54</td>
+<td align="right">26.58</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">5.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-3.35</td>
+<td align="right">12.3</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">famn3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">2.38</td>
+<td align="right">14.63</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">4.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-6.70</td>
+<td align="right">46.6</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">clan1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">3.77</td>
+<td align="right">7.50</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">4.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-12.93</td>
+<td align="right">177.7</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">clan2</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-3.50</td>
+<td align="right">27.31</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">4.0</td>
+<td align="right">5.2</td>
+<td align="right">7</td>
+<td align="right">-3.21</td>
+<td align="right">11.3</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">clan3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">2.62</td>
+<td align="right">12.68</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">4.0</td>
+<td align="right">5.0</td>
+<td align="right">7</td>
+<td align="right">-7.77</td>
+<td align="right">62.5</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">natic1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-5.00</td>
+<td align="right">30.58</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">5.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-2.75</td>
+<td align="right">8.6</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">natic2</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-3.72</td>
+<td align="right">29.16</td>
+<td align="right">-99</td>
+<td align="right">4</td>
+<td align="right">5.0</td>
+<td align="right">7.0</td>
+<td align="right">7</td>
+<td align="right">-2.96</td>
+<td align="right">9.8</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">natic3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">3.62</td>
+<td align="right">14.80</td>
+<td align="right">-99</td>
+<td align="right">4</td>
+<td align="right">7.0</td>
+<td align="right">7.0</td>
+<td align="right">7</td>
+<td align="right">-6.72</td>
+<td align="right">46.7</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">idma1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-2.71</td>
+<td align="right">25.54</td>
+<td align="right">-99</td>
+<td align="right">1</td>
+<td align="right">4.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-3.49</td>
+<td align="right">13.3</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">idma2</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-5.05</td>
+<td align="right">28.78</td>
+<td align="right">-99</td>
+<td align="right">1</td>
+<td align="right">3.0</td>
+<td align="right">5.0</td>
+<td align="right">7</td>
+<td align="right">-2.95</td>
+<td align="right">9.8</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">idma3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-3.94</td>
+<td align="right">27.22</td>
+<td align="right">-99</td>
+<td align="right">1</td>
+<td align="right">3.5</td>
+<td align="right">5.2</td>
+<td align="right">7</td>
+<td align="right">-3.19</td>
+<td align="right">11.3</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">qous1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-2.46</td>
+<td align="right">25.58</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">4.0</td>
+<td align="right">5.0</td>
+<td align="right">7</td>
+<td align="right">-3.50</td>
+<td align="right">13.3</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">qous2</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">3.19</td>
+<td align="right">12.75</td>
+<td align="right">-99</td>
+<td align="right">4</td>
+<td align="right">5.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-7.77</td>
+<td align="right">62.5</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">qous3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-1.31</td>
+<td align="right">24.80</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">5.0</td>
+<td align="right">6.2</td>
+<td align="right">7</td>
+<td align="right">-3.67</td>
+<td align="right">14.6</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">qous4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-3.96</td>
+<td align="right">29.09</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">5.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-2.96</td>
+<td align="right">9.8</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">qous5</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-3.85</td>
+<td align="right">29.12</td>
+<td align="right">-99</td>
+<td align="right">3</td>
+<td align="right">5.0</td>
+<td align="right">6.0</td>
+<td align="right">7</td>
+<td align="right">-2.96</td>
+<td align="right">9.8</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">goufr</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">-1.84</td>
+<td align="right">28.93</td>
+<td align="right">-99</td>
+<td align="right">2</td>
+<td align="right">7.0</td>
+<td align="right">10.0</td>
+<td align="right">10</td>
+<td align="right">-3.02</td>
+<td align="right">10.3</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">sex</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">1.48</td>
+<td align="right">0.50</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1.0</td>
+<td align="right">2.0</td>
+<td align="right">2</td>
+<td align="right">0.08</td>
+<td align="right">1.0</td>
+<td align="left">▇▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">region</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">1.80</td>
+<td align="right">0.40</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2.0</td>
+<td align="right">2.0</td>
+<td align="right">2</td>
+<td align="right">-1.54</td>
+<td align="right">3.4</td>
+<td align="left">▂▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">age</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">200</td>
+<td align="right">14.86</td>
+<td align="right">0.76</td>
+<td align="right">14</td>
+<td align="right">14</td>
+<td align="right">15.0</td>
+<td align="right">15.0</td>
+<td align="right">17</td>
+<td align="right">0.65</td>
+<td align="right">3.1</td>
+<td align="left">▆▁▇▁▁▂▁▁</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># frecuencia del uso de categorias</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>datos_amistad <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(affo1<span class="sc">:</span>goufr, sex, region) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  r4sda<span class="sc">::</span><span class="fu">wide_resp</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(., <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">variable</th>
+<th align="right">-99</th>
+<th align="right">00</th>
+<th align="right">01</th>
+<th align="right">02</th>
+<th align="right">03</th>
+<th align="right">04</th>
+<th align="right">05</th>
+<th align="right">06</th>
+<th align="right">07</th>
+<th align="right">08</th>
+<th align="right">09</th>
+<th align="right">10</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">affo1</td>
+<td align="right">0.04</td>
+<td align="right"></td>
+<td align="right">0.02</td>
+<td align="right">0.03</td>
+<td align="right">0.04</td>
+<td align="right">0.17</td>
+<td align="right">0.17</td>
+<td align="right">0.29</td>
+<td align="right">0.23</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">affo2</td>
+<td align="right">0.10</td>
+<td align="right"></td>
+<td align="right">0.13</td>
+<td align="right">0.04</td>
+<td align="right">0.12</td>
+<td align="right">0.20</td>
+<td align="right">0.16</td>
+<td align="right">0.13</td>
+<td align="right">0.12</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">affo3</td>
+<td align="right">0.06</td>
+<td align="right"></td>
+<td align="right">0.08</td>
+<td align="right">0.07</td>
+<td align="right">0.12</td>
+<td align="right">0.23</td>
+<td align="right">0.21</td>
+<td align="right">0.14</td>
+<td align="right">0.09</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">outt1</td>
+<td align="right">0.02</td>
+<td align="right"></td>
+<td align="right">0.10</td>
+<td align="right">0.04</td>
+<td align="right">0.12</td>
+<td align="right">0.24</td>
+<td align="right">0.21</td>
+<td align="right">0.16</td>
+<td align="right">0.10</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">outt2</td>
+<td align="right">0.04</td>
+<td align="right"></td>
+<td align="right">0.26</td>
+<td align="right">0.13</td>
+<td align="right">0.10</td>
+<td align="right">0.16</td>
+<td align="right">0.13</td>
+<td align="right">0.12</td>
+<td align="right">0.06</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">outt3</td>
+<td align="right">0.04</td>
+<td align="right"></td>
+<td align="right">0.10</td>
+<td align="right">0.07</td>
+<td align="right">0.12</td>
+<td align="right">0.24</td>
+<td align="right">0.18</td>
+<td align="right">0.13</td>
+<td align="right">0.12</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">famn1</td>
+<td align="right">0.03</td>
+<td align="right"></td>
+<td align="right">0.08</td>
+<td align="right">0.04</td>
+<td align="right">0.09</td>
+<td align="right">0.17</td>
+<td align="right">0.17</td>
+<td align="right">0.20</td>
+<td align="right">0.21</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">famn2</td>
+<td align="right">0.07</td>
+<td align="right"></td>
+<td align="right">0.06</td>
+<td align="right">0.06</td>
+<td align="right">0.09</td>
+<td align="right">0.18</td>
+<td align="right">0.20</td>
+<td align="right">0.16</td>
+<td align="right">0.17</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">famn3</td>
+<td align="right">0.02</td>
+<td align="right"></td>
+<td align="right">0.09</td>
+<td align="right">0.06</td>
+<td align="right">0.09</td>
+<td align="right">0.27</td>
+<td align="right">0.16</td>
+<td align="right">0.16</td>
+<td align="right">0.15</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">clan1</td>
+<td align="right">0.00</td>
+<td align="right"></td>
+<td align="right">0.09</td>
+<td align="right">0.06</td>
+<td align="right">0.14</td>
+<td align="right">0.30</td>
+<td align="right">0.14</td>
+<td align="right">0.15</td>
+<td align="right">0.12</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">clan2</td>
+<td align="right">0.07</td>
+<td align="right"></td>
+<td align="right">0.08</td>
+<td align="right">0.06</td>
+<td align="right">0.16</td>
+<td align="right">0.26</td>
+<td align="right">0.13</td>
+<td align="right">0.16</td>
+<td align="right">0.10</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">clan3</td>
+<td align="right">0.01</td>
+<td align="right"></td>
+<td align="right">0.09</td>
+<td align="right">0.07</td>
+<td align="right">0.14</td>
+<td align="right">0.25</td>
+<td align="right">0.22</td>
+<td align="right">0.14</td>
+<td align="right">0.08</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">natic1</td>
+<td align="right">0.10</td>
+<td align="right"></td>
+<td align="right">0.04</td>
+<td align="right">0.09</td>
+<td align="right">0.06</td>
+<td align="right">0.17</td>
+<td align="right">0.16</td>
+<td align="right">0.17</td>
+<td align="right">0.22</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">natic2</td>
+<td align="right">0.09</td>
+<td align="right"></td>
+<td align="right">0.05</td>
+<td align="right">0.04</td>
+<td align="right">0.07</td>
+<td align="right">0.12</td>
+<td align="right">0.19</td>
+<td align="right">0.18</td>
+<td align="right">0.26</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">natic3</td>
+<td align="right">0.02</td>
+<td align="right"></td>
+<td align="right">0.04</td>
+<td align="right">0.04</td>
+<td align="right">0.05</td>
+<td align="right">0.12</td>
+<td align="right">0.08</td>
+<td align="right">0.15</td>
+<td align="right">0.51</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">idma1</td>
+<td align="right">0.06</td>
+<td align="right"></td>
+<td align="right">0.19</td>
+<td align="right">0.13</td>
+<td align="right">0.07</td>
+<td align="right">0.16</td>
+<td align="right">0.11</td>
+<td align="right">0.07</td>
+<td align="right">0.21</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">idma2</td>
+<td align="right">0.09</td>
+<td align="right"></td>
+<td align="right">0.21</td>
+<td align="right">0.11</td>
+<td align="right">0.11</td>
+<td align="right">0.15</td>
+<td align="right">0.13</td>
+<td align="right">0.08</td>
+<td align="right">0.12</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">idma3</td>
+<td align="right">0.07</td>
+<td align="right"></td>
+<td align="right">0.24</td>
+<td align="right">0.10</td>
+<td align="right">0.07</td>
+<td align="right">0.12</td>
+<td align="right">0.12</td>
+<td align="right">0.07</td>
+<td align="right">0.17</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">qous1</td>
+<td align="right">0.06</td>
+<td align="right"></td>
+<td align="right">0.09</td>
+<td align="right">0.07</td>
+<td align="right">0.12</td>
+<td align="right">0.25</td>
+<td align="right">0.17</td>
+<td align="right">0.10</td>
+<td align="right">0.14</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">qous2</td>
+<td align="right">0.01</td>
+<td align="right"></td>
+<td align="right">0.04</td>
+<td align="right">0.09</td>
+<td align="right">0.09</td>
+<td align="right">0.22</td>
+<td align="right">0.18</td>
+<td align="right">0.18</td>
+<td align="right">0.18</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">qous3</td>
+<td align="right">0.06</td>
+<td align="right"></td>
+<td align="right">0.04</td>
+<td align="right">0.09</td>
+<td align="right">0.07</td>
+<td align="right">0.16</td>
+<td align="right">0.16</td>
+<td align="right">0.17</td>
+<td align="right">0.25</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">qous4</td>
+<td align="right">0.09</td>
+<td align="right"></td>
+<td align="right">0.04</td>
+<td align="right">0.04</td>
+<td align="right">0.11</td>
+<td align="right">0.19</td>
+<td align="right">0.15</td>
+<td align="right">0.17</td>
+<td align="right">0.21</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">qous5</td>
+<td align="right">0.09</td>
+<td align="right"></td>
+<td align="right">0.04</td>
+<td align="right">0.04</td>
+<td align="right">0.08</td>
+<td align="right">0.19</td>
+<td align="right">0.14</td>
+<td align="right">0.17</td>
+<td align="right">0.24</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">goufr</td>
+<td align="right">0.08</td>
+<td align="right">0.04</td>
+<td align="right">0.06</td>
+<td align="right">0.09</td>
+<td align="right">0.07</td>
+<td align="right">0.06</td>
+<td align="right">0.04</td>
+<td align="right">0.04</td>
+<td align="right">0.04</td>
+<td align="right">0.04</td>
+<td align="right">0.03</td>
+<td align="right">0.42</td>
+<td align="left">▁▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">sex</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.52</td>
+<td align="right">0.48</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▇▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">region</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.20</td>
+<td align="right">0.80</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">▂▁▁▁▁▁▁▇</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Nota: todas las variables ordinales presentan valores -99</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       a excepcion de las variables dummy (sex, region).</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># declarar como NA todos los valores -99</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>datos_amistad <span class="ot">&lt;-</span> datos_amistad <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                 dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">99</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># revisar conversion</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>datos_amistad <span class="sc">%&gt;%</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>ethnia) <span class="sc">%&gt;%</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  r4sda<span class="sc">::</span><span class="fu">get_desc</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(., <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">var</th>
+<th align="right">missing</th>
+<th align="right">complete</th>
+<th align="right">n</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">min</th>
+<th align="right">p25</th>
+<th align="right">median</th>
+<th align="right">p75</th>
+<th align="right">max</th>
+<th align="right">skew</th>
+<th align="right">kurt</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">id</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">200</td>
+<td align="right">100.5</td>
+<td align="right">57.88</td>
+<td align="right">1</td>
+<td align="right">51</td>
+<td align="right">100</td>
+<td align="right">150</td>
+<td align="right">200</td>
+<td align="right">0.00</td>
+<td align="right">1.8</td>
+<td align="left">▇▇▇▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">affo1</td>
+<td align="right">0.04</td>
+<td align="right">0.96</td>
+<td align="right">200</td>
+<td align="right">5.4</td>
+<td align="right">1.44</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.87</td>
+<td align="right">3.4</td>
+<td align="left">▁▁▁▅▁▅▇▆</td>
+</tr>
+<tr class="odd">
+<td align="left">affo2</td>
+<td align="right">0.10</td>
+<td align="right">0.90</td>
+<td align="right">200</td>
+<td align="right">4.2</td>
+<td align="right">1.89</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.27</td>
+<td align="right">2.1</td>
+<td align="left">▅▂▅▇▁▆▅▅</td>
+</tr>
+<tr class="even">
+<td align="left">affo3</td>
+<td align="right">0.06</td>
+<td align="right">0.94</td>
+<td align="right">200</td>
+<td align="right">4.3</td>
+<td align="right">1.67</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">-0.31</td>
+<td align="right">2.4</td>
+<td align="left">▃▂▃▇▁▇▅▃</td>
+</tr>
+<tr class="odd">
+<td align="left">outt1</td>
+<td align="right">0.02</td>
+<td align="right">0.98</td>
+<td align="right">200</td>
+<td align="right">4.3</td>
+<td align="right">1.72</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.38</td>
+<td align="right">2.4</td>
+<td align="left">▃▂▃▇▁▇▅▃</td>
+</tr>
+<tr class="even">
+<td align="left">outt2</td>
+<td align="right">0.04</td>
+<td align="right">0.96</td>
+<td align="right">200</td>
+<td align="right">3.4</td>
+<td align="right">1.98</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">0.22</td>
+<td align="right">1.7</td>
+<td align="left">▇▃▃▅▁▃▃▂</td>
+</tr>
+<tr class="odd">
+<td align="left">outt3</td>
+<td align="right">0.04</td>
+<td align="right">0.96</td>
+<td align="right">200</td>
+<td align="right">4.2</td>
+<td align="right">1.78</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.24</td>
+<td align="right">2.3</td>
+<td align="left">▃▂▃▇▁▆▅▃</td>
+</tr>
+<tr class="even">
+<td align="left">famn1</td>
+<td align="right">0.03</td>
+<td align="right">0.97</td>
+<td align="right">200</td>
+<td align="right">4.8</td>
+<td align="right">1.83</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.60</td>
+<td align="right">2.4</td>
+<td align="left">▃▂▃▆▁▆▇▇</td>
+</tr>
+<tr class="odd">
+<td align="left">famn2</td>
+<td align="right">0.07</td>
+<td align="right">0.93</td>
+<td align="right">200</td>
+<td align="right">4.7</td>
+<td align="right">1.72</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.47</td>
+<td align="right">2.4</td>
+<td align="left">▂▂▃▇▁▇▆▆</td>
+</tr>
+<tr class="even">
+<td align="left">famn3</td>
+<td align="right">0.02</td>
+<td align="right">0.98</td>
+<td align="right">200</td>
+<td align="right">4.5</td>
+<td align="right">1.78</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.34</td>
+<td align="right">2.3</td>
+<td align="left">▂▂▂▇▁▅▅▅</td>
+</tr>
+<tr class="odd">
+<td align="left">clan1</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">200</td>
+<td align="right">4.3</td>
+<td align="right">1.73</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.17</td>
+<td align="right">2.3</td>
+<td align="left">▂▂▃▇▁▃▅▃</td>
+</tr>
+<tr class="even">
+<td align="left">clan2</td>
+<td align="right">0.07</td>
+<td align="right">0.92</td>
+<td align="right">200</td>
+<td align="right">4.2</td>
+<td align="right">1.70</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.16</td>
+<td align="right">2.3</td>
+<td align="left">▂▂▅▇▁▅▅▃</td>
+</tr>
+<tr class="odd">
+<td align="left">clan3</td>
+<td align="right">0.01</td>
+<td align="right">0.98</td>
+<td align="right">200</td>
+<td align="right">4.2</td>
+<td align="right">1.66</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">-0.24</td>
+<td align="right">2.4</td>
+<td align="left">▃▂▅▇▁▇▅▂</td>
+</tr>
+<tr class="even">
+<td align="left">natic1</td>
+<td align="right">0.10</td>
+<td align="right">0.90</td>
+<td align="right">200</td>
+<td align="right">4.9</td>
+<td align="right">1.80</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.52</td>
+<td align="right">2.3</td>
+<td align="left">▂▃▂▆▁▆▆▇</td>
+</tr>
+<tr class="odd">
+<td align="left">natic2</td>
+<td align="right">0.09</td>
+<td align="right">0.92</td>
+<td align="right">200</td>
+<td align="right">5.1</td>
+<td align="right">1.74</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">-0.78</td>
+<td align="right">2.8</td>
+<td align="left">▂▁▂▃▁▆▆▇</td>
+</tr>
+<tr class="even">
+<td align="left">natic3</td>
+<td align="right">0.02</td>
+<td align="right">0.98</td>
+<td align="right">200</td>
+<td align="right">5.7</td>
+<td align="right">1.73</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">-1.22</td>
+<td align="right">3.4</td>
+<td align="left">▁▁▁▂▁▁▂▇</td>
+</tr>
+<tr class="odd">
+<td align="left">idma1</td>
+<td align="right">0.06</td>
+<td align="right">0.94</td>
+<td align="right">200</td>
+<td align="right">4.0</td>
+<td align="right">2.22</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">0.04</td>
+<td align="right">1.6</td>
+<td align="left">▇▅▂▆▁▅▂▇</td>
+</tr>
+<tr class="even">
+<td align="left">idma2</td>
+<td align="right">0.09</td>
+<td align="right">0.92</td>
+<td align="right">200</td>
+<td align="right">3.7</td>
+<td align="right">2.08</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">0.16</td>
+<td align="right">1.8</td>
+<td align="left">▇▅▅▆▁▅▃▅</td>
+</tr>
+<tr class="odd">
+<td align="left">idma3</td>
+<td align="right">0.07</td>
+<td align="right">0.92</td>
+<td align="right">200</td>
+<td align="right">3.8</td>
+<td align="right">2.25</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">0.12</td>
+<td align="right">1.6</td>
+<td align="left">▇▃▂▅▁▅▂▆</td>
+</tr>
+<tr class="even">
+<td align="left">qous1</td>
+<td align="right">0.06</td>
+<td align="right">0.94</td>
+<td align="right">200</td>
+<td align="right">4.3</td>
+<td align="right">1.77</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">-0.15</td>
+<td align="right">2.3</td>
+<td align="left">▃▂▃▇▁▆▃▅</td>
+</tr>
+<tr class="odd">
+<td align="left">qous2</td>
+<td align="right">0.01</td>
+<td align="right">0.98</td>
+<td align="right">200</td>
+<td align="right">4.8</td>
+<td align="right">1.69</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.38</td>
+<td align="right">2.3</td>
+<td align="left">▁▃▃▇▁▇▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">qous3</td>
+<td align="right">0.06</td>
+<td align="right">0.94</td>
+<td align="right">200</td>
+<td align="right">4.9</td>
+<td align="right">1.82</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">-0.53</td>
+<td align="right">2.2</td>
+<td align="left">▂▃▂▅▁▅▆▇</td>
+</tr>
+<tr class="odd">
+<td align="left">qous4</td>
+<td align="right">0.09</td>
+<td align="right">0.92</td>
+<td align="right">200</td>
+<td align="right">4.9</td>
+<td align="right">1.71</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">-0.44</td>
+<td align="right">2.3</td>
+<td align="left">▂▂▅▇▁▆▆▇</td>
+</tr>
+<tr class="even">
+<td align="left">qous5</td>
+<td align="right">0.09</td>
+<td align="right">0.92</td>
+<td align="right">200</td>
+<td align="right">5.0</td>
+<td align="right">1.74</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">-0.57</td>
+<td align="right">2.5</td>
+<td align="left">▂▂▂▆▁▅▆▇</td>
+</tr>
+<tr class="odd">
+<td align="left">goufr</td>
+<td align="right">0.08</td>
+<td align="right">0.92</td>
+<td align="right">200</td>
+<td align="right">6.6</td>
+<td align="right">3.66</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">-0.46</td>
+<td align="right">1.6</td>
+<td align="left">▂▂▁▂▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">sex</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">200</td>
+<td align="right">1.5</td>
+<td align="right">0.50</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0.08</td>
+<td align="right">1.0</td>
+<td align="left">▇▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">region</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">200</td>
+<td align="right">1.8</td>
+<td align="right">0.40</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">-1.54</td>
+<td align="right">3.4</td>
+<td align="left">▂▁▁▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">age</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">200</td>
+<td align="right">14.9</td>
+<td align="right">0.76</td>
+<td align="right">14</td>
+<td align="right">14</td>
+<td align="right">15</td>
+<td align="right">15</td>
+<td align="right">17</td>
+<td align="right">0.65</td>
+<td align="right">3.1</td>
+<td align="left">▆▁▇▁▁▂▁▁</td>
+</tr>
+</tbody>
+</table>
+<h2 id="items-invertidos">Items invertidos</h2>
+<ul>
+<li>Los datos de “amistad_intergrupal” incluyen un item invertido.</li>
+<li>Este es el item <code>outt2</code>, de la escala de confianza en el exogrupo</li>
+<li>Miremos estos items en conjunto:</li>
+</ul>
+<p>´´´text</p>
+<p>outt1 La mayoría de los &lt;<exogrupo>&gt; son confiables.</p>
+<p>outt2 Creo que los &lt;<exogrupo>&gt; tratan de aprovecharse de los demás.</p>
+<p>outt3 Pienso que los &lt;<exogrupo>&gt; actúan correctamente.</p>
+<p>´´´</p>
+<p>Del total de items empleados, este es el único item que no puede ser interpretado como “mayor valor de respuesta, mayor expresion del atributo”.</p>
+<ul>
+<li>Una forma de trabajar con estos items, es invertirlos, antes de generar puntajes totales por escala.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># items invertidos</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># frecuencia del uso de categorias</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>datos_amistad <span class="sc">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(outt1<span class="sc">:</span>outt3) <span class="sc">%&gt;%</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  r4sda<span class="sc">::</span><span class="fu">wide_resp</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(., <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">variable</th>
+<th align="right">01</th>
+<th align="right">02</th>
+<th align="right">03</th>
+<th align="right">04</th>
+<th align="right">05</th>
+<th align="right">06</th>
+<th align="right">07</th>
+<th align="right">NA</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">outt1</td>
+<td align="right">0.10</td>
+<td align="right">0.04</td>
+<td align="right">0.12</td>
+<td align="right">0.24</td>
+<td align="right">0.21</td>
+<td align="right">0.16</td>
+<td align="right">0.10</td>
+<td align="right">0.02</td>
+<td align="left">▃▂▃▇▁▇▅▃</td>
+</tr>
+<tr class="even">
+<td align="left">outt2</td>
+<td align="right">0.26</td>
+<td align="right">0.13</td>
+<td align="right">0.10</td>
+<td align="right">0.16</td>
+<td align="right">0.13</td>
+<td align="right">0.12</td>
+<td align="right">0.06</td>
+<td align="right">0.04</td>
+<td align="left">▇▃▃▅▁▃▃▂</td>
+</tr>
+<tr class="odd">
+<td align="left">outt3</td>
+<td align="right">0.10</td>
+<td align="right">0.07</td>
+<td align="right">0.12</td>
+<td align="right">0.24</td>
+<td align="right">0.18</td>
+<td align="right">0.13</td>
+<td align="right">0.12</td>
+<td align="right">0.04</td>
+<td align="left">▃▂▃▇▁▆▅▃</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Nota: se ve que el histograma de uso de categorias</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       del item outt2, presenta más respuestas en las </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       categorias de respuesta de menor valor.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       Por el contenido del item, en contraste al resto</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       de las afirmaciones empleadas en la escala de</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       &quot;confianza en el exogrupo&quot;, llegamos a la conclusión</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       de que `outt2` es un item invertido</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># recodificar item invertido</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>datos_amistad <span class="ot">&lt;-</span> datos_amistad <span class="sc">%&gt;%</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">outt2r =</span> <span class="fu">case_when</span>(</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                  outt2 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">7</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                  outt2 <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                  outt2 <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="dv">5</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>                  outt2 <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>                  outt2 <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>                  outt2 <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>                  outt2 <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="dv">1</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                  ))</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co"># mostrar recodificacion</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">count</span>(datos_amistad, outt2, outt2r)</span></code></pre></div>
+<pre><code>## # A tibble: 8 x 3
+##   outt2 outt2r     n
+##   &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;
+## 1     1      7    52
+## 2     2      6    26
+## 3     3      5    20
+## 4     4      4    31
+## 5     5      3    26
+## 6     6      2    25
+## 7     7      1    11
+## 8    NA     NA     9</code></pre>
+<h2 id="recodificacion-de-variables-dummy">Recodificacion de variables dummy</h2>
+<ul>
+<li>Copnvencionalmente las, variables dummy se recodifican como variables 0 y 1, de modo tal que 1 exprese la categoria de interes, mientras que 0 exprese la categoria de referencia.</li>
+<li>Esta convensión proviene de la inclusión de variables dummy en modelos de regresion.</li>
+<li>No obstante, es muy común que en los procesos de digitación, las respuestas sean digitadas de izquierda a derecha, y por tanto tomen valores 1 y 2, segun el orden en que estas fueron presentadas en el cuestionario.</li>
+<li>En el siguiente codigo vamos a recodificar estos valores a dummy para modelos de regresion.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># variables dummy</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># recodificar sociodemograficas</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>datos_amistad <span class="ot">&lt;-</span> datos_amistad <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">ingroup =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                  ethnia <span class="sc">==</span> <span class="st">&#39;CHI&#39;</span> <span class="sc">~</span> <span class="dv">1</span>, <span class="co"># estudidantes no indigenas</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                  ethnia <span class="sc">==</span> <span class="st">&#39;MAP&#39;</span> <span class="sc">~</span> <span class="dv">0</span>  <span class="co"># estudidantes indigenas</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                  )</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>                 ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">fem =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>                  sex <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">0</span>, <span class="co"># niños (boy)</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>                  sex <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">1</span>  <span class="co"># niñas (girl)</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                  )</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>                 ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">stgo =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>                  region <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>, <span class="co"># Santiago</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>                  region <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">0</span>  <span class="co"># Temuco</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>                  )</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>                 ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">amig_exog =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">between</span>(goufr, <span class="dv">0</span>, <span class="dv">3</span>) <span class="sc">~</span> <span class="dv">1</span>, <span class="co"># pocos  0 a 3</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">between</span>(goufr, <span class="dv">4</span>, <span class="dv">7</span>) <span class="sc">~</span> <span class="dv">2</span>, <span class="co"># varios 4 a 7</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">between</span>(goufr, <span class="dv">0</span>, <span class="dv">10</span>) <span class="sc">~</span> <span class="dv">3</span> <span class="co"># muchos 8 a 10</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>                  )</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>                 ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mutate</span>(<span class="at">amig_exog_group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">between</span>(goufr, <span class="dv">0</span>, <span class="dv">3</span>)  <span class="sc">~</span> <span class="st">&#39;0 a 3&#39;</span>, <span class="co"># pocos  0 a 3</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">between</span>(goufr, <span class="dv">4</span>, <span class="dv">7</span>)  <span class="sc">~</span> <span class="st">&#39;4 a 7&#39;</span>, <span class="co"># varios 4 a 7</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">between</span>(goufr, <span class="dv">0</span>, <span class="dv">10</span>) <span class="sc">~</span> <span class="st">&#39;8 a 10&#39;</span> <span class="co"># muchos 8 a 10</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>                  )</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>                 )                 </span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="co"># revision de recodificaciones</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">count</span>(datos_amistad, ethnia, ingroup)</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 3
+##   ethnia ingroup     n
+##   &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt;
+## 1 CHI          1   100
+## 2 MAP          0   100</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">count</span>(datos_amistad, sex, fem)</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 3
+##     sex   fem     n
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
+## 1     1     0   104
+## 2     2     1    96</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">count</span>(datos_amistad, region, stgo)</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 3
+##   region  stgo     n
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
+## 1      1     1    39
+## 2      2     0   161</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">count</span>(datos_amistad, goufr, amig_exog)</span></code></pre></div>
+<pre><code>## # A tibble: 12 x 3
+##    goufr amig_exog     n
+##    &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;
+##  1     0         1     9
+##  2     1         1    13
+##  3     2         1    17
+##  4     3         1    14
+##  5     4         2    11
+##  6     5         2     9
+##  7     6         2     8
+##  8     7         2     7
+##  9     8         3     7
+## 10     9         3     6
+## 11    10         3    83
+## 12    NA        NA    16</code></pre>
+<h2 id="crear-puntajes">Crear puntajes</h2>
+<ul>
+<li>En general, en diferentes estudios de ciencias sociales, los articulos emplean puntajes para representar atributos o constructos teóricos en base a respuestas a diferentes preguntas.</li>
+<li>Estos puntajes pueden ser generados por diferentes metodos tales como: promedios de respuestas, sumas de respuestas, o el empleo de un modelo de respuesta (e.g., <em>confirmatory factor analysis</em>, <em>item response theory models</em>).</li>
+<li>Los datos contenidos en “Amistad Integrupal” incluyen diferentes respuestas a diferentes afirmaciones, las cuales se encuentran agrupadas en los siguientes constrcuctos:
+<ul>
+<li>Reacciones afectivas al exogrupo (affo1, affo2, affo3)</li>
+<li>Confianza al exogrupo (outt1, outt2r, outt3)
+<ul>
+<li>outt2r incluye las respuestas invertidas del item outt2</li>
+</ul></li>
+<li>Normas familiares de apoyo al contacto con el exogrupo (famn1, famn2, famn3)</li>
+<li>Normas e compañeros de curso de apoyo al contacto con el exogrupo (clan1, clan2, clan3)</li>
+<li>Identificación con Chile (natic1, natic2, natic3)</li>
+<li>Identificación con el pueblo Mapuche (idma1, idma2, idma3)</li>
+<li>Calidad de contacto (qous1, qous2, qous3, qous4, qous5)</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># crear suma de puntajes</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># aislar matrices de respuesta por constructo</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>affec_items <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(datos_amistad, affo1, affo2, affo3)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>trust_items <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(datos_amistad, outt1, outt2r, outt3)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>normf_items <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(datos_amistad, famn1, famn2, famn3)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>normp_items <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(datos_amistad, clan1, clan2, natic3)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>idnat_items <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(datos_amistad, natic1, natic2, natic3)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>idmap_items <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(datos_amistad, idma1, idma2, idma3)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>contq_items <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(datos_amistad, qous1, qous2, qous3, qous4, qous5)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co"># tabla de confiabilidad de puntajes</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="at">scales =</span> <span class="fu">c</span>(</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Affectos&#39;</span>,</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Confianza&#39;</span>,</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Normas Familiares&#39;</span>,</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Normas Grupo curso&#39;</span>,</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Identidad con Chile&#39;</span>,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Identidad con el pueblo Mapuche&#39;</span>,</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Calidad de contacto con exogrupo&#39;</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="at">alpha =</span> </span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(affec_items)<span class="sc">$</span>total<span class="sc">$</span>raw_alpha,</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(trust_items)<span class="sc">$</span>total<span class="sc">$</span>raw_alpha,</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(normf_items)<span class="sc">$</span>total<span class="sc">$</span>raw_alpha,</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(normp_items)<span class="sc">$</span>total<span class="sc">$</span>raw_alpha,</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(idnat_items)<span class="sc">$</span>total<span class="sc">$</span>raw_alpha,</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(idmap_items)<span class="sc">$</span>total<span class="sc">$</span>raw_alpha,</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(contq_items)<span class="sc">$</span>total<span class="sc">$</span>raw_alpha</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(., <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">scales</th>
+<th align="right">alpha</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Affectos</td>
+<td align="right">0.80</td>
+</tr>
+<tr class="even">
+<td align="left">Confianza</td>
+<td align="right">0.57</td>
+</tr>
+<tr class="odd">
+<td align="left">Normas Familiares</td>
+<td align="right">0.85</td>
+</tr>
+<tr class="even">
+<td align="left">Normas Grupo curso</td>
+<td align="right">0.58</td>
+</tr>
+<tr class="odd">
+<td align="left">Identidad con Chile</td>
+<td align="right">0.89</td>
+</tr>
+<tr class="even">
+<td align="left">Identidad con el pueblo Mapuche</td>
+<td align="right">0.95</td>
+</tr>
+<tr class="odd">
+<td align="left">Calidad de contacto con exogrupo</td>
+<td align="right">0.90</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Nota: la generación de puntajes en base a respuestas o </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       valores de diferentes indicadores, se evaluan en base</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       a indicadores de confiabilidad. Estos indicadores</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       de confiabilidad, como el &quot;Alpha de Cronbach&quot; nos</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       nos indican que tanta precision tienen los puntajes</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       generados, para poder distinguir entre las personas</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       o unidades representadas con los puntajes. En general,</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       valores cercanos a .70 son deseables.</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># crear promedios de puntaje</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>datos_amistad <span class="ot">&lt;-</span> datos_amistad <span class="sc">%&gt;%</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">affec =</span> psi2301<span class="sc">::</span><span class="fu">mean_score</span>(affec_items)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">trust =</span> psi2301<span class="sc">::</span><span class="fu">mean_score</span>(trust_items)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">normf =</span> psi2301<span class="sc">::</span><span class="fu">mean_score</span>(normf_items)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">normp =</span> psi2301<span class="sc">::</span><span class="fu">mean_score</span>(normp_items)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">idnat =</span> psi2301<span class="sc">::</span><span class="fu">mean_score</span>(idnat_items)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">idmap =</span> psi2301<span class="sc">::</span><span class="fu">mean_score</span>(idmap_items)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">contq =</span> psi2301<span class="sc">::</span><span class="fu">mean_score</span>(contq_items))</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co"># inspeccionar base de datos creada</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>datos_amistad <span class="sc">%&gt;%</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>r4sda<span class="sc">::</span><span class="fu">variables_table</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">variable</th>
+<th align="left">type</th>
+<th align="left">values</th>
+<th align="left">labels</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">id</td>
+<td align="left">dbl</td>
+<td align="left">10, 11, 12, 13, 14, 15, 16,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">affo1</td>
+<td align="left">dbl</td>
+<td align="left">, NA, 4, 6, 4, 6, 2, 5, 5, 4…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">affo2</td>
+<td align="left">dbl</td>
+<td align="left">5, 4, 6, 7, 7, NA, 4, 6, 7,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">affo3</td>
+<td align="left">dbl</td>
+<td align="left">4, 3, 5, 7, 5, 1, 2, 5, 5, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">outt1</td>
+<td align="left">dbl</td>
+<td align="left">4, 3, 5, 4, 6, 1, 5, 1, 4, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">outt2</td>
+<td align="left">dbl</td>
+<td align="left">4, 2, 1, 1, 1, 4, 3, 2, 3, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">outt3</td>
+<td align="left">dbl</td>
+<td align="left">4, 3, 4, 7, 7, 1, 5, 3, 3, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">famn1</td>
+<td align="left">dbl</td>
+<td align="left">5, 4, 5, 4, 6, 4, 3, 4, 4, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">famn2</td>
+<td align="left">dbl</td>
+<td align="left">5, 3, 6, 4, 6, 4, 3, NA, 4,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">famn3</td>
+<td align="left">dbl</td>
+<td align="left">5, 2, 5, 4, 4, 1, 3, 4, 5, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">clan1</td>
+<td align="left">dbl</td>
+<td align="left">4, 3, 6, 4, 3, 1, 3, 6, 7, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">clan2</td>
+<td align="left">dbl</td>
+<td align="left">4, 3, 6, 4, 4, 1, 3, 5, 4, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">clan3</td>
+<td align="left">dbl</td>
+<td align="left">4, 2, 5, 4, 4, 6, 3, 5, 4, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">natic1</td>
+<td align="left">dbl</td>
+<td align="left">5, 2, 5, 4, 7, NA, 2, 4, 4,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">natic2</td>
+<td align="left">dbl</td>
+<td align="left">5, 5, 1, 5, 4, 7, 3, 3, NA, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">natic3</td>
+<td align="left">dbl</td>
+<td align="left">6, 7, 2, 7, 7, 7, 4, 7, 6, 4…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">idma1</td>
+<td align="left">dbl</td>
+<td align="left">4, 2, 4, 1, 7, 1, 2, 2, 2, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">idma2</td>
+<td align="left">dbl</td>
+<td align="left">, 3, 1, 4, NA, 5, NA, 1, 5, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">idma3</td>
+<td align="left">dbl</td>
+<td align="left">, 3, 2, 4, 1, 6, 1, 2, NA, 4…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">qous1</td>
+<td align="left">dbl</td>
+<td align="left">4, 4, 6, 2, 5, 1, 1, 4, 3, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">qous2</td>
+<td align="left">dbl</td>
+<td align="left">4, 5, 6, 2, 5, 1, NA, 6, 3,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">qous3</td>
+<td align="left">dbl</td>
+<td align="left">, 4, 6, NA, 2, 5, 1, 2, 7, 3…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">qous4</td>
+<td align="left">dbl</td>
+<td align="left">4, 4, 7, 2, 4, 1, 2, 6, 3, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">qous5</td>
+<td align="left">dbl</td>
+<td align="left">, 4, 7, 6, 3, 4, 1, 2, 7, 4,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">goufr</td>
+<td align="left">dbl</td>
+<td align="left">, 10, 3, 10, 3, 2, 1, 2, 2, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">ethnia</td>
+<td align="left">chr</td>
+<td align="left">, “CHI”, “CHI”, “CHI”, “CHI”…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">sex</td>
+<td align="left">dbl</td>
+<td align="left">1, 2, 2, 2, 1, 1, 2, 2, 2, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">region</td>
+<td align="left">dbl</td>
+<td align="left">2, 2, 2, 1, 1, 2, 2, 2, 1, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">age</td>
+<td align="left">dbl</td>
+<td align="left">, 15, 14, 14, 14, 15, 16, 17…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">outt2r</td>
+<td align="left">dbl</td>
+<td align="left">4, 6, 7, 7, 7, 4, 5, 6, 5, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">ingroup</td>
+<td align="left">dbl</td>
+<td align="left">1, 1, 1, 1, 1, 1, 1, 1, 1, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">fem</td>
+<td align="left">dbl</td>
+<td align="left">0, 1, 1, 1, 0, 0, 1, 1, 1, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">stgo</td>
+<td align="left">dbl</td>
+<td align="left">0, 0, 0, 1, 1, 0, 0, 0, 1, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">amig_exog</td>
+<td align="left">dbl</td>
+<td align="left">1, 3, 1, 1, 1, 1, 1, 2, 1, …</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">amig_exog_group</td>
+<td align="left">chr</td>
+<td align="left">“,”8 a 10“,”4 a 7“,”8 a 1…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">affec</td>
+<td align="left">dbl</td>
+<td align="left">.0, 3.3, 3.5, 4.3, 4.5, 3.7,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">trust</td>
+<td align="left">dbl</td>
+<td align="left">.7, 5.7, 5.7, 4.0, 4.0, 4.0,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">normf</td>
+<td align="left">dbl</td>
+<td align="left">.7, 5.0, 3.7, 6.7, 5.0, 3.0,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">normp</td>
+<td align="left">dbl</td>
+<td align="left">.0, 3.0, 3.7, 3.3, 5.0, 2.7,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">idnat</td>
+<td align="left">dbl</td>
+<td align="left">.5, 1.0, 4.0, 5.0, 5.7, 1.7,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="odd">
+<td align="left">idmap</td>
+<td align="left">dbl</td>
+<td align="left">.3, 1.0, 2.3, 4.0, 3.3, 1.7,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+<tr class="even">
+<td align="left">contq</td>
+<td align="left">dbl</td>
+<td align="left">.4, 6.8, 4.2, 6.4, 4.0, 5.2,…</td>
+<td align="left">=== no variable label ===</td>
+</tr>
+</tbody>
+</table>
+<h1 id="anova">ANOVA</h1>
+<h2 id="caso-1-residuales-no-normales-y-varianzas-no-equivalentes">Caso 1: Residuales no normales, y varianzas no equivalentes</h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># traditional anova</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># crear tabla de descriptivos (medias y sd)</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(contq <span class="sc">~</span> <span class="fu">as.factor</span>(amig_exog), <span class="at">data =</span> datos_amistad)</span></code></pre></div>
+<pre><code>## Call:
+##    aov(formula = contq ~ as.factor(amig_exog), data = datos_amistad)
+## 
+## Terms:
+##                 as.factor(amig_exog) Residuals
+## Sum of Squares                    26       386
+## Deg. of Freedom                    2       181
+## 
+## Residual standard error: 1.5
+## Estimated effects may be unbalanced
+## 16 observations deleted due to missingness</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># normality</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>anova_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(contq <span class="sc">~</span> <span class="fu">as.factor</span>(amig_exog), <span class="at">data =</span> datos_amistad)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">residuals</span>(anova_model))</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(anova_model)
+## W = 1, p-value = 0.008</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># homocesdasticity</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># test 1</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">leveneTest</span>(</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  contq <span class="sc">~</span> <span class="fu">as.factor</span>(amig_exog), </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos_amistad, </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">center =</span> <span class="st">&#39;mean&#39;</span>)</span></code></pre></div>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+##        Df F value Pr(&gt;F)  
+## group   2    3.01  0.052 .
+##       181                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test 2</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(contq <span class="sc">~</span> <span class="fu">as.factor</span>(amig_exog), <span class="at">data =</span> datos_amistad)</span></code></pre></div>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  contq by as.factor(amig_exog)
+## Bartlett&#39;s K-squared = 6, df = 2, p-value = 0.06</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># n balance</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">count</span>(datos_amistad, amig_exog)</span></code></pre></div>
+<pre><code>## # A tibble: 4 x 2
+##   amig_exog     n
+##       &lt;dbl&gt; &lt;int&gt;
+## 1         1    53
+## 2         2    35
+## 3         3    96
+## 4        NA    16</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># multiple comparison ignoring assumptions</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>anova_example <span class="ot">&lt;-</span> <span class="fu">aov</span>(contq <span class="sc">~</span> <span class="fu">as.factor</span>(amig_exog), <span class="at">data =</span> datos_amistad)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(anova_example)</span></code></pre></div>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = contq ~ as.factor(amig_exog), data = datos_amistad)
+## 
+## $`as.factor(amig_exog)`
+##     diff   lwr upr p adj
+## 2-1 0.45 -0.30 1.2  0.33
+## 3-1 0.87  0.28 1.5  0.00
+## 3-2 0.41 -0.27 1.1  0.33</code></pre>
+<h2 id="alternativas-games-howell-post-hoc-test">Alternativas: Games-Howell Post Hoc Test</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Welch Anova</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(contq <span class="sc">~</span> <span class="fu">as.factor</span>(amig_exog), </span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos_amistad, <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## 
+##  One-way analysis of means (not assuming equal variances)
+## 
+## data:  contq and as.factor(amig_exog)
+## F = 5, num df = 2, denom df = 93, p-value = 0.006</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># bonferroni</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(datos_amistad, </span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pairwise.t.test</span>(</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> contq,</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">g =</span> <span class="fu">as.factor</span>(amig_exog), </span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">p.adjust.method=</span><span class="st">&quot;bonferroni&quot;</span>)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  contq and as.factor(amig_exog) 
+## 
+##   1     2    
+## 2 0.466 -    
+## 3 0.002 0.465
+## 
+## P value adjustment method: bonferroni</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Games-Howell Post Hoc Test via &quot;userfriendlyscience&quot;</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github(&quot;matherion/userfriendlyscience&quot;, dependencies=TRUE)</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(datos_amistad,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>userfriendlyscience<span class="sc">::</span><span class="fu">posthocTGH</span>(</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">y=</span>contq,</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">x=</span><span class="fu">as.factor</span>(amig_exog))</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>##    n means variances
+## 1 53   4.2       2.6
+## 2 35   4.6       1.2
+## 3 96   5.1       2.2
+## 
+##     diff ci.lo ci.hi   t  df    p
+## 2-1 0.45 -0.23  1.14 1.6  86  .26
+## 3-1 0.87  0.23  1.50 3.2 101 &lt;.01
+## 3-2 0.41 -0.16  0.99 1.7  81  .21</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Games-Howell Post Hoc Test via &quot;rstatix&quot;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>rstatix<span class="sc">::</span><span class="fu">games_howell_test</span>(</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos_amistad, </span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> contq <span class="sc">~</span> amig_exog_group, </span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.level =</span> <span class="fl">0.95</span>, <span class="at">detailed =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 14
+##   .y.   group1 group2    n1    n2 estimate conf.low conf.high    se statistic
+## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+## 1 contq 0 a 3  4 a 7     53    35    0.454   -0.235     1.14  0.204      1.57
+## 2 contq 0 a 3  8 a 10    53    96    0.866    0.228     1.50  0.190      3.23
+## 3 contq 4 a 7  8 a 10    35    96    0.412   -0.162     0.985 0.170      1.71
+## # … with 4 more variables: df &lt;dbl&gt;, p.adj &lt;dbl&gt;, p.adj.signif &lt;chr&gt;,
+## #   method &lt;chr&gt;</code></pre>
+
+</body>
+</html>

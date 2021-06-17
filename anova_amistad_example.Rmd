@@ -1,0 +1,447 @@
+---
+title: "ANOVA: F y p value"
+output: github_document
+---
+
+# Pregunta: homocedasticidad de varianzas
+
+¡Buenas tardes Pablo y Profesor!
+
+Espero estén muy bien, les escribo porque a raíz de la pregunta que hizo Jorge en clases sobre el incumplimiento del supuesto de homocedasticidad, realicé la corrección mediante el siguiente código:
+anova1 = oneway.test(c_contac ~ factor(amig_exog), data=a_ig, var.equal =FALSE)
+anova1
+
+y me arrojó lo siguiente:
+One-way analysis of means (not assuming equal variances)
+data:  c_contac and factor(amig_exog)
+F = 3.3803, num df = 2.00, denom df = 73.98, p-value = 0.03937
+
+Sin embargo, me parece que no me entrega todos los datos necesarios para completar la tabla de anova (como por ejemplo, la suma de cuadrados), en esta misma línea me gustaría saber si num df y denom df son los grados de libertad inter e intragrupal, respectivamente.
+
+Por otro lado, al igual que a mi compañero, no me permite calcular la prueba de Tukey y muestra el siguiente error
+
+```{r, echo=TRUE, eval = FALSE}
+
+# Post hoc Tukey
+tukey_test = TukeyHSD(anova1)
+tukey_test
+
+# Error in UseMethod("TukeyHSD") :
+# no applicable method for 'TukeyHSD' applied to an object of class "htest"
+# tukey_test
+# Error: objeto 'tukey_test' no encontrado
+```
+
+Quedo atenta a su respuesta y agradezco desde ya su disposición :)
+¡Saludos!
+
+Carolina.
+
+
+# Respuesta
+
+Un F de 2, para una distribución F de 3 grupos, y de 180 casos en total (i.e. df1 = 2, df2 = 177), es menor al F critico esperado (F = 3.05), para una prueba con un alpha de .05.
+
+Dependiendo de la cantidad de casos, y de la cantidad de grupos comparados, cual es el valor de F crítico, para rechazar la hipotesis nula, y argumentar que hay diferencias entre los grupos respecto a la variable dependiente o de respuesta.
+
+En este caso, si bien las medias de estos grupos pueden ser nominalmente diferentes, la diferencia entre estas es muy pequeña, como para que afirmar que los grupos etarios generados explica las medias de los puntajes de confianza.
+
+A a continuación, se incluyen los siguientes códigos:
+
+- códigos que preparan los datos para conducir el ANOVA en cuestión
+- el calculo de la tabla de ANOVA
+- una visualización que compara el F observado, en relacion al F critico, en una distribucion de F de 2 y 177 grados de libertad.
+- un plot que compara los puntajes de confianza entre los grupos etarios generados
+- un tabla de medias para cada grupo etario
+
+
+## Preparar datos
+
+```{r, echo=TRUE, eval = TRUE}
+# -----------------------------------------------------------------------------
+# abrir dplyr y los datos
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# actualizar psi2301
+# -----------------------------------------------
+
+# credentials::set_github_pat()
+# devtools::install_github("dacarras/psi2301", force = TRUE)
+
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
+
+datos_amistad <- psi2301::amistad_intergrupal %>%
+                 rename_all(tolower) %>%
+                 dplyr::glimpse()
+
+# -----------------------------------------------------------------------------
+# valores de sin respuesta
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# descriptivos de todas las variables numericas
+# -----------------------------------------------
+
+datos_amistad %>%
+  dplyr::select(-ethnia) %>%
+  r4sda::get_desc() %>%
+  knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# frecuencia del uso de categorias
+# -----------------------------------------------
+
+datos_amistad %>%
+  dplyr::select(affo1:goufr, sex, region) %>%
+  r4sda::wide_resp() %>%
+  knitr::kable(., digits = 2)
+
+# Nota: todas las variables ordinales presentan valores -99
+#       a excepcion de las variables dummy (sex, region).
+
+
+# -----------------------------------------------
+# declarar como NA todos los valores -99
+# -----------------------------------------------
+
+datos_amistad <- datos_amistad %>%
+                 dplyr::na_if(-99)
+
+# -----------------------------------------------
+# revisar conversion
+# -----------------------------------------------
+
+datos_amistad %>%
+  dplyr::select(-ethnia) %>%
+  r4sda::get_desc() %>%
+  knitr::kable(., digits = 2)
+
+```
+
+## Items invertidos
+
+- Los datos de "amistad_intergrupal" incluyen un item invertido.
+- Este es el item `outt2`, de la escala de confianza en el exogrupo
+- Miremos estos items en conjunto:
+
+´´´text
+
+outt1
+La mayoría de los <<exogrupo>> son confiables.
+
+outt2
+Creo que los <<exogrupo>> tratan de aprovecharse de los demás.
+
+outt3
+Pienso que los <<exogrupo>> actúan correctamente.
+
+´´´
+
+Del total de items empleados, este es el único item que no puede ser interpretado como "mayor valor de respuesta, mayor expresion del atributo".
+
+- Una forma de trabajar con estos items, es invertirlos, antes de generar puntajes totales por escala.
+
+
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# items invertidos
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# frecuencia del uso de categorias
+# -----------------------------------------------
+
+datos_amistad %>%
+  dplyr::select(outt1:outt3) %>%
+  r4sda::wide_resp() %>%
+  knitr::kable(., digits = 2)
+
+# Nota: se ve que el histograma de uso de categorias
+#       del item outt2, presenta más respuestas en las 
+#       categorias de respuesta de menor valor.
+#       Por el contenido del item, en contraste al resto
+#       de las afirmaciones empleadas en la escala de
+#       "confianza en el exogrupo", llegamos a la conclusión
+#       de que `outt2` es un item invertido
+
+
+# -----------------------------------------------
+# recodificar item invertido
+# -----------------------------------------------
+
+datos_amistad <- datos_amistad %>%
+                 mutate(outt2r = case_when(
+                  outt2 == 1 ~ 7,
+                  outt2 == 2 ~ 6,
+                  outt2 == 3 ~ 5,
+                  outt2 == 4 ~ 4,
+                  outt2 == 5 ~ 3,
+                  outt2 == 6 ~ 2,
+                  outt2 == 7 ~ 1
+                  ))
+
+# -----------------------------------------------
+# mostrar recodificacion
+# -----------------------------------------------
+
+dplyr::count(datos_amistad, outt2, outt2r)
+
+```
+
+
+## Recodificacion de variables dummy
+
+- Copnvencionalmente las, variables dummy se recodifican como variables 0 y 1, de modo tal que 1 exprese la categoria de interes, mientras que 0 exprese la categoria de referencia.
+- Esta convensión proviene de la inclusión de variables dummy en modelos de regresion.
+- No obstante, es muy común que en los procesos de digitación, las respuestas sean digitadas de izquierda a derecha, y por tanto tomen valores 1 y 2, segun el orden en que estas fueron presentadas en el cuestionario.
+- En el siguiente codigo vamos a recodificar estos valores a dummy para modelos de regresion.
+
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# variables dummy
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# recodificar sociodemograficas
+# -----------------------------------------------
+
+datos_amistad <- datos_amistad %>%
+                 mutate(ingroup = case_when(
+                  ethnia == 'CHI' ~ 1, # estudidantes no indigenas
+                  ethnia == 'MAP' ~ 0  # estudidantes indigenas
+                  )
+                 ) %>%
+                 mutate(fem = case_when(
+                  sex == 1 ~ 0, # niños (boy)
+                  sex == 2 ~ 1  # niñas (girl)
+                  )
+                 ) %>%
+                 mutate(stgo = case_when(
+                  region == 1 ~ 1, # Santiago
+                  region == 2 ~ 0  # Temuco
+                  )
+                 ) %>%
+                 mutate(amig_exog = case_when(
+                  between(goufr, 0, 3) ~ 1, # pocos  0 a 3
+                  between(goufr, 4, 7) ~ 2, # varios 4 a 7
+                  between(goufr, 0, 10) ~ 3 # muchos 8 a 10
+                  )
+                 ) %>%
+                mutate(amig_exog_group = case_when(
+                  between(goufr, 0, 3)  ~ '0 a 3', # pocos  0 a 3
+                  between(goufr, 4, 7)  ~ '4 a 7', # varios 4 a 7
+                  between(goufr, 0, 10) ~ '8 a 10' # muchos 8 a 10
+                  )
+                 )                 
+
+
+# -----------------------------------------------
+# revision de recodificaciones
+# -----------------------------------------------
+
+dplyr::count(datos_amistad, ethnia, ingroup)
+dplyr::count(datos_amistad, sex, fem)
+dplyr::count(datos_amistad, region, stgo)
+dplyr::count(datos_amistad, goufr, amig_exog)
+
+```
+
+
+## Crear puntajes
+
+- En general, en diferentes estudios de ciencias sociales, los articulos emplean puntajes para representar atributos o constructos teóricos en base a respuestas a diferentes preguntas.
+- Estos puntajes pueden ser generados por diferentes metodos tales como: promedios de respuestas, sumas de respuestas, o el empleo de un modelo de respuesta (e.g., *confirmatory factor analysis*, *item response theory models*).
+- Los datos contenidos en "Amistad Integrupal" incluyen diferentes respuestas a diferentes afirmaciones, las cuales se encuentran agrupadas en los siguientes constrcuctos:
+  + Reacciones afectivas al exogrupo (affo1, affo2, affo3)
+  + Confianza al exogrupo (outt1, outt2r, outt3)
+    + outt2r incluye las respuestas invertidas del item outt2
+  + Normas familiares de apoyo al contacto con el exogrupo (famn1, famn2, famn3)
+  + Normas e compañeros de curso de apoyo al contacto con el exogrupo (clan1, clan2, clan3)
+  + Identificación con Chile (natic1, natic2, natic3)
+  + Identificación con el pueblo Mapuche (idma1, idma2, idma3)  
+  + Calidad de contacto (qous1, qous2, qous3, qous4, qous5)
+
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# crear suma de puntajes
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# aislar matrices de respuesta por constructo
+# -----------------------------------------------
+
+affec_items <- dplyr::select(datos_amistad, affo1, affo2, affo3)
+trust_items <- dplyr::select(datos_amistad, outt1, outt2r, outt3)
+normf_items <- dplyr::select(datos_amistad, famn1, famn2, famn3)
+normp_items <- dplyr::select(datos_amistad, clan1, clan2, natic3)
+idnat_items <- dplyr::select(datos_amistad, natic1, natic2, natic3)
+idmap_items <- dplyr::select(datos_amistad, idma1, idma2, idma3)
+contq_items <- dplyr::select(datos_amistad, qous1, qous2, qous3, qous4, qous5)
+
+# -----------------------------------------------
+# tabla de confiabilidad de puntajes
+# -----------------------------------------------
+
+data.frame(
+scales = c(
+  'Affectos',
+  'Confianza',
+  'Normas Familiares',
+  'Normas Grupo curso',
+  'Identidad con Chile',
+  'Identidad con el pueblo Mapuche',
+  'Calidad de contacto con exogrupo'
+),
+alpha = 
+  c(
+psych::alpha(affec_items)$total$raw_alpha,
+psych::alpha(trust_items)$total$raw_alpha,
+psych::alpha(normf_items)$total$raw_alpha,
+psych::alpha(normp_items)$total$raw_alpha,
+psych::alpha(idnat_items)$total$raw_alpha,
+psych::alpha(idmap_items)$total$raw_alpha,
+psych::alpha(contq_items)$total$raw_alpha
+  )
+) %>%
+knitr::kable(., digits = 2)
+
+# Nota: la generación de puntajes en base a respuestas o 
+#       valores de diferentes indicadores, se evaluan en base
+#       a indicadores de confiabilidad. Estos indicadores
+#       de confiabilidad, como el "Alpha de Cronbach" nos
+#       nos indican que tanta precision tienen los puntajes
+#       generados, para poder distinguir entre las personas
+#       o unidades representadas con los puntajes. En general,
+#       valores cercanos a .70 son deseables.
+
+# -----------------------------------------------
+# crear promedios de puntaje
+# -----------------------------------------------
+
+datos_amistad <- datos_amistad %>%
+                 mutate(affec = psi2301::mean_score(affec_items)) %>%
+                 mutate(trust = psi2301::mean_score(trust_items)) %>%
+                 mutate(normf = psi2301::mean_score(normf_items)) %>%
+                 mutate(normp = psi2301::mean_score(normp_items)) %>%
+                 mutate(idnat = psi2301::mean_score(idnat_items)) %>%
+                 mutate(idmap = psi2301::mean_score(idmap_items)) %>%
+                 mutate(contq = psi2301::mean_score(contq_items))
+
+# -----------------------------------------------
+# inspeccionar base de datos creada
+# -----------------------------------------------
+
+datos_amistad %>%
+r4sda::variables_table() %>%
+knitr::kable()
+
+```
+
+# ANOVA
+
+## Caso 1: Residuales no normales, y varianzas no equivalentes
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# traditional anova
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# crear tabla de descriptivos (medias y sd)
+# -----------------------------------------------
+
+aov(contq ~ as.factor(amig_exog), data = datos_amistad)
+
+# -----------------------------------------------
+# normality
+# -----------------------------------------------
+
+anova_model <- lm(contq ~ as.factor(amig_exog), data = datos_amistad)
+shapiro.test(residuals(anova_model))
+
+# -----------------------------------------------
+# homocesdasticity
+# -----------------------------------------------
+
+# test 1
+car::leveneTest(
+  contq ~ as.factor(amig_exog), 
+  data = datos_amistad, 
+  center = 'mean')
+
+
+# test 2
+bartlett.test(contq ~ as.factor(amig_exog), data = datos_amistad)
+
+# -----------------------------------------------
+# n balance
+# -----------------------------------------------
+
+dplyr::count(datos_amistad, amig_exog)
+
+# -----------------------------------------------
+# multiple comparison ignoring assumptions
+# -----------------------------------------------
+
+anova_example <- aov(contq ~ as.factor(amig_exog), data = datos_amistad)
+TukeyHSD(anova_example)
+
+
+```
+
+## Alternativas: Games-Howell Post Hoc Test
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# Welch Anova
+# -----------------------------------------------------------------------------
+
+oneway.test(contq ~ as.factor(amig_exog), 
+  data = datos_amistad, var.equal = FALSE)
+
+# -----------------------------------------------
+# bonferroni
+# -----------------------------------------------
+
+with(datos_amistad, 
+  pairwise.t.test(
+    x = contq,
+    g = as.factor(amig_exog), 
+    p.adjust.method="bonferroni")
+  )
+
+# -----------------------------------------------
+# Games-Howell Post Hoc Test via "userfriendlyscience"
+# -----------------------------------------------
+
+# devtools::install_github("matherion/userfriendlyscience", dependencies=TRUE)
+
+with(datos_amistad,
+userfriendlyscience::posthocTGH(
+  y=contq,
+  x=as.factor(amig_exog))
+)
+
+# -----------------------------------------------
+# Games-Howell Post Hoc Test via "rstatix"
+# -----------------------------------------------
+
+
+rstatix::games_howell_test(
+  data = datos_amistad, 
+  formula = contq ~ amig_exog_group, 
+  conf.level = 0.95, detailed = TRUE)
+
+
+```
