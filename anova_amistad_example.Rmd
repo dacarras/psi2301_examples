@@ -40,19 +40,14 @@ Carolina.
 
 # Respuesta
 
-Un F de 2, para una distribución F de 3 grupos, y de 180 casos en total (i.e. df1 = 2, df2 = 177), es menor al F critico esperado (F = 3.05), para una prueba con un alpha de .05.
+En un escenario en que hubieran no equivalencia de varianza entre los grupos, una alternativa a la comparación multiple de Tukey, es el procedimiento de Games-Howell (ver Sauder & Demars, 2019). Este se encuentra implementado en la libreria "rstatix". En el siguiente codigo se incluyen secciones para:
 
-Dependiendo de la cantidad de casos, y de la cantidad de grupos comparados, cual es el valor de F crítico, para rechazar la hipotesis nula, y argumentar que hay diferencias entre los grupos respecto a la variable dependiente o de respuesta.
+- preparar los datos
+- ajustar un ANOVA
+- generar comparaciones multiples ignorando la falta de equivalencia entre varianzas
+- ajustar un ANOVA con corrección de Welch
+- generar comparaciones multiples empleando Games-Howell
 
-En este caso, si bien las medias de estos grupos pueden ser nominalmente diferentes, la diferencia entre estas es muy pequeña, como para que afirmar que los grupos etarios generados explica las medias de los puntajes de confianza.
-
-A a continuación, se incluyen los siguientes códigos:
-
-- códigos que preparan los datos para conducir el ANOVA en cuestión
-- el calculo de la tabla de ANOVA
-- una visualización que compara el F observado, en relacion al F critico, en una distribucion de F de 2 y 177 grados de libertad.
-- un plot que compara los puntajes de confianza entre los grupos etarios generados
-- un tabla de medias para cada grupo etario
 
 
 ## Preparar datos
@@ -230,17 +225,16 @@ datos_amistad <- datos_amistad %>%
                  ) %>%
                  mutate(amig_exog = case_when(
                   between(goufr, 0, 3) ~ 1, # pocos  0 a 3
-                  between(goufr, 4, 7) ~ 2, # varios 4 a 7
+                  between(goufr, 4, 6) ~ 2, # varios 4 a 7
                   between(goufr, 0, 10) ~ 3 # muchos 8 a 10
                   )
                  ) %>%
                 mutate(amig_exog_group = case_when(
                   between(goufr, 0, 3)  ~ '0 a 3', # pocos  0 a 3
-                  between(goufr, 4, 7)  ~ '4 a 7', # varios 4 a 7
-                  between(goufr, 0, 10) ~ '8 a 10' # muchos 8 a 10
+                  between(goufr, 4, 6)  ~ '4 a 6', # varios 4 a 7
+                  between(goufr, 0, 10) ~ '7 a 10' # muchos 8 a 10
                   )
                  )                 
-
 
 # -----------------------------------------------
 # revision de recodificaciones
@@ -366,8 +360,12 @@ aov(contq ~ as.factor(amig_exog), data = datos_amistad)
 # normality
 # -----------------------------------------------
 
-anova_model <- lm(contq ~ as.factor(amig_exog), data = datos_amistad)
-shapiro.test(residuals(anova_model))
+datos_amistad %>%
+dplyr::select(contq, amig_exog) %>%
+na.omit() %>%
+lm(contq ~ as.factor(amig_exog), data = .) %>%
+residuals(.) %>%
+shapiro.test()
 
 # -----------------------------------------------
 # homocesdasticity
@@ -379,9 +377,12 @@ car::leveneTest(
   data = datos_amistad, 
   center = 'mean')
 
+# No equivalentes
 
 # test 2
 bartlett.test(contq ~ as.factor(amig_exog), data = datos_amistad)
+
+# Casi Equivalentes.
 
 # -----------------------------------------------
 # n balance
@@ -410,33 +411,10 @@ TukeyHSD(anova_example)
 oneway.test(contq ~ as.factor(amig_exog), 
   data = datos_amistad, var.equal = FALSE)
 
-# -----------------------------------------------
-# bonferroni
-# -----------------------------------------------
-
-with(datos_amistad, 
-  pairwise.t.test(
-    x = contq,
-    g = as.factor(amig_exog), 
-    p.adjust.method="bonferroni")
-  )
-
-# -----------------------------------------------
-# Games-Howell Post Hoc Test via "userfriendlyscience"
-# -----------------------------------------------
-
-# devtools::install_github("matherion/userfriendlyscience", dependencies=TRUE)
-
-with(datos_amistad,
-userfriendlyscience::posthocTGH(
-  y=contq,
-  x=as.factor(amig_exog))
-)
 
 # -----------------------------------------------
 # Games-Howell Post Hoc Test via "rstatix"
 # -----------------------------------------------
-
 
 rstatix::games_howell_test(
   data = datos_amistad, 
@@ -445,3 +423,59 @@ rstatix::games_howell_test(
 
 
 ```
+
+
+## Visualización de histogramas para los puntajes de confianza
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# visualization of trust score distribution by group
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# plot trust scores
+# -----------------------------------------------
+
+library(ggplot2)
+library(ggridges)
+
+datos_amistad %>%
+dplyr::select(contq, amig_exog_group) %>%
+na.omit() %>%
+ggplot(., aes(x = contq, y = amig_exog_group, group = amig_exog_group)) + 
+  geom_density_ridges() +
+   theme_ridges() +
+   ylab('Cantidad de Amigos del exogrupo') +
+   xlab('Calidad de contacto')
+
+```
+
+## Tabla de medias de puntajes de confianza
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# descriptives by grup
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# mean table
+# -----------------------------------------------
+
+datos_amistad %>%
+group_by(amig_exog_group) %>%
+summarize(
+  mean = mean(contq, na.rm = TRUE),
+  n = n()) %>%
+  knitr::kable(., digits = 2)
+
+# Nota: procurar que los resultados generados, 
+#       no incluyan a los datos perdidos 
+#       (que no tienen datos sobre la cantidad
+#        de amigos del exogrupo).
+
+
+
+```
+

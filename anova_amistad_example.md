@@ -41,29 +41,18 @@ Carolina.
 
 # Respuesta
 
-Un F de 2, para una distribución F de 3 grupos, y de 180 casos en total
-(i.e. df1 = 2, df2 = 177), es menor al F critico esperado (F = 3.05),
-para una prueba con un alpha de .05.
+En un escenario en que hubieran no equivalencia de varianza entre los
+grupos, una alternativa a la comparación multiple de Tukey, es el
+procedimiento de Games-Howell (ver Sauder & Demars, 2019). Este se
+encuentra implementado en la libreria “rstatix”. En el siguiente codigo
+se incluyen secciones para:
 
-Dependiendo de la cantidad de casos, y de la cantidad de grupos
-comparados, cual es el valor de F crítico, para rechazar la hipotesis
-nula, y argumentar que hay diferencias entre los grupos respecto a la
-variable dependiente o de respuesta.
-
-En este caso, si bien las medias de estos grupos pueden ser nominalmente
-diferentes, la diferencia entre estas es muy pequeña, como para que
-afirmar que los grupos etarios generados explica las medias de los
-puntajes de confianza.
-
-A a continuación, se incluyen los siguientes códigos:
-
--   códigos que preparan los datos para conducir el ANOVA en cuestión
--   el calculo de la tabla de ANOVA
--   una visualización que compara el F observado, en relacion al F
-    critico, en una distribucion de F de 2 y 177 grados de libertad.
--   un plot que compara los puntajes de confianza entre los grupos
-    etarios generados
--   un tabla de medias para cada grupo etario
+-   preparar los datos
+-   ajustar un ANOVA
+-   generar comparaciones multiples ignorando la falta de equivalencia
+    entre varianzas
+-   ajustar un ANOVA con corrección de Welch
+-   generar comparaciones multiples empleando Games-Howell
 
 ## Preparar datos
 
@@ -90,35 +79,35 @@ datos_amistad <- psi2301::amistad_intergrupal %>%
 
     ## Rows: 200
     ## Columns: 29
-    ## $ id     <dbl> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, …
-    ## $ affo1  <dbl> 7, 6, 5, 4, 4, 6, 6, -99, 5, -99, 4, 6, 4, 6, 2, 5, 5, 4, 6, 6,…
-    ## $ affo2  <dbl> 3, 7, 4, 4, 3, 7, 3, 3, 4, 5, 4, 6, 7, 7, -99, 4, 6, 7, 7, -99,…
-    ## $ affo3  <dbl> 7, 7, 5, 4, 2, 5, 1, 4, 4, 4, 3, 5, 7, 5, 1, 2, 5, 5, 1, 4, 4, …
-    ## $ outt1  <dbl> 7, 6, 4, 4, 3, 5, 5, 6, 3, 4, 3, 5, 4, 6, 1, 5, 1, 4, 3, 4, 2, …
-    ## $ outt2  <dbl> 3, 1, 2, 2, 3, 2, 1, 1, 1, 4, 2, 1, 1, 1, 4, 3, 2, 3, 1, 4, 5, …
-    ## $ outt3  <dbl> 7, 6, 4, 4, 4, 3, 5, 4, 2, 4, 3, 4, 7, 7, 1, 5, 3, 3, 2, 4, 4, …
-    ## $ famn1  <dbl> 7, 7, 5, 7, 1, 6, 7, 4, 6, 5, 4, 5, 4, 6, 4, 3, 4, 4, 7, 5, 4, …
-    ## $ famn2  <dbl> 7, 6, 6, 4, 2, 5, 7, 3, 7, 5, 3, 6, 4, 6, 4, 3, -99, 4, 7, 5, 4…
-    ## $ famn3  <dbl> 7, 6, 5, 4, 4, 6, 1, 4, 7, 5, 2, 5, 4, 4, 1, 3, 4, 5, 7, -99, -…
-    ## $ clan1  <dbl> 4, 6, 5, 4, 4, 6, 1, 4, 2, 4, 3, 6, 4, 3, 1, 3, 6, 7, 4, 2, 5, …
-    ## $ clan2  <dbl> 3, 6, 5, 4, 3, 4, 7, 3, 2, 4, 3, 6, 4, 4, 1, 3, 5, 4, 4, 4, 4, …
-    ## $ clan3  <dbl> 5, 6, 5, 4, 4, 6, 1, 4, 2, 4, 2, 5, 4, 4, 6, 3, 5, 4, 4, 4, 5, …
-    ## $ natic1 <dbl> 5, 6, 5, 4, 5, 7, 1, 3, 4, 5, 2, 5, 4, 7, -99, 2, 4, 4, 7, 4, 4…
-    ## $ natic2 <dbl> 6, -99, 6, -99, 6, 6, 1, 5, 5, 5, 1, 5, 4, 7, 3, 3, -99, 4, 7, …
-    ## $ natic3 <dbl> 7, 7, 7, 4, -99, -99, 1, 4, 6, 7, 2, 7, 7, 7, 4, 7, 6, 4, 7, 7,…
-    ## $ idma1  <dbl> 7, 7, 1, 1, 2, 7, 1, 2, 4, 4, 2, 4, 1, 7, 1, 2, 2, 2, 7, 1, 4, …
-    ## $ idma2  <dbl> 7, 7, 1, 1, -99, 6, 1, 3, 4, 3, 1, 4, -99, 5, -99, 1, 5, -99, 7…
-    ## $ idma3  <dbl> 7, 7, 1, 1, -99, 6, 1, 2, 4, 3, 2, 4, 1, 6, 1, 2, -99, 4, 7, 1,…
-    ## $ qous1  <dbl> 7, 2, 4, 4, 4, 5, 6, 5, 5, 4, 4, 6, 2, 5, 1, 1, 4, 3, 5, 5, 4, …
-    ## $ qous2  <dbl> 6, 3, 4, 4, 3, 6, 7, 4, 6, 4, 5, 6, 2, 5, 1, -99, 6, 3, 5, 4, 4…
-    ## $ qous3  <dbl> 7, 6, 4, 4, 2, 5, -99, 5, 7, 4, 6, -99, 2, 5, 1, 2, 7, 3, 6, 4,…
-    ## $ qous4  <dbl> 7, 6, 4, 4, 4, 5, 7, 3, 7, 4, 4, 7, 2, 4, 1, 2, 6, 3, 5, 3, 4, …
-    ## $ qous5  <dbl> 6, 6, 4, -99, 3, 6, 7, 4, 7, 4, 7, 6, 3, 4, 1, 2, 7, 4, 7, 2, 5…
-    ## $ goufr  <dbl> 10, 10, 1, 10, 5, 10, 0, 3, 10, 3, 10, 3, 2, 1, 2, 2, 7, 0, 10,…
-    ## $ ethnia <chr> "CHI", "CHI", "CHI", "CHI", "CHI", "CHI", "CHI", "CHI", "CHI", …
-    ## $ sex    <dbl> 2, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, …
-    ## $ region <dbl> 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 1, …
-    ## $ age    <dbl> 16, 15, 14, 14, 15, 14, 15, 15, 14, 14, 14, 15, 16, 17, 14, 15,…
+    ## $ id     [3m[38;5;246m<dbl>[39m[23m 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, …
+    ## $ affo1  [3m[38;5;246m<dbl>[39m[23m 7, 6, 5, 4, 4, 6, 6, -99, 5, -99, 4, 6, 4, 6, 2, 5, 5, 4, 6, 6,…
+    ## $ affo2  [3m[38;5;246m<dbl>[39m[23m 3, 7, 4, 4, 3, 7, 3, 3, 4, 5, 4, 6, 7, 7, -99, 4, 6, 7, 7, -99,…
+    ## $ affo3  [3m[38;5;246m<dbl>[39m[23m 7, 7, 5, 4, 2, 5, 1, 4, 4, 4, 3, 5, 7, 5, 1, 2, 5, 5, 1, 4, 4, …
+    ## $ outt1  [3m[38;5;246m<dbl>[39m[23m 7, 6, 4, 4, 3, 5, 5, 6, 3, 4, 3, 5, 4, 6, 1, 5, 1, 4, 3, 4, 2, …
+    ## $ outt2  [3m[38;5;246m<dbl>[39m[23m 3, 1, 2, 2, 3, 2, 1, 1, 1, 4, 2, 1, 1, 1, 4, 3, 2, 3, 1, 4, 5, …
+    ## $ outt3  [3m[38;5;246m<dbl>[39m[23m 7, 6, 4, 4, 4, 3, 5, 4, 2, 4, 3, 4, 7, 7, 1, 5, 3, 3, 2, 4, 4, …
+    ## $ famn1  [3m[38;5;246m<dbl>[39m[23m 7, 7, 5, 7, 1, 6, 7, 4, 6, 5, 4, 5, 4, 6, 4, 3, 4, 4, 7, 5, 4, …
+    ## $ famn2  [3m[38;5;246m<dbl>[39m[23m 7, 6, 6, 4, 2, 5, 7, 3, 7, 5, 3, 6, 4, 6, 4, 3, -99, 4, 7, 5, 4…
+    ## $ famn3  [3m[38;5;246m<dbl>[39m[23m 7, 6, 5, 4, 4, 6, 1, 4, 7, 5, 2, 5, 4, 4, 1, 3, 4, 5, 7, -99, -…
+    ## $ clan1  [3m[38;5;246m<dbl>[39m[23m 4, 6, 5, 4, 4, 6, 1, 4, 2, 4, 3, 6, 4, 3, 1, 3, 6, 7, 4, 2, 5, …
+    ## $ clan2  [3m[38;5;246m<dbl>[39m[23m 3, 6, 5, 4, 3, 4, 7, 3, 2, 4, 3, 6, 4, 4, 1, 3, 5, 4, 4, 4, 4, …
+    ## $ clan3  [3m[38;5;246m<dbl>[39m[23m 5, 6, 5, 4, 4, 6, 1, 4, 2, 4, 2, 5, 4, 4, 6, 3, 5, 4, 4, 4, 5, …
+    ## $ natic1 [3m[38;5;246m<dbl>[39m[23m 5, 6, 5, 4, 5, 7, 1, 3, 4, 5, 2, 5, 4, 7, -99, 2, 4, 4, 7, 4, 4…
+    ## $ natic2 [3m[38;5;246m<dbl>[39m[23m 6, -99, 6, -99, 6, 6, 1, 5, 5, 5, 1, 5, 4, 7, 3, 3, -99, 4, 7, …
+    ## $ natic3 [3m[38;5;246m<dbl>[39m[23m 7, 7, 7, 4, -99, -99, 1, 4, 6, 7, 2, 7, 7, 7, 4, 7, 6, 4, 7, 7,…
+    ## $ idma1  [3m[38;5;246m<dbl>[39m[23m 7, 7, 1, 1, 2, 7, 1, 2, 4, 4, 2, 4, 1, 7, 1, 2, 2, 2, 7, 1, 4, …
+    ## $ idma2  [3m[38;5;246m<dbl>[39m[23m 7, 7, 1, 1, -99, 6, 1, 3, 4, 3, 1, 4, -99, 5, -99, 1, 5, -99, 7…
+    ## $ idma3  [3m[38;5;246m<dbl>[39m[23m 7, 7, 1, 1, -99, 6, 1, 2, 4, 3, 2, 4, 1, 6, 1, 2, -99, 4, 7, 1,…
+    ## $ qous1  [3m[38;5;246m<dbl>[39m[23m 7, 2, 4, 4, 4, 5, 6, 5, 5, 4, 4, 6, 2, 5, 1, 1, 4, 3, 5, 5, 4, …
+    ## $ qous2  [3m[38;5;246m<dbl>[39m[23m 6, 3, 4, 4, 3, 6, 7, 4, 6, 4, 5, 6, 2, 5, 1, -99, 6, 3, 5, 4, 4…
+    ## $ qous3  [3m[38;5;246m<dbl>[39m[23m 7, 6, 4, 4, 2, 5, -99, 5, 7, 4, 6, -99, 2, 5, 1, 2, 7, 3, 6, 4,…
+    ## $ qous4  [3m[38;5;246m<dbl>[39m[23m 7, 6, 4, 4, 4, 5, 7, 3, 7, 4, 4, 7, 2, 4, 1, 2, 6, 3, 5, 3, 4, …
+    ## $ qous5  [3m[38;5;246m<dbl>[39m[23m 6, 6, 4, -99, 3, 6, 7, 4, 7, 4, 7, 6, 3, 4, 1, 2, 7, 4, 7, 2, 5…
+    ## $ goufr  [3m[38;5;246m<dbl>[39m[23m 10, 10, 1, 10, 5, 10, 0, 3, 10, 3, 10, 3, 2, 1, 2, 2, 7, 0, 10,…
+    ## $ ethnia [3m[38;5;246m<chr>[39m[23m "CHI", "CHI", "CHI", "CHI", "CHI", "CHI", "CHI", "CHI", "CHI", …
+    ## $ sex    [3m[38;5;246m<dbl>[39m[23m 2, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, …
+    ## $ region [3m[38;5;246m<dbl>[39m[23m 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 1, …
+    ## $ age    [3m[38;5;246m<dbl>[39m[23m 16, 15, 14, 14, 15, 14, 15, 15, 14, 14, 14, 15, 16, 17, 14, 15,…
 
 ``` r
 # -----------------------------------------------------------------------------
@@ -389,17 +378,16 @@ datos_amistad <- datos_amistad %>%
                  ) %>%
                  mutate(amig_exog = case_when(
                   between(goufr, 0, 3) ~ 1, # pocos  0 a 3
-                  between(goufr, 4, 7) ~ 2, # varios 4 a 7
+                  between(goufr, 4, 6) ~ 2, # varios 4 a 7
                   between(goufr, 0, 10) ~ 3 # muchos 8 a 10
                   )
                  ) %>%
                 mutate(amig_exog_group = case_when(
                   between(goufr, 0, 3)  ~ '0 a 3', # pocos  0 a 3
-                  between(goufr, 4, 7)  ~ '4 a 7', # varios 4 a 7
-                  between(goufr, 0, 10) ~ '8 a 10' # muchos 8 a 10
+                  between(goufr, 4, 6)  ~ '4 a 6', # varios 4 a 7
+                  between(goufr, 0, 10) ~ '7 a 10' # muchos 8 a 10
                   )
                  )                 
-
 
 # -----------------------------------------------
 # revision de recodificaciones
@@ -448,7 +436,7 @@ dplyr::count(datos_amistad, goufr, amig_exog)
     ##  5     4         2    11
     ##  6     5         2     9
     ##  7     6         2     8
-    ##  8     7         2     7
+    ##  8     7         3     7
     ##  9     8         3     7
     ## 10     9         3     6
     ## 11    10         3    83
@@ -599,8 +587,8 @@ knitr::kable()
 | ingroup           | dbl  | 1, 1, 1, 1, 1, 1, 1, 1, 1, …  | === no variable label === |
 | fem               | dbl  | 0, 1, 1, 1, 0, 0, 1, 1, 1, …  | === no variable label === |
 | stgo              | dbl  | 0, 0, 0, 1, 1, 0, 0, 0, 1, …  | === no variable label === |
-| amig\_exog        | dbl  | 1, 3, 1, 1, 1, 1, 1, 2, 1, …  | === no variable label === |
-| amig\_exog\_group | chr  | “,”8 a 10“,”4 a 7“,”8 a 1…    | === no variable label === |
+| amig\_exog        | dbl  | 1, 3, 1, 1, 1, 1, 1, 3, 1, …  | === no variable label === |
+| amig\_exog\_group | chr  | “,”7 a 10“,”4 a 6“,”7 a 1…    | === no variable label === |
 | affec             | dbl  | .0, 3.3, 3.5, 4.3, 4.5, 3.7,… | === no variable label === |
 | trust             | dbl  | .7, 5.7, 5.7, 4.0, 4.0, 4.0,… | === no variable label === |
 | normf             | dbl  | .7, 5.0, 3.7, 6.7, 5.0, 3.0,… | === no variable label === |
@@ -630,7 +618,7 @@ aov(contq ~ as.factor(amig_exog), data = datos_amistad)
     ## 
     ## Terms:
     ##                 as.factor(amig_exog) Residuals
-    ## Sum of Squares                    26       386
+    ## Sum of Squares                    23       389
     ## Deg. of Freedom                    2       181
     ## 
     ## Residual standard error: 1.5
@@ -642,14 +630,18 @@ aov(contq ~ as.factor(amig_exog), data = datos_amistad)
 # normality
 # -----------------------------------------------
 
-anova_model <- lm(contq ~ as.factor(amig_exog), data = datos_amistad)
-shapiro.test(residuals(anova_model))
+datos_amistad %>%
+dplyr::select(contq, amig_exog) %>%
+na.omit() %>%
+lm(contq ~ as.factor(amig_exog), data = .) %>%
+residuals(.) %>%
+shapiro.test()
 ```
 
     ## 
     ##  Shapiro-Wilk normality test
     ## 
-    ## data:  residuals(anova_model)
+    ## data:  .
     ## W = 1, p-value = 0.008
 
 ``` r
@@ -666,12 +658,14 @@ car::leveneTest(
 
     ## Levene's Test for Homogeneity of Variance (center = "mean")
     ##        Df F value Pr(>F)  
-    ## group   2    3.01  0.052 .
+    ## group   2    3.62  0.029 *
     ##       181                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ``` r
+# No equivalentes
+
 # test 2
 bartlett.test(contq ~ as.factor(amig_exog), data = datos_amistad)
 ```
@@ -680,9 +674,11 @@ bartlett.test(contq ~ as.factor(amig_exog), data = datos_amistad)
     ##  Bartlett test of homogeneity of variances
     ## 
     ## data:  contq by as.factor(amig_exog)
-    ## Bartlett's K-squared = 6, df = 2, p-value = 0.06
+    ## Bartlett's K-squared = 6, df = 2, p-value = 0.05
 
 ``` r
+# Casi Equivalentes.
+
 # -----------------------------------------------
 # n balance
 # -----------------------------------------------
@@ -694,8 +690,8 @@ dplyr::count(datos_amistad, amig_exog)
     ##   amig_exog     n
     ##       <dbl> <int>
     ## 1         1    53
-    ## 2         2    35
-    ## 3         3    96
+    ## 2         2    28
+    ## 3         3   103
     ## 4        NA    16
 
 ``` r
@@ -714,9 +710,9 @@ TukeyHSD(anova_example)
     ## 
     ## $`as.factor(amig_exog)`
     ##     diff   lwr upr p adj
-    ## 2-1 0.45 -0.30 1.2  0.33
-    ## 3-1 0.87  0.28 1.5  0.00
-    ## 3-2 0.41 -0.27 1.1  0.33
+    ## 2-1 0.54 -0.27 1.4  0.26
+    ## 3-1 0.81  0.23 1.4  0.00
+    ## 3-2 0.27 -0.47 1.0  0.66
 
 ## Alternativas: Games-Howell Post Hoc Test
 
@@ -733,61 +729,12 @@ oneway.test(contq ~ as.factor(amig_exog),
     ##  One-way analysis of means (not assuming equal variances)
     ## 
     ## data:  contq and as.factor(amig_exog)
-    ## F = 5, num df = 2, denom df = 93, p-value = 0.006
-
-``` r
-# -----------------------------------------------
-# bonferroni
-# -----------------------------------------------
-
-with(datos_amistad, 
-  pairwise.t.test(
-    x = contq,
-    g = as.factor(amig_exog), 
-    p.adjust.method="bonferroni")
-  )
-```
-
-    ## 
-    ##  Pairwise comparisons using t tests with pooled SD 
-    ## 
-    ## data:  contq and as.factor(amig_exog) 
-    ## 
-    ##   1     2    
-    ## 2 0.466 -    
-    ## 3 0.002 0.465
-    ## 
-    ## P value adjustment method: bonferroni
-
-``` r
-# -----------------------------------------------
-# Games-Howell Post Hoc Test via "userfriendlyscience"
-# -----------------------------------------------
-
-# devtools::install_github("matherion/userfriendlyscience", dependencies=TRUE)
-
-with(datos_amistad,
-userfriendlyscience::posthocTGH(
-  y=contq,
-  x=as.factor(amig_exog))
-)
-```
-
-    ##    n means variances
-    ## 1 53   4.2       2.6
-    ## 2 35   4.6       1.2
-    ## 3 96   5.1       2.2
-    ## 
-    ##     diff ci.lo ci.hi   t  df    p
-    ## 2-1 0.45 -0.23  1.14 1.6  86  .26
-    ## 3-1 0.87  0.23  1.50 3.2 101 <.01
-    ## 3-2 0.41 -0.16  0.99 1.7  81  .21
+    ## F = 5, num df = 2, denom df = 80, p-value = 0.01
 
 ``` r
 # -----------------------------------------------
 # Games-Howell Post Hoc Test via "rstatix"
 # -----------------------------------------------
-
 
 rstatix::games_howell_test(
   data = datos_amistad, 
@@ -798,8 +745,69 @@ rstatix::games_howell_test(
     ## # A tibble: 3 x 14
     ##   .y.   group1 group2    n1    n2 estimate conf.low conf.high    se statistic
     ## * <chr> <chr>  <chr>  <int> <int>    <dbl>    <dbl>     <dbl> <dbl>     <dbl>
-    ## 1 contq 0 a 3  4 a 7     53    35    0.454   -0.235     1.14  0.204      1.57
-    ## 2 contq 0 a 3  8 a 10    53    96    0.866    0.228     1.50  0.190      3.23
-    ## 3 contq 4 a 7  8 a 10    35    96    0.412   -0.162     0.985 0.170      1.71
+    ## 1 contq 0 a 3  4 a 6     53    28    0.542   -0.165     1.25  0.209      1.83
+    ## 2 contq 0 a 3  7 a 10    53   103    0.814    0.183     1.44  0.187      3.07
+    ## 3 contq 4 a 6  7 a 10    28   103    0.272   -0.318     0.861 0.173      1.11
     ## # … with 4 more variables: df <dbl>, p.adj <dbl>, p.adj.signif <chr>,
     ## #   method <chr>
+
+## Visualización de histogramas para los puntajes de confianza
+
+``` r
+# -----------------------------------------------------------------------------
+# visualization of trust score distribution by group
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# plot trust scores
+# -----------------------------------------------
+
+library(ggplot2)
+library(ggridges)
+
+datos_amistad %>%
+dplyr::select(contq, amig_exog_group) %>%
+na.omit() %>%
+ggplot(., aes(x = contq, y = amig_exog_group, group = amig_exog_group)) + 
+  geom_density_ridges() +
+   theme_ridges() +
+   ylab('Cantidad de Amigos del exogrupo') +
+   xlab('Calidad de contacto')
+```
+
+    ## Picking joint bandwidth of 0.548
+
+![](anova_amistad_example_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+## Tabla de medias de puntajes de confianza
+
+``` r
+# -----------------------------------------------------------------------------
+# descriptives by grup
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# mean table
+# -----------------------------------------------
+
+datos_amistad %>%
+group_by(amig_exog_group) %>%
+summarize(
+  mean = mean(contq, na.rm = TRUE),
+  n = n()) %>%
+  knitr::kable(., digits = 2)
+```
+
+| amig\_exog\_group | mean |   n |
+|:------------------|-----:|----:|
+| 0 a 3             |  4.2 |  53 |
+| 4 a 6             |  4.7 |  28 |
+| 7 a 10            |  5.0 | 103 |
+|                   |  5.3 |  16 |
+
+``` r
+# Nota: procurar que los resultados generados, 
+#       no incluyan a los datos perdidos 
+#       (que no tienen datos sobre la cantidad
+#        de amigos del exogrupo).
+```
