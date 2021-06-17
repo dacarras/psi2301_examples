@@ -1,0 +1,281 @@
+---
+title: "ANOVA: F y p value"
+output: github_document
+---
+
+# Pregunta: consistencia de valores F y p_value
+
+Buenas tardes profesor!! Espero se encuentre muy bien :) Tal como hablamos en la clase, con mi grupo tenemos una pregunta en torno al valor F y el p value. La base de datos que estamos usando para la entrega es la encuesta INJUV 2012. Para el desarrollo de uno de nuestros ANOVA , realizamos el cruce entre la variable de múltiples preguntas `C1_1 - C1_9` (categorizada de la siguiente manera: 
+
+```{r, echo=TRUE, eval = FALSE}
+(INJUV$CONFIANZA=with(INJUV,rowMeans(cbind(C1_1,C1_2,C1_3,C1_4,C1_5,C1_6,C1_7,C1_8,C1_9),na.rm = TRUE)) 
+```
+
+
+que responden a la pregunta ¿cuánto confías en cada una de estas personas? y la variable sociodemográfica de edad, la cual categorizamos en tres intervalos:
+
+```{r, echo=TRUE, eval = FALSE}
+INJUV$EDAD_EXACTA [INJUV$EDAD_EXACTA >= 15 & INJUV$EDAD_EXACTA <= 19] = 1
+INJUV$EDAD_EXACTA [INJUV$EDAD_EXACTA >= 20 & INJUV$EDAD_EXACTA <= 24] = 2
+INJUV$EDAD_EXACTA [INJUV$EDAD_EXACTA >= 25 & INJUV$EDAD_EXACTA <= 29] = 3
+INJUV$EDAD_EXACTA<-factor(INJUV$EDAD_EXACTA, labels=c("15-19", "20-24", "25-29"))
+
+```
+
+
+Al aplicar la prueba ANOVA entre estas variables, usando el siguiente código:
+
+```{r, echo=TRUE, eval = FALSE}
+anova_1 = aov(CONFIANZA ~ (EDAD_EXACTA), data=INJUV)
+summary(anova_1)
+
+```
+
+nos arroja el output que le adjunté. En este output se puede ver que el F es mayor a 1 y que el p value es mayor a 0.05, por lo que ahí está la contradicción... ¿qué hacemos? ¿cómo podemos explicar que la hipótesis nula se acepta (tal como indica el p valor) y a la vez el valor F presenta diferencias que vuelven razonable el rechazo de la hipótesis nula?
+Muchísimas gracias por su tiempo!
+Saludos, Rosario.
+
+# Respuesta
+
+Un F de 2, para una distribución F de 3 grupos, y de 180 casos en total (i.e. df1 = 2, df2 = 177), es menor al F critico esperado (F = 3.05), para una prueba con un alpha de .05.
+
+Dependiendo de la cantidad de casos, y de la cantidad de grupos comparados, cual es el valor de F crítico, para rechazar la hipotesis nula, y argumentar que hay diferencias entre los grupos respecto a la variable dependiente o de respuesta.
+
+En este caso, si bien las medias de estos grupos pueden ser nominalmente diferentes, la diferencia entre estas es muy pequeña, como para que afirmar que los grupos etarios generados explica las medias de los puntajes de confianza.
+
+A a continuación, se incluyen los siguientes códigos:
+
+- códigos que preparan los datos para conducir el ANOVA en cuestión
+- el calculo de la tabla de ANOVA
+- una visualización que compara el F observado, en relacion al F critico, en una distribucion de F de 2 y 177 grados de libertad.
+- un plot que compara los puntajes de confianza entre los grupos etarios generados
+- un tabla de medias para cada grupo etario
+
+
+## Preparar datos
+
+```{r, echo=TRUE, eval = TRUE}
+# -----------------------------------------------------------------------------
+# abrir dplyr y los datos
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# actualizar psi2301
+# -----------------------------------------------
+
+# credentials::set_github_pat()
+# devtools::install_github("dacarras/psi2301", force = TRUE)
+
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
+
+library(dplyr)
+datos_injuv <- psi2301::injuv_2012
+
+# -----------------------------------------------
+# preparar los datos
+# -----------------------------------------------
+
+datos_injuv %>%
+r4sda::variables_table() %>%
+knitr::kable()
+
+# -----------------------------------------------
+# preparar los datos
+# -----------------------------------------------
+
+datos_injuv <- datos_injuv %>%
+               rename_all(tolower) %>%
+               dplyr::glimpse()
+
+# -----------------------------------------------
+# descriptivo de frecuencias
+# -----------------------------------------------
+
+datos_injuv %>%
+  dplyr::select(-edad_exacta) %>%
+  r4sda::wide_resp() %>%
+  knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# descriptivo parar edad
+# -----------------------------------------------
+
+datos_injuv %>%
+dplyr::select(edad_exacta) %>%
+r4sda::get_desc() %>%
+knitr::kable(., digits = 2)
+
+# Nota: edad no tiene valores perdidos (99).
+
+# -----------------------------------------------
+# convertir valores 99 a NA
+# -----------------------------------------------
+
+datos_injuv <- datos_injuv %>%
+               na_if(99)
+
+
+# -----------------------------------------------
+# revisión de frecuencias
+# -----------------------------------------------
+
+datos_injuv %>%
+  dplyr::select(-edad_exacta) %>%
+  r4sda::wide_resp() %>%
+  knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# crear variables de ejemplo
+# -----------------------------------------------
+
+trust_items <- dplyr::select(datos_injuv, c1_1:c1_9)
+
+datos_injuv <- datos_injuv %>%
+               # puuntajes promedio de confianza
+               mutate(tru = psi2301::mean_score(trust_items)) %>%
+               mutate(ager = case_when(
+                between(edad_exacta,  0, 19) ~ 1,
+                between(edad_exacta, 20, 24) ~ 3,
+                between(edad_exacta, 25, 29) ~ 2
+                )
+               ) %>%
+               dplyr::glimpse()
+
+```
+
+# ANOVA
+
+## Generar ANOVA
+
+```{r, echo=TRUE, eval = TRUE}
+# -----------------------------------------------------------------------------
+# abrir dplyr y los datos
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# listado de putajes generados
+# -----------------------------------------------
+
+anova_trust <- aov(tru ~ as.factor(ager), data= datos_injuv)
+summary(anova_trust)
+
+```
+
+## Visualización de p value
+
+```{r, echo=TRUE, eval = TRUE}
+# -----------------------------------------------------------------------------
+# visualization of p value
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# retrieve observed f value
+# -----------------------------------------------
+
+
+f_value <- aov(tru ~ as.factor(ager), data= datos_injuv) %>%
+           broom::tidy() %>%
+           dplyr::filter(term != 'Residuals') %>%
+           dplyr::select(statistic) %>%
+           pull() %>%
+           as.numeric()
+
+# -----------------------------------------------
+# compute p value
+# -----------------------------------------------
+
+pf(f_value, df1 = 2, df2 = 177, lower.tail = FALSE) %>%
+r4sda::decimal(., 2)
+
+# -----------------------------------------------
+# retrieve f critical value for alpha .05
+# -----------------------------------------------
+
+f_critic <- qf(.95, df1 = 2, df2 = 177)
+f_critic
+
+# -----------------------------------------------
+# plot observed and expected F value
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data.frame(x = c(0, 20)), aes(x)) +
+  stat_function(fun = df, args = list(df1 = 2, df2 = 177), geom = "area") +
+  geom_vline(xintercept = f_value, color = 'red') +
+  geom_vline(xintercept = f_critic, color = 'red', linetype = 'dotted') +
+  scale_x_continuous(breaks=seq(0, 20, 1)) + 
+  # xlim(0,10) +
+  ylim(0,1) +
+  labs(
+    x = 'F Ratio', 
+    y = 'density') +
+  theme_minimal() +
+  theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank()
+  ) +
+  annotate("text", x = 4.2, y = .25, label = "F critical value") +
+  annotate("text", x = 3.2, y = .50, label = "F observed value")
+
+```
+
+
+## Visualización de histogramas para los puntajes de confianza
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# visualization of trust score distribution by group
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# plot trust scores
+# -----------------------------------------------
+
+library(ggplot2)
+library(ggridges)
+
+datos_injuv %>%
+mutate(age_group = case_when(
+  ager == 1 ~ '15-19 años',
+  ager == 2 ~ '20-24 años',
+  ager == 3 ~ '25-29 años'
+  )) %>%
+ggplot(., aes(x = tru, y = age_group, group = age_group)) + 
+  geom_density_ridges() +
+   theme_ridges() +
+   ylab('') +
+   xlab('Confianza')
+
+```
+
+## Tabla de medias de puntajes de confianza
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# descriptives by grup
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# mean table
+# -----------------------------------------------
+
+datos_injuv %>%
+mutate(age_group = case_when(
+  ager == 1 ~ '15-19 años',
+  ager == 2 ~ '20-24 años',
+  ager == 3 ~ '25-29 años'
+  )) %>%
+group_by(age_group) %>%
+summarize(
+  mean = mean(tru, na.rm = TRUE),
+  n = n()) %>%
+  knitr::kable(., digits = 2)
+
+
+```
+
