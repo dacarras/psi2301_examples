@@ -37,7 +37,7 @@ data_correlation[1:10,] %>%
 knitr::kable(., digits = 2)
 
 # -----------------------------------------------
-# generate components
+# generate components: formula 1, based on covariance
 # -----------------------------------------------
 
 data_corr <- data_correlation %>%
@@ -70,6 +70,58 @@ knitr::kable(., digits = 2)
 
 covariance  <- sum(data_corr$cross)
 denominator <- sqrt(sum(data_corr$x_var)*sum(data_corr$y_var))
+
+# -----------------------------------------------
+# get correlation
+# -----------------------------------------------
+
+covariance/denominator
+
+# -----------------------------------------------
+# get correlation via stats::cor()
+# -----------------------------------------------
+
+cor(data_corr$y, data_corr$x)
+
+
+# -----------------------------------------------
+# generate components: formula 2, based on z score
+# -----------------------------------------------
+
+data_corr <- data_correlation %>%
+             # mean of x
+             mutate(x_bar = mean(x, na.rm = TRUE)) %>%
+             # mean of y
+             mutate(y_bar = mean(y, na.rm = TRUE)) %>%
+             # sd of x
+             mutate(x_sd = sd(x, na.rm = TRUE)) %>%
+             # sd of y
+             mutate(y_sd = sd(y, na.rm = TRUE)) %>%
+             # deviations from x             
+             mutate(x_dev = x - x_bar) %>%
+             # deviations from y     
+             mutate(y_dev = y - y_bar) %>%
+             # x z_score
+             mutate(x_z = x_dev/x_sd) %>%
+             # x z_score
+             mutate(y_z = y_dev/y_sd) %>%
+             # cross products of deviations     
+             mutate(cross = x_z*y_z)
+
+# -----------------------------------------------
+# display components
+# -----------------------------------------------
+
+data_corr[1:10,] %>%
+knitr::kable(., digits = 2)
+
+
+# -----------------------------------------------
+# terms of correlation formula
+# -----------------------------------------------
+
+covariance  <- sum(data_corr$cross)
+denominator <- nrow(data_corr) -1
 
 # -----------------------------------------------
 # get correlation

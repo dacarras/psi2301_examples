@@ -1,0 +1,713 @@
+---
+title: "Modelos lineales"
+subtitle: "Clase 14: regresion"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dpi=300,fig.width=7)
+```
+
+# Regresión
+
+- Modelos lineales
+
+## Altura de padres e hijos
+
+- Empleamos los datos de Pearson & Lee (1903), los cuales contienen 1078 observaciones de alturas de pares de padres e hijos.
+  - Originalmente, los datos se encuentran en pulgadas
+  - Los vamos a transformar a metros, de modo de interpretar los resultados en un métrica más común a la empleada en Chile.
+  - Los datos los obtenemos desde el R packege `library(UsingR)`, con el comando `UsingR::father.son`
+
+## Preparar datos
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# child and parents height
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# install package
+# -----------------------------------------------
+
+# install.packages("UsingR")
+
+
+# -----------------------------------------------
+# load data
+# -----------------------------------------------
+
+data_alt <- UsingR::father.son
+
+# -----------------------------------------------
+# variables
+# -----------------------------------------------
+
+library(dplyr)
+r4sda::variables_table(data_alt) %>%
+knitr::kable()
+
+# -----------------------------------------------
+# data description
+# -----------------------------------------------
+
+# ? UsingR::UsingR::father.son
+
+# Description:
+# 
+#      1078 measurements of a father's height and his son's height.
+# 
+# Usage:
+# 
+#      data(father.son)
+#      
+# Format:
+# 
+#      A data frame with 1078 observations on the following 2 variables.
+# 
+#      fheight Father's height in inches
+# 
+#      sheight Son's height in inches
+# 
+# Details:
+# 
+#      Data set used by Pearson & Lee (1903) to investigate regression. See data set
+#      ‘galton’ for data set used by Galton.
+# 
+
+# Note: metric in inches (1 inch is 2.54 cms)
+
+# -----------------------------------------------
+# get descriptives
+# -----------------------------------------------
+
+data_alt %>%
+r4sda::get_desc() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# prepare data
+# -----------------------------------------------
+
+data_alt <- data_alt %>%
+            mutate(parent = (fheight*2.54)/100) %>%
+            mutate(child = (sheight*2.54)/100) %>%
+            dplyr::glimpse()
+
+
+```
+
+## Explorar datos
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# child and parents height
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# install package
+# -----------------------------------------------
+
+# -----------------------------------------------
+# get descriptives
+# -----------------------------------------------
+
+data_alt %>%
+r4sda::get_desc() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# correlations
+# -----------------------------------------------
+
+data_alt %>%
+corrr::correlate() %>%
+corrr::shave() %>%
+knitr::kable(., digits = 2)
+
+
+# -----------------------------------------------
+# inspect with a scatter plot (plain)
+# -----------------------------------------------
+
+library(ggplot2)
+data_alt %>%
+ggplot(., aes(y = child, x = parent)) + 
+geom_point(alpha = .3) + 
+labs(x = "parents", y = "child") +
+theme_linedraw()
+
+```
+
+## Linea de regresión sobre figuras
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# child and parents height
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# inspect with a scatter plot (regression line)
+# -----------------------------------------------
+
+library(ggplot2)
+data_alt %>%
+ggplot(., aes(y = child, x = parent)) + 
+geom_point(alpha = .3) + 
+geom_smooth(method = "lm", colour = "Red") +
+labs(
+  y = "childs' height (mts)",
+  x = "parents' height (mts)",   
+  ) +
+theme_linedraw()
+
+ggplot2::ggsave('regression_01.png',
+     plot = last_plot(), 
+     width=10, 
+     height=10, 
+     units="cm",
+     bg = "transparent",
+     dpi = 400,
+     scale= 2)
+
+
+# -----------------------------------------------
+# inspect with a scatter plot (with correlation)
+# -----------------------------------------------
+
+library(ggplot2)
+data_alt %>%
+ggplot(., aes(y = child, x = parent)) + 
+geom_point(alpha = .3) + 
+geom_smooth(method = "lm", colour = "Red") +
+labs(x = "parents", y = "child") +
+ggpubr::stat_cor(method="pearson", label.y = 1.98) +
+ggpubr::stat_cor(method="pearson") +
+theme_linedraw()
+
+# -----------------------------------------------
+# inspect with a scatter plot (with regression equation)
+# -----------------------------------------------
+
+library(ggplot2)
+data_alt %>%
+ggplot(., aes(y = child, x = parent)) + 
+geom_point(alpha = .3) + 
+geom_smooth(method = "lm", colour = "Red") +
+labs(x = "parents", y = "child") +
+ggpubr::stat_cor(method="pearson", label.y = 1.98) +
+ggpubr::stat_regline_equation(label.y = 1.95) +
+theme_linedraw()
+
+
+```
+
+## Ajustar regressiones
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# child and parents height
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# using inches
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# regression as in Pearson & Lee (1903)
+# -----------------------------------------------
+
+
+lm(sheight ~ + 1 + fheight, data = data_alt) %>%
+summary()
+
+
+# -----------------------------------------------
+# regression output with tidy table
+# -----------------------------------------------
+
+lm(sheight ~ + 1 + fheight, data = data_alt) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+
+# -----------------------------------------------------------------------------
+# using meters
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# regression model summary using mts
+# -----------------------------------------------
+
+lm(child ~ + 1 + parent, data = data_alt) %>%
+summary()
+
+
+# -----------------------------------------------
+# regression output with tidy table
+# -----------------------------------------------
+
+lm(child ~ + 1 + parent, data = data_alt) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# r-square
+# -----------------------------------------------
+
+lm(child ~ + 1 + parent, data = data_alt) %>%
+broom::glance() %>%
+knitr::kable(., digits = 2)
+
+
+# -----------------------------------------------------------------------------
+# using inches with  lavaan
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# regression model with lavaan
+# -----------------------------------------------
+
+reg_model <- '
+sheight ~ b0*1       # intercept
+sheight ~ b1*fheight # slope
+'
+
+# -----------------------------------------------
+# fit model
+# -----------------------------------------------
+
+fit_reg <- lavaan::sem(reg_model, data = data_alt, 
+             mimic="Mplus", estimator = "ML")
+
+# -----------------------------------------------
+# display results
+# -----------------------------------------------
+
+lavaan::summary(fit_reg,
+  standardized=TRUE, 
+  fit.measures=TRUE, 
+  rsquare=TRUE)
+
+# -----------------------------------------------------------------------------
+# using meters with  lavaan
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# regression model with lavaan
+# -----------------------------------------------
+
+reg_model <- '
+child ~ b0*1      # intercept
+child ~ b1*parent # slope
+'
+
+# -----------------------------------------------
+# fit model
+# -----------------------------------------------
+
+fit_reg <- lavaan::sem(reg_model, data = data_alt, 
+             mimic="Mplus", estimator = "ML")
+
+# -----------------------------------------------
+# display results
+# -----------------------------------------------
+
+lavaan::summary(fit_reg,
+  standardized=TRUE, 
+  fit.measures=TRUE, 
+  rsquare=TRUE)
+
+
+```
+
+
+## Chequeo de supuestos
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# normaility of errors
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# normality assumption of errors (Shapiro Wilk)
+# -----------------------------------------------
+
+lm(child ~ + 1 + parent, data = data_alt) %>%
+residuals() %>%
+shapiro.test()
+
+# -----------------------------------------------
+# normality assumption of errors (Kolmogorov Smirnoff)
+# -----------------------------------------------
+
+residual_values <- residuals(lm(child ~ + 1 + parent, data = data_alt))
+fitted_values   <- predict(lm(child ~ + 1 + parent, data = data_alt))
+
+data_hom <- data_alt %>%
+            mutate(fit = fitted_values) %>%
+            mutate(errors = residual_values)
+
+
+ks.test(data_hom$errors, 
+  "pnorm", 
+  mean=mean(data_hom$errors), 
+  sd=sd(data_hom$errors)
+  )
+
+
+# -----------------------------------------------
+# normality plot of errors
+# -----------------------------------------------
+
+error_mean <- mean(data_hom$errors, na.rm = TRUE)
+error_sd <- sd(data_hom$errors, na.rm = TRUE)
+error_n  <- nrow(data_hom$errors)
+binwidth <- 0.01
+
+data_hom %>%
+ggplot(., aes(x = errors, mean = error_mean, sd = error_sd, binwidth = binwidth, n = error_n)) +
+    theme_linedraw() +
+    geom_histogram(
+        aes(y =..density..),
+        binwidth = binwidth, 
+        colour = "white", 
+        fill = "grey60", 
+        size = 0.1) +
+stat_function(fun = dnorm, args = list(mean = error_mean, sd = error_sd), geom = "line")
+
+
+# -----------------------------------------------
+# normality of residuals, qqplot
+# -----------------------------------------------
+
+
+residual_values <- residuals(lm(child ~ + 1 + parent, data = data_alt))
+
+data_residual <- data_alt %>%
+                 mutate(errors = residual_values)
+
+
+ggplot(data_residual, aes(sample = errors)) +
+  stat_qq(alpha = .5) +
+  labs(y = "residuals") +
+theme_linedraw()
+
+
+# -----------------------------------------------
+# homocesdasticiy plot
+# -----------------------------------------------
+
+residual_values <- residuals(lm(child ~ + 1 + parent, data = data_alt))
+fitted_values   <- predict(lm(child ~ + 1 + parent, data = data_alt))
+
+data_hom <- data_alt %>%
+            mutate(fit = fitted_values) %>%
+            mutate(errors = residual_values)
+
+
+data_hom %>%
+ggplot(., aes(y = errors, x = fit)) + 
+geom_point(alpha = .3, col = 'grey20') + 
+# geom_segment(aes(xend = parent, yend = fit), alpha = .4, col = 'red') + 
+# geom_point(aes(y = fit), col = 'grey25', alpha = .5) + 
+xlab('Fitted Values') +
+ylab('Residuals') + 
+ggtitle('Residual Dispersion') +
+geom_hline(yintercept = 0, linetype=2)+
+theme_linedraw()
+
+# -----------------------------------------------
+# homocesdasticiy Breusch-Pagan Test
+# -----------------------------------------------
+
+lm(child ~ + 1 + parent, data = data_alt) %>%
+lmtest::bptest()
+
+```
+
+# Anexos
+
+## Plots empleados en clases
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# child and parents height
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# install package
+# -----------------------------------------------
+
+# install.packages("UsingR")
+
+# -----------------------------------------------
+# load data
+# -----------------------------------------------
+
+data_alt <- UsingR::father.son
+
+# -----------------------------------------------
+# prepare data
+# -----------------------------------------------
+
+data_alt <- data_alt %>%
+            mutate(parent = (fheight*2.54)/100) %>%
+            mutate(child = (sheight*2.54)/100) %>%
+            dplyr::glimpse()
+
+
+# -----------------------------------------------
+# inspect with a scatter plot (regression line)
+# -----------------------------------------------
+
+library(ggplot2)
+data_alt %>%
+ggplot(., aes(y = sheight, x = fheight)) + 
+geom_point(alpha = .3) + 
+geom_smooth(method = "lm", colour = "Red") +
+labs(x = "parents", y = "child") +
+ggpubr::stat_regline_equation(label.y = 80.00) +
+theme_linedraw()
+
+ggplot2::ggsave('regression_01_original.png',
+     plot = last_plot(), 
+     width=10, 
+     height=10, 
+     units="cm",
+     bg = "transparent",
+     dpi = 400,
+     scale= 2)
+
+
+# -----------------------------------------------
+# regression as in Pearson & Lee (1903)
+# -----------------------------------------------
+
+lm(sheight ~ + 1 + fheight, data = data_alt) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# regression line in mts
+# -----------------------------------------------
+
+library(ggplot2)
+data_alt %>%
+ggplot(., aes(y = child, x = parent)) + 
+geom_point(alpha = .3) + 
+geom_smooth(method = "lm", colour = "Red") +
+labs(
+  y = "childs' height (mts)",
+  x = "parents' height (mts)",   
+  ) +
+theme_linedraw()
+
+ggplot2::ggsave('regression_01_mts.png',
+     plot = last_plot(), 
+     width=10, 
+     height=10, 
+     units="cm",
+     bg = "transparent",
+     dpi = 400,
+     scale= 2)
+
+
+# -----------------------------------------------
+# plot with full axis
+# -----------------------------------------------
+
+library(ggplot2)
+data_alt %>%
+ggplot(., aes(y = sheight, x = fheight)) + 
+geom_point(alpha = .1) + 
+geom_smooth(method = "lm", colour = "Red") +
+labs(x = "parents", y = "child") +
+ggpubr::stat_regline_equation(label.y = 80.00) +
+xlim(0,80) +
+ylim(0,80) +
+theme_linedraw()
+
+ggplot2::ggsave('regression_01_full_axis.png',
+     plot = last_plot(), 
+     width=10, 
+     height=10, 
+     units="cm",
+     bg = "transparent",
+     dpi = 400,
+     scale= 2)
+
+lm(sheight ~ + 1 + fheight, data = data_alt) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+
+
+# -----------------------------------------------
+# plot with full axis
+# -----------------------------------------------
+
+fheight_mean <- mean(data_alt$fheight, na.rm = TRUE)
+
+library(ggplot2)
+data_alt %>%
+mutate(fheight_centered = fheight - fheight_mean) %>%
+ggplot(., aes(y = sheight, x = fheight_centered)) + 
+geom_point(alpha = .1) + 
+geom_smooth(method = "lm", colour = "Red") +
+labs(x = "parents", y = "child") +
+ylim(60,80) +
+xlim(-10,10) +
+ggpubr::stat_regline_equation(label.y = 80.00) +
+theme_linedraw()
+
+ggplot2::ggsave('regression_01_centered.png',
+     plot = last_plot(), 
+     width=10, 
+     height=10, 
+     units="cm",
+     bg = "transparent",
+     dpi = 400,
+     scale= 2)
+
+data_alt %>%
+mutate(fheight_centered = fheight - fheight_mean) %>%
+lm(sheight ~ + 1 + fheight_centered, data = .) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+
+# -----------------------------------------------
+# residuals in comparison to the model
+# -----------------------------------------------
+
+
+fitted_values <- predict(lm(sheight ~ + 1 + fheight, data = data_alt))
+
+data_fitted <- data_alt %>%
+               mutate(fit = fitted_values)
+
+data_fitted %>%
+ggplot(., aes(y = sheight, x = fheight)) + 
+geom_point(alpha = .3, col = 'grey20') + 
+geom_segment(aes(xend = fheight, yend = fit), alpha = .4, col = 'red') + 
+geom_point(aes(y = fit), col = 'grey25', alpha = .5) + 
+xlab('Height of Father') +
+ylab('Height of Sons') + 
+ggtitle('Residual Distance from the Model') +
+theme_linedraw()
+
+
+ggplot2::ggsave('regression_01_residuals.png',
+     plot = last_plot(), 
+     width=10, 
+     height=10, 
+     units="cm",
+     bg = "transparent",
+     dpi = 400,
+     scale= 2)
+
+
+# -----------------------------------------------
+# normality assumption of errors (Kolmogorov Smirnoff)
+# -----------------------------------------------
+
+residual_values <- residuals(lm(child ~ + 1 + parent, data = data_alt))
+fitted_values   <- predict(lm(child ~ + 1 + parent, data = data_alt))
+
+data_hom <- data_alt %>%
+            mutate(fit = fitted_values) %>%
+            mutate(errors = residual_values)
+
+
+ks.test(data_hom$errors, 
+  "pnorm", 
+  mean=mean(data_hom$errors), 
+  sd=sd(data_hom$errors)
+  )
+
+
+# -----------------------------------------------
+# normality plot of errors
+# -----------------------------------------------
+
+residual_values <- residuals(lm(child ~ + 1 + parent, data = data_alt))
+fitted_values   <- predict(lm(child ~ + 1 + parent, data = data_alt))
+
+data_hom <- data_alt %>%
+            mutate(fit = fitted_values) %>%
+            mutate(errors = residual_values)
+
+error_mean <- mean(data_hom$errors, na.rm = TRUE)
+error_sd <- sd(data_hom$errors, na.rm = TRUE)
+error_n  <- nrow(data_hom$errors)
+binwidth <- 0.01
+
+data_hom %>%
+ggplot(., aes(x = errors, mean = error_mean, sd = error_sd, binwidth = binwidth, n = error_n)) +
+    theme_linedraw() +
+    geom_histogram(
+        aes(y =..density..),
+        binwidth = binwidth, 
+        colour = "white", 
+        fill = "grey60", 
+        size = 0.1) +
+stat_function(fun = dnorm, args = list(mean = error_mean, sd = error_sd), geom = "line")
+
+
+
+ggplot2::ggsave('regression_04_normality.png',
+     plot = last_plot(), 
+     width=10, 
+     height=10, 
+     units="cm",
+     bg = "transparent",
+     dpi = 400,
+     scale= 2)
+
+
+# -----------------------------------------------
+# homocesdasticiy plot
+# -----------------------------------------------
+
+residual_values <- residuals(lm(child ~ + 1 + parent, data = data_alt))
+fitted_values   <- predict(lm(child ~ + 1 + parent, data = data_alt))
+
+data_hom <- data_alt %>%
+            mutate(fit = fitted_values) %>%
+            mutate(errors = residual_values)
+
+
+data_hom %>%
+ggplot(., aes(y = errors, x = fit)) + 
+geom_point(alpha = .3, col = 'grey20') + 
+# geom_segment(aes(xend = parent, yend = fit), alpha = .4, col = 'red') + 
+# geom_point(aes(y = fit), col = 'grey25', alpha = .5) + 
+xlab('Fitted Values') +
+ylab('Residuals') + 
+ggtitle('Residual Dispersion') +
+geom_hline(yintercept = 0, linetype=2)+
+theme_linedraw()
+
+
+
+ggplot2::ggsave('regression_05_homocedasticity.png',
+     plot = last_plot(), 
+     width=10, 
+     height=10, 
+     units="cm",
+     bg = "transparent",
+     dpi = 400,
+     scale= 2)
+
+
+```
+
+
+
