@@ -1,0 +1,790 @@
+---
+title: "Modelos lineales"
+subtitle: "Clase 15: regresion"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dpi=300,fig.width=7)
+```
+
+# Regresión
+
+- En el presente código se revisan diferentes casos de regresión, donde variamos el tipo de covariable incluida.
+    + variable dicotómica
+    + variable de más de una categoría
+    + variable continua
+    + interacción entre variables
+
+
+# Caso 1: variable dicotómica
+
+## Preparar datos
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# ICCS 2016 random sample of 500 cases
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# load data
+# -----------------------------------------------
+
+data_dem <- psi2301::dem_16
+
+# -----------------------------------------------
+# variables
+# -----------------------------------------------
+
+library(dplyr)
+r4sda::variables_table(data_dem) %>%
+knitr::kable()
+
+# -----------------------------------------------
+# data description
+# -----------------------------------------------
+
+# ? psi2301::dem_16
+
+# Description:
+# 
+#      Datos del Estudio Internacional sobre Educación Cívica y Ciudadana
+#      (ICCS). Esta tabla de datos, incluye las observaciones del módulo
+#      internacional, y del modulo latino americano. Estos datos inlcuyen
+#      500 casos de cada país, ademas de variables tales como: sexo,
+#      edad, perfil de concepciones de la democracia, creencias
+#      antidemocraticas, conocimiento cívico, nivel socioeconómico, y
+#      educacion de los padres, y niveles de conocimiento cívico.
+# 
+# Usage:
+# 
+#      data(dem_16)
+#      
+# Format:
+# 
+#      Objeto clase ‘"cross"’; ver ‘read.cross’.
+# 
+# Source:
+# 
+#      IEA, <https://www.iea.nl/index.php/data-tools/repository/iccs>
+# 
+# References:
+# 
+#      Schulz, W., Carstens, R., Losito, B., & Fraillon, J. (2018). ICCS
+#      2016 Technical Report (W. Schulz, R. Carstens, B. Losito, & J.
+#      Fraillon (eds.)). International Association for the Evaluation of
+#      Educational Achievement (IEA).
+# 
+# Examples:
+# 
+#      data(dem_16)
+#      dplyr::glimpse(dem_16)
+
+# -----------------------------------------------
+# get descriptives
+# -----------------------------------------------
+
+data_dem %>%
+dplyr::select(aut, edu) %>%
+r4sda::get_desc() %>%
+knitr::kable(., digits = 2)
+
+```
+
+## Ajusta modelo de regresión
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# conventional regression
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# caso 1
+# -----------------------------------------------
+
+lm(aut ~ 1 + edu, data = data_dem)
+
+# -----------------------------------------------
+# request summary
+# -----------------------------------------------
+
+lm(aut ~ 1 + edu, data = data_dem) %>%
+summary()
+
+```
+
+## Obtener estimados en formato tabla
+
+```{r, echo=TRUE}
+# -----------------------------------------------------------------------------
+# tidy output
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# get estimates in a table
+# -----------------------------------------------
+
+lm(aut ~ 1 + edu, data = data_dem) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# get fit indexes
+# -----------------------------------------------
+
+lm(aut ~ 1 + edu, data = data_dem) %>%
+broom::glance() %>%
+knitr::kable(., digits = 2)
+
+```
+
+## Ajustar modelos en pasos
+
+```{r, echo=TRUE}
+# -----------------------------------------------------------------------------
+# regression in steps
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# regression in steps
+# -----------------------------------------------
+
+m00 <- as.formula('aut ~ 1')
+m01 <- as.formula('aut ~ 1 + edu')
+
+fit_00 <- lm(m00, data = data_dem)
+fit_01 <- lm(m01, data = data_dem)
+
+texreg::screenreg(
+    list(fit_00, fit_01),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+# -----------------------------------------------
+# anova
+# -----------------------------------------------
+
+# anova(fit_00, fit_01)
+
+# Note: error producto de que los modelos no estan anidados.
+
+# -----------------------------------------------
+# regression in steps, with not ommitted
+# -----------------------------------------------
+
+data_dem_edu <- dplyr::select(data_dem, aut, edu) %>% na.omit()
+
+m00 <- as.formula('aut ~ 1')
+m01 <- as.formula('aut ~ 1 + edu')
+
+
+fit_00 <- lm(m00, data = data_dem_edu)
+fit_01 <- lm(m01, data = data_dem_edu)
+
+texreg::screenreg(
+    list(fit_00, fit_01),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+# -----------------------------------------------
+# anova
+# -----------------------------------------------
+
+anova(fit_00, fit_01)
+
+```
+
+## Estimados estandarizados
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# regression in lavaan
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# regression model with lavaan
+# -----------------------------------------------
+
+reg_model <- '
+
+aut ~ 1     # intercept
+aut ~ edu   # slope
+
+'
+
+# -----------------------------------------------
+# fit model
+# -----------------------------------------------
+
+fit_reg <- lavaan::sem(reg_model, data = data_dem, 
+             mimic="Mplus", estimator = "ML")
+
+# -----------------------------------------------
+# display results
+# -----------------------------------------------
+
+lavaan::summary(fit_reg,
+  standardized=TRUE, 
+  fit.measures=TRUE, 
+  rsquare=TRUE)
+
+```
+
+## Medias esperadas
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# expected means
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# comparison of results with t test
+# -----------------------------------------------
+
+t.test(aut ~ edu, 
+    var.equal = TRUE,
+    data = data_dem)
+
+# -----------------------------------------------
+# t test statistics
+# -----------------------------------------------
+
+t.test(aut ~ edu, 
+    var.equal = TRUE,
+    data = data_dem) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# get expected means
+# -----------------------------------------------
+
+alpha <- lm(aut ~ 1 + edu, data = data_dem) %>%
+         broom::tidy() %>%
+         dplyr::filter(term =='(Intercept)') %>%
+         dplyr::select(estimate) %>%
+         dplyr::pull()
+
+beta <- lm(aut ~ 1 + edu, data = data_dem) %>%
+         broom::tidy() %>%
+         dplyr::filter(term =='edu') %>%
+         dplyr::select(estimate) %>%
+         dplyr::pull()
+
+mean_0 <- alpha
+mean_1 <- alpha + beta
+
+data.frame(
+    group = c(
+        'Sin Educacion Terciaria', 
+        'Con Educación terciaria'),
+    medias = c(mean_0, mean_1)
+    ) %>%
+knitr::kable(., digits = 2)
+
+```
+
+
+## Reparametrización de dummy
+
+- Reparametrizar el modelo, consiste en cambiar la codificación de la variable dummy, de modo que el coeficiente y el intercepto del modelo tome otro significado.
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# model reparametrization
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# check dummy 
+# -----------------------------------------------
+
+dplyr::count(data_dem, edu)
+
+# -----------------------------------------------
+# add reparametrized variables
+# -----------------------------------------------
+
+data_dem <- psi2301::dem_16 %>%
+            mutate(edu_1 = edu) %>%
+            mutate(edu_0 = case_when(
+                edu == 0 ~ 1,
+                edu == 1 ~ 0
+                )) %>%
+            mutate(edu_d = case_when(
+                edu == 0 ~ -1,
+                edu == 1 ~  1
+                )) %>%
+            mutate(edu_g = mean(edu, na.rm = TRUE)) %>%
+            mutate(edu_m = edu - edu_g) %>%
+            dplyr::glimpse()
+
+
+# -----------------------------------------------
+# models with different parametrizations
+# -----------------------------------------------
+
+
+e00 <- as.formula('aut ~ 1')
+e01 <- as.formula('aut ~ 1 + edu')
+e02 <- as.formula('aut ~ 1 + edu_1')
+e03 <- as.formula('aut ~ 1 + edu_0')
+e04 <- as.formula('aut ~ 1 + edu_d')
+e05 <- as.formula('aut ~ 1 + edu_m')
+
+c00 <- lm(e00, data = data_dem)
+c01 <- lm(e01, data = data_dem)
+c02 <- lm(e02, data = data_dem)
+c03 <- lm(e03, data = data_dem)
+c04 <- lm(e04, data = data_dem)
+c05 <- lm(e05, data = data_dem)
+
+texreg::screenreg(
+    list(c00, c01, c02, c03, c04, c05),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+# -----------------------------------------------
+# results
+# -----------------------------------------------
+
+# =========================================================================================
+#              Model 1      Model 2      Model 3      Model 4      Model 5      Model 6    
+# -----------------------------------------------------------------------------------------
+# (Intercept)    49.41 ***    50.18 ***    50.18 ***    47.32 ***    48.75 ***    49.43 ***
+#                (0.23)       (0.27)       (0.27)       (0.45)       (0.26)       (0.23)   
+# edu                         -2.86 ***                                                    
+#                             (0.52)                                                       
+# edu_1                                    -2.86 ***                                       
+#                                          (0.52)                                          
+# edu_0                                                  2.86 ***                          
+#                                                       (0.52)                             
+# edu_d                                                              -1.43 ***             
+#                                                                    (0.26)                
+# edu_m                                                                           -2.86 ***
+#                                                                                 (0.52)   
+# -----------------------------------------------------------------------------------------
+# R^2             0.00         0.01         0.01         0.01         0.01         0.01    
+# Adj. R^2        0.00         0.01         0.01         0.01         0.01         0.01    
+# Num. obs.    2483         2453         2453         2453         2453         2453       
+# =========================================================================================
+# *** p < 0.001; ** p < 0.01; * p < 0.05
+
+```
+
+
+- Notas
+    + Model 1: intercepto es la gran media
+    + Model 2: intercepto es media del grupo de estudiantes de padres sin educación terciaria
+    + Model 3: intercepto es media del grupo de estudiantes de padres sin educación terciaria
+    + Model 4: intercepto es media del grupo de estudiantes de padres con educación terciaria
+    + Model 5: intercepto es el promedio de ambos grupos (con y sin educación terciaria)
+    + Model 6: intercepto es la gran media, a niveles medios de escolaridad de los padres
+
+
+
+# Caso 2: variable categorica con más de dos categorías
+
+## Preparar datos
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# ICCS 2016 random sample of 500 cases
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# load data
+# -----------------------------------------------
+
+data_dem <- psi2301::dem_16
+
+# -----------------------------------------------
+# ordinal covariate
+# -----------------------------------------------
+
+dplyr::count(data_dem, level)
+
+# -----------------------------------------------
+# generate dummy
+# -----------------------------------------------
+
+data_dem <- psi2301::dem_16 %>%
+            mutate(level_0 = case_when(
+                level == 0 ~ 1,
+                level == 1 ~ 0,
+                level == 2 ~ 0,
+                level == 3 ~ 0
+                )) %>%
+            mutate(level_1 = case_when(
+                level == 0 ~ 0,
+                level == 1 ~ 1,
+                level == 2 ~ 0,
+                level == 3 ~ 0
+                )) %>%
+            mutate(level_2 = case_when(
+                level == 0 ~ 0,
+                level == 1 ~ 0,
+                level == 2 ~ 1,
+                level == 3 ~ 0
+                )) %>%
+            mutate(level_3 = case_when(
+                level == 0 ~ 0,
+                level == 1 ~ 0,
+                level == 2 ~ 0,
+                level == 3 ~ 1
+                )) %>%
+            dplyr::glimpse()
+
+
+```
+
+## Ajustar regresion
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# ICCS 2016 random sample of 500 cases
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# regression in steps
+# -----------------------------------------------
+
+m00 <- as.formula('aut ~ 1')
+m01 <- as.formula('aut ~ 1 + level_1 + level_2 + level_3')
+
+
+fit_00 <- lm(m00, data = data_dem)
+fit_01 <- lm(m01, data = data_dem)
+
+texreg::screenreg(
+    list(fit_00, fit_01),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+# -----------------------------------------------
+# descriptive means
+# -----------------------------------------------
+
+data_dem %>%
+group_by(level_lab) %>%
+summarize(
+    aut_mean = mean(aut, na.rm = TRUE)) %>%
+knitr::kable(., digits = 2)
+
+
+# -----------------------------------------------
+# get expected means
+# -----------------------------------------------
+
+alpha <- fit_01 %>%
+         broom::tidy() %>%
+         dplyr::filter(term =='(Intercept)') %>%
+         dplyr::select(estimate) %>%
+         dplyr::pull()
+
+beta_1 <-  fit_01 %>%
+           broom::tidy() %>%
+           dplyr::filter(term =='level_1') %>%
+           dplyr::select(estimate) %>%
+           dplyr::pull()
+
+beta_2 <-  fit_01 %>%
+           broom::tidy() %>%
+           dplyr::filter(term =='level_2') %>%
+           dplyr::select(estimate) %>%
+           dplyr::pull()
+
+beta_3 <-  fit_01 %>%
+           broom::tidy() %>%
+           dplyr::filter(term =='level_3') %>%
+           dplyr::select(estimate) %>%
+           dplyr::pull()
+
+
+mean_0 <- alpha
+mean_1 <- alpha + beta_1
+mean_2 <- alpha + beta_2
+mean_3 <- alpha + beta_3
+
+
+data.frame(
+    group = c(
+        'level 0', 
+        'level 1',
+        'level 2',
+        'level 3'
+        ),
+    medias = c(
+        mean_0, 
+        mean_1,
+        mean_2,
+        mean_3
+        )
+    ) %>%
+knitr::kable(., digits = 2)
+
+```
+
+# Caso 3: variable continua
+
+## Preparar datos
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# ICCS 2016 random sample of 500 cases
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# load data
+# -----------------------------------------------
+
+data_dem <- psi2301::dem_16
+
+# -----------------------------------------------
+# ordinal covariate
+# -----------------------------------------------
+
+data_dem %>%
+dplyr::select(aut, civ) %>%
+r4sda::get_desc() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# centering variables
+# -----------------------------------------------
+
+data_dem <- psi2301::dem_16 %>%
+            mutate(civ_u = civ) %>%
+            mutate(civ_m = civ - mean(civ, na.rm = TRUE)) %>%
+            mutate(civ_z = r4sda::z_score(civ)) %>%
+            mutate(aut_z = r4sda::z_score(aut)) %>%
+            dplyr::glimpse()
+
+
+```
+
+## Ajustar regresion
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# ICCS 2016 random sample of 500 cases
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# models with different parametrizations
+# -----------------------------------------------
+
+
+e00 <- as.formula('aut ~ 1')
+e01 <- as.formula('aut ~ 1 + civ_u')
+e02 <- as.formula('aut ~ 1 + civ_m')
+e03 <- as.formula('aut ~ 1 + civ_z')
+e04 <- as.formula('aut_z ~ 1 + civ_z')
+
+c00 <- lm(e00, data = data_dem)
+c01 <- lm(e01, data = data_dem)
+c02 <- lm(e02, data = data_dem)
+c03 <- lm(e03, data = data_dem)
+c04 <- lm(e04, data = data_dem)
+
+texreg::screenreg(
+    list(c00, c01, c02, c03, c04),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+# -----------------------------------------------------------------------------
+# regression in lavaan
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# regression model with lavaan
+# -----------------------------------------------
+
+reg_model <- '
+
+aut ~ 1     # intercept
+aut ~ civ   # slope
+
+'
+
+# -----------------------------------------------
+# fit model
+# -----------------------------------------------
+
+fit_reg <- lavaan::sem(reg_model, data = data_dem, 
+             mimic="Mplus", estimator = "ML")
+
+# -----------------------------------------------
+# display results
+# -----------------------------------------------
+
+lavaan::summary(fit_reg,
+  standardized=TRUE, 
+  fit.measures=TRUE, 
+  rsquare=TRUE)
+
+```
+
+# Caso 4: interaccion
+
+## Preparar datos
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# ICCS 2016 random sample of 500 cases
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# countries
+# -----------------------------------------------
+
+psi2301::iccs_09_lat %>%
+dplyr::count(COUNTRY)
+
+# -----------------------------------------------
+# moderator
+# -----------------------------------------------
+
+
+psi2301::iccs_09_lat %>%
+dplyr::count(PARINT)
+
+# -----------------------------------------------
+# selected variables
+# -----------------------------------------------
+
+psi2301::iccs_09_lat %>%
+dplyr::select(PV1CIV, NISB, PARINT) %>%
+r4sda::get_desc() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# centering variables
+# -----------------------------------------------
+
+data_par <- psi2301::iccs_09_lat %>%
+            dplyr::filter(COUNTRY == 'PRY') %>%
+            mutate(aut_u = AUTGOV) %>%
+            mutate(aut_z = r4sda::z_score(aut_u)) %>%
+            mutate(ses_z = r4sda::z_score(NISB)) %>%
+            mutate(int_z = r4sda::z_score(INTPOLS)) %>%
+            mutate(eff_z = r4sda::z_score(CITEFF)) %>%
+            mutate(civ_u = PV1CIV) %>%
+            mutate(civ_z = r4sda::z_score(civ_u)) %>%
+            mutate(civ_c = r4sda::c_mean(civ_z, id_j)) %>%
+            mutate(civ_g = r4sda::c_mean(civ_z, id_k)) %>%
+            mutate(civ_m = civ_z - civ_g) %>%
+            mutate(civ_w = civ_z - civ_c) %>%
+            mutate(civ_b = civ_c - civ_g) %>%
+            mutate(opd_z = r4sda::z_score(OPDISC)) %>%
+            mutate(opd_c = r4sda::c_mean(opd_z, id_j)) %>%
+            mutate(opd_g = r4sda::c_mean(opd_z, id_k)) %>%
+            mutate(opd_m = opd_z - opd_g) %>%
+            mutate(opd_w = opd_z - opd_c) %>%
+            mutate(opd_b = opd_c - opd_g) %>%
+            mutate(edu_t = case_when(
+                 HISCED == 5 ~ 1,
+                 HISCED == 4 ~ 0,
+                 HISCED == 3 ~ 0,  
+                 HISCED == 2 ~ 0,
+                 HISCED == 1 ~ 0,
+                 HISCED == 0 ~ 0)) %>%
+            mutate(exe_t = case_when(
+                 SISCED == 4 ~ 1,
+                 SISCED == 3 ~ 0,  
+                 SISCED == 2 ~ 0,
+                 SISCED == 1 ~ 0,
+                 SISCED == 0 ~ 0)) %>%    
+            mutate(int_t = case_when(
+                 PARINT == 3 ~ 1,  
+                 PARINT == 2 ~ 1,
+                 PARINT == 1 ~ 0,
+                 PARINT == 0 ~ 0)) %>%                             
+            mutate(int_s = ses_z*int_t) %>%
+            # random selection
+            dplyr::sample_n(500, weights = ws) %>%
+            dplyr::glimpse()
+
+
+```
+
+## Ajustar regresion
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# ICCS 2016 random sample of 500 cases
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# models with different parametrizations
+# -----------------------------------------------
+
+
+e00 <- as.formula('aut_z ~ 1')
+e01 <- as.formula('aut_z ~ 1 + ses_z')
+e02 <- as.formula('aut_z ~ 1 + ses_z + int_t')
+e03 <- as.formula('aut_z ~ 1 + ses_z + int_t + int_s')
+
+
+c00 <- lm(e00, data = data_par)
+c01 <- lm(e01, data = data_par)
+c02 <- lm(e02, data = data_par)
+c03 <- lm(e03, data = data_par)
+
+texreg::screenreg(
+    list(c00, c01, c02, c03),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+
+# -----------------------------------------------------------------------------
+# interaction plot
+# -----------------------------------------------------------------------------
+
+
+interaction_model <- lm(aut_z ~ ses_z*int_t, data = data_par)
+interactions::johnson_neyman(interaction_model, pred = ses_z, modx = int_t)
+interactions::probe_interaction(interaction_model, pred = ses_z, modx = int_t)
+
+
+```

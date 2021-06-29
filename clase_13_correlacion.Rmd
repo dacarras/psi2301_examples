@@ -33,6 +33,7 @@ data_correlation <- readr::read_csv(url_file)
 # display data
 # -----------------------------------------------
 
+library(dplyr)
 data_correlation[1:10,] %>%
 knitr::kable(., digits = 2)
 
@@ -170,6 +171,7 @@ cor(x = data_tol$L_ATTCORR,
     use = 'complete.obs',
     method = 'pearson')
 
+
 #------------------------------------------------
 # correlation via stats::cor(), get p value
 #------------------------------------------------
@@ -289,6 +291,19 @@ dplyr::select(
 r4sda::remove_labels() %>%
 corrr::correlate() %>%
 corrr::stretch() %>%
+knitr::kable(., digits = 2)
+
+
+data_tol %>%
+dplyr::select(
+  L_ATTCORR, L_AUTGOV, S_NISB, PV1CIV, 
+  S_CIVLRN, S_OPDISC, S_POLDISC, S_SOCMED
+  ) %>%
+r4sda::remove_labels() %>%
+corrr::correlate() %>%
+corrr::stretch() %>%
+mutate(r_abs = abs(r)) %>%
+arrange(desc(r_abs)) %>%
 knitr::kable(., digits = 2)
 
 
