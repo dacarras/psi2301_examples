@@ -1,0 +1,361 @@
+---
+title: "Gráficos"
+subtitle: "Clase 02"
+output: github_document
+---
+
+
+```{r setup, include=FALSE}
+#------------------------------------------------------------------------------
+# setup
+#------------------------------------------------------------------------------
+
+# knitr option
+knitr::opts_chunk$set(dev = 'png')
+options(knitr.kable.NA = '', digits = 2)
+
+# remove all previous objects
+rm(list = ls())
+
+
+# set appropiate time zone via OlsonNames()
+Sys.setenv(TZ="America/Santiago")
+Sys.getenv("TZ")
+Sys.time()
+
+# fonts
+Sys.setenv(LANG="en_US.UTF-8")
+
+# load main library
+library(dplyr)
+
+
+# ------------------------------------------------------
+# get times
+# ------------------------------------------------------
+
+start_time <- Sys.time()
+
+
+```
+
+
+# Carpetas
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# folders
+#------------------------------------------------------------------------------
+
+# ---------------------------------------------------------
+# get local path from relative path
+# ---------------------------------------------------------
+
+
+local_path <- function(x){
+  paste0(tools::file_path_as_absolute('..'),x)
+}
+
+# Note: set current directory as working directory
+
+# ---------------------------------------------------------
+# folder with data files
+# ---------------------------------------------------------
+
+data_folder   <- local_path('/')
+save_folder   <- local_path('/')
+
+# ---------------------------------------------------------
+# load main library
+# ---------------------------------------------------------
+
+library(dplyr)
+
+# ---------------------------------------------------------
+# check folder
+# ---------------------------------------------------------
+
+list.files(data_folder)
+
+
+```
+
+# Códigos Clase 02
+
+
+## Abrir y transformar datos
+
+
+```{r echo=TRUE}
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
+
+data_life_wide <- readxl::read_xlsx(
+                  'life_expectancy_2018.xlsx',
+                  sheet = 'plain_data')
+
+income <- readxl::read_xlsx('income_2000.xlsx')
+
+# -----------------------------------------------
+# transformar datos a long format
+# -----------------------------------------------
+
+life_stacked <- data_life_wide %>%
+                dplyr::filter(type == 'country') %>%
+                tidyr::gather('year', 'life', 
+                  -country_name, -country_code, -indicator_name, -indicator_code, 
+                  -income_group, -region, -type) %>%
+                dplyr::select(country_name, year, life, region, income_group) %>%
+                mutate(year_num = as.numeric(year))
+
+
+# -----------------------------------------------
+# tabla de datos
+# -----------------------------------------------
+
+str(data_life_wide)
+
+# -----------------------------------------------
+# tabla de datos
+# -----------------------------------------------
+
+str(life_stacked)
+
+# -----------------------------------------------
+# preparar datos para histograma
+# -----------------------------------------------
+
+example_4 <- life_stacked %>%
+             dplyr::filter(year %in% c(2000)) %>%
+             na.omit() %>%
+             mutate(age = round(life, 0)) %>%
+             mutate(observed = 1) %>%
+             group_by(life) %>%
+             mutate(count = cumsum(observed)) %>%
+             ungroup() %>%
+             dplyr::select(country_name, year, life, count) %>%
+             rename(n = count) %>%
+             print
+
+# -----------------------------------------------
+# preparar datos para scatter
+# -----------------------------------------------
+
+example_5 <- life_stacked %>%
+             dplyr::filter(year %in% c(2000)) %>%
+             na.omit() %>%
+             mutate(age = round(life, 0)) %>%
+             mutate(observed = 1) %>%
+             group_by(life) %>%
+             mutate(count = cumsum(observed)) %>%
+             ungroup() %>%
+             dplyr::select(country_name, year, life, count) %>%
+             rename(n = count) %>%
+             dplyr::left_join(., 
+              dplyr::select(income, country_name, income),
+              by = 'country_name') %>%
+             print
+# -----------------------------------------------
+# preparar datos para mosaico
+# -----------------------------------------------
+
+example_6 <- life_stacked %>%
+             dplyr::filter(year %in% c(2000)) %>%
+             na.omit() %>%
+             mutate(age = round(life, 0)) %>%
+             mutate(observed = 1) %>%
+             group_by(life) %>%
+             mutate(count = cumsum(observed)) %>%
+             ungroup() %>%
+             dplyr::select(country_name, year, life, count, income_group) %>%
+             rename(n = count) %>%
+             dplyr::left_join(., 
+              dplyr::select(income, country_name, income),
+              by = 'country_name') %>%
+             mutate(life_group = case_when(
+              between(life, 30,50) ~ '30 - 50 years',
+              between(life, 51,70) ~ '51 - 70 years',
+              between(life, 71,100) ~'71 or more years',
+              )) %>%
+             dplyr::select(country_name, life_group, income_group) %>%
+             na.omit() %>%
+             mutate(income_group = factor(income_group, levels = c(
+            'Low income',
+            'Lower middle income',
+            'Upper middle income',
+            'High income'
+            ))) %>% print
+
+
+
+```
+
+# Plots en R base
+
+## Histogramas en R base
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# histogramas en R base
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# histogram binwidth = 5
+# -----------------------------------------------
+hist(
+  example_4$life,     # emplea el vector de datos
+  breaks = 5,         # define el ancho del intervalo
+  col    = "#397CDA", # define el color
+  freq   = TRUE       # emplea frecuencias
+  )
+
+
+# -----------------------------------------------
+# histogram binwidth = 5
+# -----------------------------------------------
+hist(
+  example_4$life,     # emplea el vector de datos
+  breaks = 5,         # define el ancho del intervalo
+  col    = "#397CDA", # define el color
+  freq   = TRUE,      # emplea frecuencias
+  main   = 'Histograma de años expectativas de vida',
+  xlab   = 'Años de expectativas de vida (2000)'
+  )
+
+
+# -----------------------------------------------
+# histogram binwidth = 8
+# -----------------------------------------------
+hist(
+  example_4$life,     # emplea el vector de datos
+  breaks = 8,         # define el ancho del intervalo
+  col    = "#397CDA", # define el color
+  freq   = TRUE,      # emplea frecuencias
+  main   = 'Histograma de años expectativas de vida',
+  xlab   = 'Años de expectativas de vida (2000)'
+  )
+
+```
+
+
+## Scatter en R base
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# scatter en R base
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# scatter
+# -----------------------------------------------
+
+plot(
+  x = example_5$income, # define variable eje x
+  y = example_5$life,   # define variable eje y
+  col    = "#397CDA"    # define el color
+  )
+
+
+# -----------------------------------------------
+# scatter con titulos
+# -----------------------------------------------
+
+plot(
+  x = example_5$income, # define variable eje x
+  y = example_5$life,   # define variable eje y
+  col    = "#397CDA",   # define el color
+  main   = 'Scatter life expectancy at birht by GDP',
+  ylab   = 'Life expectancy at birth',
+  xlab   = 'Gross Domestic Product per capita (GDP)'
+  )
+
+
+```
+
+
+## Mosaic en R base
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# mosaicplot en R base
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# mosaicplot
+# -----------------------------------------------
+
+cross_table <- table(example_6$income_group, example_6$life_group)
+
+mosaicplot(cross_table)
+
+# -----------------------------------------------
+# mosaicplot con colores
+# -----------------------------------------------
+
+mosaicplot(
+  cross_table,
+  col = c('red','grey80','grey20')
+  )
+
+# -----------------------------------------------
+# mosaicplot con ejes
+# -----------------------------------------------
+
+mosaicplot(
+  cross_table,
+  col = c('red','grey80','grey20'),
+  main   = 'Mosaic of Life expectancy at birth (ranges) by Income groups',
+  ylab   = 'Life expectancy at birth (ranges)',
+  xlab   = 'Income groups'
+  )
+
+```
+
+
+## Barplot en R base
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# barplot en R base
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# barplot
+# -----------------------------------------------
+
+data_barplot <- table(example_6$life_group)
+
+barplot(
+  data_barplot
+  )
+
+# -----------------------------------------------
+# barplot con colores
+# -----------------------------------------------
+
+barplot(
+  data_barplot,
+  col = c('#397CDA')
+  )
+
+# -----------------------------------------------
+# barplot con ejes
+# -----------------------------------------------
+
+barplot(
+  data_barplot,
+  col = c('#397CDA'),
+  xlab   = 'Grouped Life Expectancy at birth'
+  )
+
+
+
+```
+
+
