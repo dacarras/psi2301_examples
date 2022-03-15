@@ -81,113 +81,59 @@ list.files(data_folder)
 
 ```
 
+# Instalar librerias
+
+```{r , echo=TRUE, eval=FALSE}
+
+#------------------------------------------------------------------------------
+# librerias
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# librerias en uso
+# -----------------------------------------------
+
+install.packages('tidyverse')
+
+install.packages('devtools')
+
+# credentials::set_github_pat()
+
+devtools::install_github(
+  'dacarras/psi2301',
+  force = TRUE)
+
+```
+
 # Códigos Clase 02
 
 
-## Abrir y transformar datos
+## Abrir datos
 
 
 ```{r echo=TRUE}
+
+#------------------------------------------------------------------------------
+# cargar datos
+#------------------------------------------------------------------------------
+
 # -----------------------------------------------
 # abrir datos
 # -----------------------------------------------
 
-data_life_wide <- readxl::read_xlsx(
-                  'life_expectancy_2018.xlsx',
-                  sheet = 'plain_data')
-
-income <- readxl::read_xlsx('income_2000.xlsx')
+data_life <- psi2301::life_2000
 
 # -----------------------------------------------
-# transformar datos a long format
+# ver structura de datis
 # -----------------------------------------------
 
-life_stacked <- data_life_wide %>%
-                dplyr::filter(type == 'country') %>%
-                tidyr::gather('year', 'life', 
-                  -country_name, -country_code, -indicator_name, -indicator_code, 
-                  -income_group, -region, -type) %>%
-                dplyr::select(country_name, year, life, region, income_group) %>%
-                mutate(year_num = as.numeric(year))
-
+str(data_life)
 
 # -----------------------------------------------
-# tabla de datos
+# abrir datos de ingresos
 # -----------------------------------------------
 
-str(data_life_wide)
-
-# -----------------------------------------------
-# tabla de datos
-# -----------------------------------------------
-
-str(life_stacked)
-
-# -----------------------------------------------
-# preparar datos para histograma
-# -----------------------------------------------
-
-example_4 <- life_stacked %>%
-             dplyr::filter(year %in% c(2000)) %>%
-             na.omit() %>%
-             mutate(age = round(life, 0)) %>%
-             mutate(observed = 1) %>%
-             group_by(life) %>%
-             mutate(count = cumsum(observed)) %>%
-             ungroup() %>%
-             dplyr::select(country_name, year, life, count) %>%
-             rename(n = count) %>%
-             print
-
-# -----------------------------------------------
-# preparar datos para scatter
-# -----------------------------------------------
-
-example_5 <- life_stacked %>%
-             dplyr::filter(year %in% c(2000)) %>%
-             na.omit() %>%
-             mutate(age = round(life, 0)) %>%
-             mutate(observed = 1) %>%
-             group_by(life) %>%
-             mutate(count = cumsum(observed)) %>%
-             ungroup() %>%
-             dplyr::select(country_name, year, life, count) %>%
-             rename(n = count) %>%
-             dplyr::left_join(., 
-              dplyr::select(income, country_name, income),
-              by = 'country_name') %>%
-             print
-# -----------------------------------------------
-# preparar datos para mosaico
-# -----------------------------------------------
-
-example_6 <- life_stacked %>%
-             dplyr::filter(year %in% c(2000)) %>%
-             na.omit() %>%
-             mutate(age = round(life, 0)) %>%
-             mutate(observed = 1) %>%
-             group_by(life) %>%
-             mutate(count = cumsum(observed)) %>%
-             ungroup() %>%
-             dplyr::select(country_name, year, life, count, income_group) %>%
-             rename(n = count) %>%
-             dplyr::left_join(., 
-              dplyr::select(income, country_name, income),
-              by = 'country_name') %>%
-             mutate(life_group = case_when(
-              between(life, 30,50) ~ '30 - 50 years',
-              between(life, 51,70) ~ '51 - 70 years',
-              between(life, 71,100) ~'71 or more years',
-              )) %>%
-             dplyr::select(country_name, life_group, income_group) %>%
-             na.omit() %>%
-             mutate(income_group = factor(income_group, levels = c(
-            'Low income',
-            'Lower middle income',
-            'Upper middle income',
-            'High income'
-            ))) %>% print
-
+knitr::kable(data_life)
 
 
 ```
@@ -206,7 +152,7 @@ example_6 <- life_stacked %>%
 # histogram binwidth = 5
 # -----------------------------------------------
 hist(
-  example_4$life,     # emplea el vector de datos
+  data_life$life,     # emplea el vector de datos
   breaks = 5,         # define el ancho del intervalo
   col    = "#397CDA", # define el color
   freq   = TRUE       # emplea frecuencias
@@ -217,7 +163,7 @@ hist(
 # histogram binwidth = 5
 # -----------------------------------------------
 hist(
-  example_4$life,     # emplea el vector de datos
+  data_life$life,     # emplea el vector de datos
   breaks = 5,         # define el ancho del intervalo
   col    = "#397CDA", # define el color
   freq   = TRUE,      # emplea frecuencias
@@ -230,7 +176,7 @@ hist(
 # histogram binwidth = 8
 # -----------------------------------------------
 hist(
-  example_4$life,     # emplea el vector de datos
+  data_life$life,     # emplea el vector de datos
   breaks = 8,         # define el ancho del intervalo
   col    = "#397CDA", # define el color
   freq   = TRUE,      # emplea frecuencias
@@ -254,8 +200,8 @@ hist(
 # -----------------------------------------------
 
 plot(
-  x = example_5$income, # define variable eje x
-  y = example_5$life,   # define variable eje y
+  x = data_life$income, # define variable eje x
+  y = data_life$life,   # define variable eje y
   col    = "#397CDA"    # define el color
   )
 
@@ -265,10 +211,10 @@ plot(
 # -----------------------------------------------
 
 plot(
-  x = example_5$income, # define variable eje x
-  y = example_5$life,   # define variable eje y
+  x = data_life$income, # define variable eje x
+  y = data_life$life,   # define variable eje y
   col    = "#397CDA",   # define el color
-  main   = 'Scatter life expectancy at birht by GDP',
+  main   = 'Scatter life expectancy at birth by GDP',
   ylab   = 'Life expectancy at birth',
   xlab   = 'Gross Domestic Product per capita (GDP)'
   )
@@ -289,7 +235,7 @@ plot(
 # mosaicplot
 # -----------------------------------------------
 
-cross_table <- table(example_6$income_group, example_6$life_group)
+cross_table <- table(data_life$income_group, data_life$life_group)
 
 mosaicplot(cross_table)
 
@@ -329,7 +275,7 @@ mosaicplot(
 # barplot
 # -----------------------------------------------
 
-data_barplot <- table(example_6$life_group)
+data_barplot <- table(data_life$life_group)
 
 barplot(
   data_barplot
