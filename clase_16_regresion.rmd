@@ -1,0 +1,705 @@
+---
+title: "Modelos lineales"
+subtitle: "Clase 16: regresion"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dpi=300,fig.width=7)
+```
+
+# Regresión
+
+- En el presente código se revisan diferentes casos de regresión.
+    - Interacción entre variables dicotómicas
+    - Interacción entre variable dicotómica y continua
+    - Interacción entre variables continuas
+    - Ejemplos de evaluación de varias hipótesis
+
+# Caso 1: Interacción entre variables dicotómicas
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# Abrevaya (2006)
+# -----------------------------------------------------------------------------
+
+#------------------------------------------------
+# datos peso al nacer
+#------------------------------------------------
+
+data_birth <- psi2301::smoking
+
+#------------------------------------------------
+# data description
+#------------------------------------------------
+
+
+# ? psi2301::smoking
+
+
+# Description:
+# 
+#      Estudio panel con el peso de recien nacidos, y antecedentes de las
+#      madres, incluyendo edad al nacer, consumo de cigarrillos por parte
+#      de la madre, educación de la madres, entre otros indicadores
+#      (Abrevaya, 2006).
+#  
+# Details:
+# 
+#      Estos datos son empleados en Rabe-Hesketh & Skrondal (2012), y
+#      contienen un 10 de los registros originales (una muestra al azar).
+#      Son datos de 8604 nacidos, de 3978 madres.
+# 
+#      Listado de variables:
+# 
+#      momid: mother identiﬁer
+# 
+#      birwt: birthweight (in grams)
+# 
+#      mage: mother’s age at the birth of the child (in years)
+# 
+#      smoke: dummy variable for mother smoking during pregnancy (1:
+#      smoking; 0: not smoking)
+# 
+#      male: dummy variable for baby being male (1: male; 0: female)
+# 
+#      married: dummy variable for mother being married (1: married; 0:
+#      unmarried)
+# 
+#      hsgrad: dummy variable for mother having graduated from high
+#      school (1: graduated; 0: did not graduate)
+# 
+#      somecoll: dummy variable for mother having some college education,
+#      but no degree (1: some college; 0: no college)
+# 
+#      collgrad: dummy variable for mother having graduated from college
+#      (1: graduated; 0: did not graduate)
+# 
+#      black: dummy variable for mother being black (1: black; 0: white)
+# 
+#      kessner2: dummy variable for Kessner index = 2, or intermediate
+#      prenatal care (1: index=2; 0: otherwise)
+# 
+#      kessner3: dummy variable for Kessner index = 3, or inadequate
+#      prenatal care (1:index=3; 0: otherwise)
+# 
+#      novisit: dummy variable for no prenatal care visit (1: no visit;
+#      0: at least 1 visit)
+# 
+#      pretri2: dummy variable for ﬁrst prenatal care visit having
+#      occurred in second trimester (1: yes; 0: no)
+# 
+#      pretri3: dummy variable for ﬁrst prenatal care visit having
+#      occurred in third trimester (1: yes; 0: no)
+# 
+#      Notes: Smoking status was determined from the answer to the
+#      question asked on the birth certiﬁcate whether there was tobacco
+#      use during pregnancy. The dummy variables for mother’s
+#      education—hsgrad, somecoll, and collgrad—were derived from the
+#      years of education given on the birth certiﬁcate. The Kessner
+#      index is a measure of the adequacy of prenatal care (1: adequate;
+#      2: intermediate; 3: inadequate) based on the timing of the ﬁrst
+#      prenatal visit and the number of prenatal visits, taking into
+#      account the gestational age of the fetus.
+# 
+# Source:
+# 
+#      https://www.stata-press.com/data/mlmus3.html
+# 
+# References:
+# 
+#      Abrevaya, J. 2006. Estimating the eﬀect of smoking on birth
+#      outcomes using a matched panel data approach. Journal of Applied
+#      Econometrics 21: 489–519.
+# 
+# Examples:
+# 
+#      data(smoking)
+#      dplyr::glimpse((smoking)
+
+
+#------------------------------------------------
+# preparar datos
+#------------------------------------------------
+
+library(dplyr)
+data_first <- psi2301::smoking %>%
+              r4sda::remove_labels() %>%
+              dplyr::filter(idx == 1) %>%
+              mutate(kg = birwt/1000)
+
+# Nota: seleccionamos los datos del primer nacido.
+#       esto nos garantiza de que tengamos datos independientes.
+#       De lo contrario, tendriamos nacidos que provienen de las mismas
+#       madres.
+
+#------------------------------------------------
+# descriptivos
+#------------------------------------------------
+
+data_first %>%
+dplyr::select(
+    kg,        # peso al nacer en kilogramos
+    mage,      # edad de la madre al nacimiento del recien nacido
+    hsgrad,    # escolaridad: terminó educación formal
+    somecoll,  # escolaridad: cuenta con algunos años de escolaridad terciaria
+    collgrad,  # escolaridad: cuenta con estudios terciarios finalizados
+    black,     # madre de color
+    novisit,   # sin visita de control prenatal (1 = sin visitas, 0 = con visitas)
+    smoke      # fuma
+    ) %>%
+r4sda:::get_desc() %>%
+knitr::kable(., digits = 2)
+
+#------------------------------------------------
+# preparar datos
+#------------------------------------------------
+
+library(dplyr)
+data_first <- psi2301::smoking %>%
+              r4sda::remove_labels() %>%
+              dplyr::filter(idx == 1) %>%
+              mutate(kg = birwt/1000) %>%
+              mutate(mage_g = mean(mage, na.rm = TRUE)) %>%
+              mutate(mage_m = mage - mage_g)
+              
+
+
+#------------------------------------------------
+# descriptivos
+#------------------------------------------------
+
+data_first %>%
+dplyr::select(
+    kg,        # peso al nacer en kilogramos
+    mage_m,    # edad de la madre al nacimiento 
+               #      del recien nacido (centrada a la gran media)
+    hsgrad,    # escolaridad: terminó educación formal
+    somecoll,  # escolaridad: cuenta con algunos años de escolaridad terciaria
+    collgrad,  # escolaridad: cuenta con estudios terciarios finalizados
+    black,     # madre de color
+    novisit,   # sin visita de control prenatal (1 = sin visitas, 0 = con visitas)
+    smoke      # fuma
+    ) %>%
+r4sda:::get_desc() %>%
+knitr::kable(., digits = 2)
+
+
+# -----------------------------------------------
+# regression in steps
+# -----------------------------------------------
+
+m00 <- as.formula('kg ~ 1')
+m01 <- as.formula('kg ~ 1 + smoke')
+m02 <- as.formula('kg ~ 1 + novisit')
+m03 <- as.formula('kg ~ 1 + smoke + novisit')
+m04 <- as.formula('kg ~ 1 + novisit*smoke')
+
+f00 <- lm(m00, data = data_first)
+f01 <- lm(m01, data = data_first)
+f02 <- lm(m02, data = data_first)
+f03 <- lm(m03, data = data_first)
+f04 <- lm(m04, data = data_first)
+
+texreg::screenreg(
+    list(f00, f01, f02, f03, f04),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+# -----------------------------------------------
+# ANOVA para interaccion
+# -----------------------------------------------
+
+survey::regTermTest(f04,c('smoke:novisit'))
+
+# -----------------------------------------------
+# ANOVA para comparar modelos
+# -----------------------------------------------
+
+
+anova(f03, f04)
+
+
+# -----------------------------------------------
+# summary traditional
+# -----------------------------------------------
+
+summary(f04)
+
+
+# -----------------------------------------------
+# summary with broom
+# -----------------------------------------------
+
+broom::glance(f03) %>%
+knitr::kable(., digits = 2)
+
+broom::glance(f04) %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# codigos para obtener interacciones
+# -----------------------------------------------
+
+# codigo 1
+interaction_model <- lm(kg ~ smoke + novisit + novisit:smoke, 
+    data = data_first)
+
+summary(interaction_model)
+
+# codigo 2
+interaction_model <- lm(kg ~ smoke + novisit + novisit*smoke, 
+    data = data_first)
+
+summary(interaction_model)
+
+# codigo 3
+library(dplyr)
+data_first <- psi2301::smoking %>%
+              r4sda::remove_labels() %>%
+              dplyr::filter(idx == 1) %>%
+              mutate(kg = birwt/1000) %>%
+              mutate(mage_g = mean(mage, na.rm = TRUE)) %>%
+              mutate(mage_m = mage - mage_g) %>%
+              mutate(int = smoke*novisit)
+              
+
+data_first %>%
+dplyr::select(kg, smoke, novisit, int) %>%
+dplyr::sample_n(50) %>%
+knitr::kable()
+
+
+interaction_model <- lm(kg ~ smoke + novisit + int, 
+    data = data_first)
+
+summary(interaction_model)
+
+
+# -----------------------------------------------
+# interaction visualization
+# -----------------------------------------------
+
+# codigo 1
+interaction_model <- lm(kg ~ smoke + novisit + novisit:smoke, 
+    data = data_first)
+
+summary(interaction_model)
+
+interactions::johnson_neyman(
+    interaction_model, 
+    pred = smoke, 
+    modx = novisit
+    )
+
+interactions::probe_interaction(
+    interaction_model, 
+    pred = smoke, 
+    modx = novisit
+    )
+
+# -----------------------------------------------
+# ANOVA per term
+# -----------------------------------------------
+
+survey::regTermTest(f04,c('novisit','smoke'))
+
+survey::regTermTest(f04,c('novisit'))
+
+survey::regTermTest(f04,c('smoke'))
+
+survey::regTermTest(f04,c('smoke:novisit'))
+
+
+```
+
+
+# Caso 2: interaccion dicotómica y continua
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# ICCS 2009 random sample of 500 cases
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# countries
+# -----------------------------------------------
+
+psi2301::iccs_09_lat %>%
+dplyr::count(COUNTRY)
+
+# -----------------------------------------------
+# data
+# -----------------------------------------------
+
+#
+# ? psi2301::iccs_09_lat
+# 
+# 
+# ICCS 2009 lat
+# 
+# Description:
+# 
+#      Datos del Estudio Internacional sobre Educación Cívica y Ciudadana
+#      (ICCS). Esta tabla de datos, incluye las observaciones del módulo
+#      latino americano. Estos datos inlcuyen muestras representativas de
+#      estudiantes de octavo grado, de Chile, Colombia, México, República
+#      Dominicana, Guatemala, Mexico y Paraguay
+# 
+# Usage:
+# 
+#      data(iccs_09_lat)
+#      
+# Format:
+# 
+#      Objeto clase ‘"cross"’; ver ‘read.cross’.
+# 
+# Source:
+# 
+#      IEA, <https://www.iea.nl/index.php/data-tools/repository/iccs>
+# 
+# References:
+# 
+#      Schulz, W., Ainley, J., & Fraillon, J. (2011). ICCS 2009 Technical
+#      Report (W. Schulz, J. Ainley, & J. Fraillon (eds.)). International
+#      Association for the Evaluation of Educational Achievement (IEA).
+#      http://www.iea.nl/fileadmin/user_upload/Publications/Electronic_versions/ICCS_2009_Technical_Report.pdf
+#  
+#  Examples:
+#  
+#       data(iccs_09_lat)
+#       dplyr::glimpse(iccs_09_lat)
+#  
+
+# -----------------------------------------------
+# moderator
+# -----------------------------------------------
+
+
+psi2301::iccs_09_lat %>%
+dplyr::count(PARINT)
+
+# -----------------------------------------------
+# selected variables
+# -----------------------------------------------
+
+psi2301::iccs_09_lat %>%
+dplyr::select(PV1CIV, NISB, PARINT) %>%
+r4sda::get_desc() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# centering variables
+# -----------------------------------------------
+
+set.seed(12345)
+data_par <- psi2301::iccs_09_lat %>%
+            dplyr::filter(COUNTRY == 'PRY') %>%
+            # autoritarismo en bruto
+            mutate(aut_u = AUTGOV) %>%
+            # diferentes variables estandarizadas
+            mutate(aut_z = r4sda::z_score(aut_u)) %>%
+            mutate(ses_z = r4sda::z_score(NISB)) %>%
+            mutate(int_z = r4sda::z_score(INTPOLS)) %>%
+            mutate(eff_z = r4sda::z_score(CITEFF)) %>%
+            # puntajes de conocimiento civico
+            mutate(civ_u = PV1CIV) %>%
+            mutate(civ_z = r4sda::z_score(civ_u)) %>%
+            mutate(civ_c = r4sda::c_mean(civ_z, id_j)) %>%
+            mutate(civ_g = r4sda::c_mean(civ_z, id_k)) %>%
+            mutate(civ_m = civ_z - civ_g) %>%
+            mutate(civ_w = civ_z - civ_c) %>%
+            mutate(civ_b = civ_c - civ_g) %>%
+            # puntajes de apertura a la discusion
+            mutate(opd_z = r4sda::z_score(OPDISC)) %>%
+            mutate(opd_c = r4sda::c_mean(opd_z, id_j)) %>%
+            mutate(opd_g = r4sda::c_mean(opd_z, id_k)) %>%
+            mutate(opd_m = opd_z - opd_g) %>%
+            mutate(opd_w = opd_z - opd_c) %>%
+            mutate(opd_b = opd_c - opd_g) %>%
+            # educación de los padres
+            mutate(edu_t = case_when(
+                 HISCED == 5 ~ 1,
+                 HISCED == 4 ~ 0,
+                 HISCED == 3 ~ 0,  
+                 HISCED == 2 ~ 0,
+                 HISCED == 1 ~ 0,
+                 HISCED == 0 ~ 0)) %>%
+            # expectativas educativas de los estudiantes
+            mutate(exe_t = case_when(
+                 SISCED == 4 ~ 1,
+                 SISCED == 3 ~ 0,  
+                 SISCED == 2 ~ 0,
+                 SISCED == 1 ~ 0,
+                 SISCED == 0 ~ 0)) %>%    
+            # interes politico de los padres
+            mutate(int_t = case_when(
+                 PARINT == 3 ~ 1,  
+                 PARINT == 2 ~ 1,
+                 PARINT == 1 ~ 0,
+                 PARINT == 0 ~ 0)) %>%                             
+            mutate(int_s = ses_z*int_t) %>%
+            # random selection
+            dplyr::sample_n(1000, weights = ws) %>%
+            dplyr::glimpse()
+
+# -----------------------------------------------
+# models with different parametrizations
+# -----------------------------------------------
+
+
+e00 <- as.formula('civ_z ~ 1')
+e01 <- as.formula('civ_z ~ 1 + ses_z')
+e02 <- as.formula('civ_z ~ 1 + ses_z + int_t')
+e03 <- as.formula('civ_z ~ 1 + ses_z + int_t + int_s')
+
+
+c00 <- lm(e00, data = data_par)
+c01 <- lm(e01, data = data_par)
+c02 <- lm(e02, data = data_par)
+c03 <- lm(e03, data = data_par)
+
+texreg::screenreg(
+    list(c00, c01, c02, c03),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+
+# -----------------------------------------------------------------------------
+# interaction plot
+# -----------------------------------------------------------------------------
+
+
+interaction_model <- lm(civ_z ~ ses_z*int_t, data = data_par)
+interactions::johnson_neyman(interaction_model, pred = ses_z, modx = int_t)
+interactions::probe_interaction(interaction_model, pred = ses_z, modx = int_t)
+
+
+```
+
+# Caso 3: interacción entre continuas
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# ICCS 2016 random sample of 500 cases
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# load data
+# -----------------------------------------------
+
+data_16 <- psi2301::iccs_16_lat %>%
+           group_by(COUNTRY) %>%
+           dplyr::sample_n(500, weights = ws) %>%
+           ungroup()
+
+# -----------------------------------------------
+# variables
+# -----------------------------------------------
+
+library(dplyr)
+r4sda::variables_table(data_16) %>%
+knitr::kable()
+
+# -----------------------------------------------
+# data description
+# -----------------------------------------------
+
+# ? psi2301::iccs_16_lat
+
+# Description:
+# 
+#      Datos del Estudio Internacional sobre Educación Cívica y Ciudadana
+#      (ICCS). Esta tabla de datos, incluye las observaciones del módulo
+#      latino americano. Estos datos inlcuyen muestras representativas de
+#      estudiantes de octavo grado, de Chile, Colombia, México, República
+#      Dominicana, y Perú.
+# 
+# Usage:
+# 
+#      data(iccs_16_lat)
+#      
+# Format:
+# 
+#      Objeto clase ‘"cross"’; ver ‘read.cross’.
+# 
+# Source:
+# 
+#      IEA, <https://www.iea.nl/index.php/data-tools/repository/iccs>
+# 
+# References:
+# 
+#      Schulz, W., Carstens, R., Losito, B., & Fraillon, J. (2018). ICCS
+#      2016 Technical Report (W. Schulz, R. Carstens, B. Losito, & J.
+#      Fraillon (eds.)). International Association for the Evaluation of
+#      Educational Achievement (IEA).
+# 
+# Examples:
+# 
+#      data(iccs_16_lat)
+#      dplyr::glimpse(iccs_16_lat)
+
+
+# -----------------------------------------------
+# get descriptives
+# -----------------------------------------------
+
+data_cor <- data_16 %>%
+mutate(ses   = psi2301::z_score(S_NISB)) %>%
+mutate(cor   = psi2301::z_score(L_ATTCORR)) %>%
+mutate(civ   = psi2301::z_score(PV1CIV)) %>%
+mutate(aut   = psi2301::z_score(L_AUTGOV)) %>%
+mutate(cln   = psi2301::z_score(S_CIVLRN)) %>%
+mutate(opd   = psi2301::z_score(S_OPDISC)) %>%
+mutate(int   = civ*opd)
+
+
+interaction_model <- lm(aut ~ 1 + civ + civ*opd, data = data_cor)
+interactions::johnson_neyman(interaction_model, pred = civ, modx = opd)
+interactions::probe_interaction(interaction_model, pred = civ, modx = opd)
+
+
+# -----------------------------------------------
+# models with different parametrizations
+# -----------------------------------------------
+
+
+e00 <- as.formula('aut ~ 1')
+e01 <- as.formula('aut ~ 1 + civ')
+e02 <- as.formula('aut ~ 1 + opd')
+e03 <- as.formula('aut ~ 1 + civ + opd')
+e04 <- as.formula('aut ~ 1 + civ + opd + int')
+
+
+c00 <- lm(e00, data = data_cor)
+c01 <- lm(e01, data = data_cor)
+c02 <- lm(e02, data = data_cor)
+c03 <- lm(e03, data = data_cor)
+c04 <- lm(e04, data = data_cor)
+
+texreg::screenreg(
+    list(c00, c01, c02, c03, c04),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+
+```
+
+# Caso 4: varias hipótesis en secuencia
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# conventional regression
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# select data
+# -----------------------------------------------
+
+data_16 <- psi2301::iccs_16_lat %>%
+           group_by(COUNTRY) %>%
+           dplyr::sample_n(500, weights = ws) %>%
+           ungroup()
+
+# -----------------------------------------------
+# hipotesis: ses gradients
+# -----------------------------------------------
+
+lm(PV1CIV ~ 1 + S_NISB, data = data_16) %>%
+summary()
+
+# -----------------------------------------------
+# hipotesis: diminishing returns
+# -----------------------------------------------
+
+data_16 %>%
+mutate(civ = PV1CIV) %>%
+mutate(ses = S_NISB) %>%
+mutate(ses_q = S_NISB^2) %>%
+lm(civ ~ 1 + ses + ses_q, data = .) %>%
+summary()
+
+
+# -----------------------------------------------
+# hipotesis: parent interaction
+# -----------------------------------------------
+
+data_int <- data_16 %>%
+mutate(civ = PV1CIV) %>%
+mutate(ses = S_NISB) %>%
+mutate(ses_q = S_NISB^2) %>%
+mutate(int = case_when(
+    S_HINT == 3  ~ 1,
+    S_HINT == 2  ~ 1,
+    S_HINT == 1  ~ 0,
+    S_HINT == 0  ~ 0
+    )) %>%
+mutate(ses_int = int*S_NISB)
+
+
+dplyr::count(data_int, S_HINT, int)
+
+lm(civ ~ 1 + ses + int + ses_int, data = data_int) %>%
+summary()
+
+
+
+
+# -----------------------------------------------
+# hipotesis: role of cultural capital
+# -----------------------------------------------
+
+data_16 %>%
+mutate(civ = PV1CIV) %>%
+lm(civ ~ 1 + as.factor(S_HISCED) + as.factor(S_HOMLIT), data = .) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# hipotesis: double jeopardy
+# -----------------------------------------------
+
+data_16 %>%
+mutate(civ = PV1CIV) %>%
+mutate(ses   = psi2301::z_score(S_NISB)) %>%
+mutate(ses_c = r4sda::c_mean(ses, id_j)) %>%
+mutate(ses_g = r4sda::c_mean(ses, id_k)) %>%
+mutate(ses_w = ses   - ses_c) %>%
+mutate(ses_b = ses_c - ses_g) %>%
+lm(civ ~ 1 + ses_w + ses_b, data = .) %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+
+model <- data_16 %>%
+mutate(civ = PV1CIV) %>%
+mutate(ses   = psi2301::z_score(S_NISB)) %>%
+mutate(ses_c = r4sda::c_mean(ses, id_j)) %>%
+mutate(ses_g = r4sda::c_mean(ses, id_k)) %>%
+mutate(ses_w = ses   - ses_c) %>%
+mutate(ses_b = ses_c - ses_g) %>%
+lm(civ ~ 1 + ses_w + ses_b, data = .)
+
+multcomp::glht(model, linfct = c("ses_b - ses_w = 0")) %>%
+summary()
+
+```

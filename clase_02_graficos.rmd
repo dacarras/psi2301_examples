@@ -1,0 +1,2149 @@
+---
+title: "Gráficos"
+subtitle: "Clase 02"
+output: github_document
+---
+
+<style>
+  .main-container {
+    max-width: 1600px !important;
+  }
+  .list-group-item.active, 
+  .list-group-item.active:focus, 
+  .list-group-item.active:hover {
+    background-color: #373334;
+  }
+</style>
+
+
+
+```{r setup, include=FALSE}
+#------------------------------------------------------------------------------
+# setup
+#------------------------------------------------------------------------------
+
+# knitr option
+knitr::opts_chunk$set(dev = 'png')
+options(knitr.kable.NA = '', digits = 2)
+
+# remove all previous objects
+rm(list = ls())
+
+
+# set appropiate time zone via OlsonNames()
+Sys.setenv(TZ="America/Santiago")
+Sys.getenv("TZ")
+Sys.time()
+
+# fonts
+Sys.setenv(LANG="en_US.UTF-8")
+
+# load main library
+library(dplyr)
+
+
+# ------------------------------------------------------
+# get times
+# ------------------------------------------------------
+
+start_time <- Sys.time()
+
+
+```
+
+
+# Carpetas
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# folders
+#------------------------------------------------------------------------------
+
+# ---------------------------------------------------------
+# get local path from relative path
+# ---------------------------------------------------------
+
+
+local_path <- function(x){
+  paste0(tools::file_path_as_absolute('..'),x)
+}
+
+# Note: set current directory as working directory
+
+# ---------------------------------------------------------
+# folder with data files
+# ---------------------------------------------------------
+
+data_folder   <- local_path('/')
+save_folder   <- local_path('/')
+
+# ---------------------------------------------------------
+# load main library
+# ---------------------------------------------------------
+
+library(dplyr)
+
+# ---------------------------------------------------------
+# check folder
+# ---------------------------------------------------------
+
+list.files(data_folder)
+
+
+```
+
+# Códigos Clase 02
+
+
+## Abrir y transformar datos
+
+
+```{r echo=TRUE}
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
+
+data_life_wide <- readxl::read_xlsx(
+                  'life_expectancy_2018.xlsx',
+                  sheet = 'plain_data')
+
+# -----------------------------------------------
+# transformar datos a long format
+# -----------------------------------------------
+
+life_stacked <- data_life_wide %>%
+                dplyr::filter(type == 'country') %>%
+                tidyr::gather('year', 'life', 
+                  -country_name, -country_code, -indicator_name, -indicator_code, 
+                  -income_group, -region, -type) %>%
+                dplyr::select(country_name, year, life, region, income_group) %>%
+                mutate(year_num = as.numeric(year))
+
+# -----------------------------------------------
+# tabla de datos
+# -----------------------------------------------
+
+r4sda::variables_table(data_life_wide) %>%
+knitr::kable()
+
+# -----------------------------------------------
+# tabla de datos
+# -----------------------------------------------
+
+r4sda::variables_table(life_stacked) %>%
+knitr::kable()
+
+
+
+```
+
+# Códigos empleados en clases
+
+## Generar plot de slide 01
+
+```{r echo=TRUE}
+
+# -----------------------------------------------
+# generar plot
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data=life_stacked, aes(x=year, y=life, group = country_name)) +
+geom_line(linetype = 1, alpha = 0.2) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )  
+
+```
+
+## Análisis descriptivos
+
+- Ver slides 12 a 14
+
+```{r echo=TRUE}
+
+
+# -----------------------------------------------
+# cantidad de paises
+# -----------------------------------------------
+
+data_life_wide %>%
+dplyr::filter(type == 'country') %>%
+nrow()
+
+
+# -----------------------------------------------
+# rangos por año
+# -----------------------------------------------
+
+life_stacked %>%
+group_by(year_num) %>%
+summarize(
+  minimum = min(life, na.rm = TRUE),
+  maximum = max(life, na.rm = TRUE)
+  ) %>%
+mutate(range = maximum - minimum) %>%
+dplyr::filter(year_num %in% c(1960, 1970, 1980, 1990, 2000, 2010)) %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# mediana por año
+# -----------------------------------------------
+
+life_stacked %>%
+group_by(year_num) %>%
+summarize(
+  median = median(life, na.rm = TRUE)
+  ) %>%
+dplyr::filter(year_num %in% c(1960, 1970, 1980, 1990, 2000, 2010)) %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# mediana por año
+# -----------------------------------------------
+
+life_stacked %>%
+group_by(year_num) %>%
+summarize(
+  median = median(life, na.rm = TRUE)
+  ) %>%
+dplyr::filter(year_num %in% c(1960, 1970, 1980, 1990, 2000, 2010)) %>%
+knitr::kable(., digits = 2)
+
+
+```
+
+## Código 01: cargar datos, transformar datos, y generar plot
+
+```{r echo=TRUE}
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
+
+data_life_wide <- readxl::read_xlsx(
+                  'life_expectancy_2018.xlsx',
+                  sheet = 'plain_data')
+
+# -----------------------------------------------
+# transformar datos a long format
+# -----------------------------------------------
+
+life_stacked <- data_life_wide %>%
+                dplyr::filter(type == 'country') %>%
+                tidyr::gather('year', 'life', 
+                  -country_name, -country_code, -indicator_name, -indicator_code, 
+                  -income_group, -region, -type) %>%
+                dplyr::select(country_name, year, life, region, income_group) %>%
+                mutate(year_num = as.numeric(year))
+
+# -----------------------------------------------
+# tabla de datos
+# -----------------------------------------------
+
+r4sda::variables_table(data_life_wide) %>%
+knitr::kable()
+
+# -----------------------------------------------
+# generar plot
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data=life_stacked, aes(x=year_num, y=life, group = country_name)) +
+geom_line(linetype = 1, alpha = 0.2) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  ) +
+scale_y_continuous(
+name = 'age',
+breaks = seq(10, 80, by = 10), 
+limits = c(10,90)
+) +
+scale_x_continuous(
+name = 'year',
+breaks = seq(1960, 2020, by = 10), 
+limits = c(1960,2000)
+) 
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'life_expectancy_plot.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+```
+
+
+## Apilado de observaciones
+
+- Slides 17-23
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------
+# list of countries
+# -----------------------------------------------
+
+lat_sur <- c(
+'Argentina',
+'Bolivia',
+'Brazil',
+'Chile',
+'Colombia',
+'Ecuador',
+'Guatemala',
+'Mexico',
+'Panama',
+'Paraguay',
+'Peru',
+'Uruguay')
+
+# -----------------------------------------------
+# prepare data
+# -----------------------------------------------
+
+example_2 <- life_stacked %>%
+             dplyr::filter(year %in% c(2000)) %>%
+             dplyr::filter(region == 'Latin America & Caribbean') %>%
+             dplyr::filter(country_name %in% lat_sur) %>%
+             na.omit() %>%
+             mutate(age = round(life, 0)) %>%
+             mutate(observed = 1) %>%
+             group_by(age) %>%
+             mutate(count = cumsum(observed)) %>%
+             ungroup() %>%
+             dplyr::select(country_name, year, age, count) %>%
+             rename(n = count) %>%
+             print
+
+
+# -----------------------------------------------
+# plot with n = 1
+# -----------------------------------------------
+
+example_2[1:1,] %>%
+ggplot(., aes(x = age, y = n)) +
+geom_point(size = 5, color = '#3876BA') +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  breaks = seq(1, 17, by = 1), 
+  limits = c(1,17)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'ex_01.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+# -----------------------------------------------
+# plot with n = 2
+# -----------------------------------------------
+
+example_2[1:2,] %>%
+ggplot(., aes(x = age, y = n)) +
+geom_point(size = 5, color = '#3876BA') +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  breaks = seq(1, 17, by = 1), 
+  limits = c(1,17)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'ex_02.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+# -----------------------------------------------
+# plot with n = 4
+# -----------------------------------------------
+
+example_2[1:4,] %>%
+ggplot(., aes(x = age, y = n)) +
+geom_point(size = 5, color = '#3876BA') +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  breaks = seq(1, 17, by = 1), 
+  limits = c(1,17)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+
+ggsave(paste0(save_folder,'ex_04.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+# -----------------------------------------------
+# plot with n = 8
+# -----------------------------------------------
+
+example_2[1:8,] %>%
+ggplot(., aes(x = age, y = n)) +
+geom_point(size = 5, color = '#3876BA') +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  breaks = seq(1, 17, by = 1), 
+  limits = c(1,17)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+
+ggsave(paste0(save_folder,'ex_08.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+
+
+# -----------------------------------------------
+# plot with n = 12
+# -----------------------------------------------
+
+example_2[1:12,] %>%
+ggplot(., aes(x = age, y = n)) +
+geom_point(size = 5, color = '#3876BA') +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  breaks = seq(1, 17, by = 1), 
+  limits = c(1,17)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+
+ggsave(paste0(save_folder,'ex_12.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+# -----------------------------------------------
+# mostrar todas las tablas
+# -----------------------------------------------
+
+example_2[1:1,]
+example_2[1:2,]
+example_2[1:4,]
+example_2[1:8,]
+example_2[1:12,]
+
+# -----------------------------------------------
+# preparar datos para plot
+# -----------------------------------------------
+
+example_3 <- life_stacked %>%
+             dplyr::filter(year %in% c(2000)) %>%
+             na.omit() %>%
+             mutate(age = round(life, 0)) %>%
+             mutate(observed = 1) %>%
+             group_by(age) %>%
+             mutate(count = cumsum(observed)) %>%
+             ungroup() %>%
+             dplyr::select(country_name, year, age, count) %>%
+             rename(n = count) %>%
+             print
+
+# -----------------------------------------------
+# crear plot
+# -----------------------------------------------
+
+example_3 %>%
+ggplot(., aes(x = age, y = n)) +
+geom_point(size = 5, color = '#3876BA') +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  breaks = seq(1, 17, by = 1), 
+  limits = c(1,17)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'ex_full.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+# -----------------------------------------------
+# descriptivos: mínimo, máximo y rango
+# -----------------------------------------------
+
+example_3 %>%
+summarize(
+  minimum = min(age, na.rm = TRUE),
+  maximum = max(age, na.rm = TRUE)
+  ) %>%
+mutate(range = maximum - minimum) %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# preparar datos para plot
+# -----------------------------------------------
+
+example_4 <- life_stacked %>%
+             dplyr::filter(year %in% c(2000)) %>%
+             na.omit() %>%
+             mutate(age = round(life, 0)) %>%
+             mutate(observed = 1) %>%
+             group_by(life) %>%
+             mutate(count = cumsum(observed)) %>%
+             ungroup() %>%
+             dplyr::select(country_name, year, life, count) %>%
+             rename(n = count) %>%
+             print
+
+# -----------------------------------------------
+# plot
+# -----------------------------------------------
+
+example_4 %>%
+ggplot(., aes(x = life, y = n)) +
+geom_point(size = 5, color = '#3876BA') +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  breaks = seq(1, 17, by = 1), 
+  limits = c(1,17)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'ex_cont.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+```
+
+## Histogramas
+
+- Ver Slides 27
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# histogram binwidth = 1
+#------------------------------------------------------------------------------
+
+library(ggplot2)
+ggplot(example_4, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 1
+  ) +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  breaks = seq(1, 17, by = 1)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'hist_width_01.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+#------------------------------------------------------------------------------
+# histogram binwidth = 5
+#------------------------------------------------------------------------------
+
+library(ggplot2)
+ggplot(example_4, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n'
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'hist_width_05.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+```
+
+
+## Histogramas en R base
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# histogramas en R base
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# histogram binwidth = 5
+# -----------------------------------------------
+hist(
+  example_4$life,     # emplea el vector de datos
+  breaks = 5,         # define el ancho del intervalo
+  col    = "#397CDA", # define el color
+  freq   = TRUE       # emplea frecuencias
+  )
+
+
+# -----------------------------------------------
+# histogram binwidth = 5
+# -----------------------------------------------
+hist(
+  example_4$life,     # emplea el vector de datos
+  breaks = 5,         # define el ancho del intervalo
+  col    = "#397CDA", # define el color
+  freq   = TRUE,      # emplea frecuencias
+  main   = 'Histograma de años expectativas de vida',
+  xlab   = 'Años de expectativas de vida (2000)'
+  )
+
+
+# -----------------------------------------------
+# histogram binwidth = 8
+# -----------------------------------------------
+hist(
+  example_4$life,     # emplea el vector de datos
+  breaks = 8,         # define el ancho del intervalo
+  col    = "#397CDA", # define el color
+  freq   = TRUE,      # emplea frecuencias
+  main   = 'Histograma de años expectativas de vida',
+  xlab   = 'Años de expectativas de vida (2000)'
+  )
+
+```
+
+
+
+# Distribuciones
+
+## Distribución generada con parámetros observados
+
+- Ver slides 35 a 42
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# simular distribución
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# set seed
+# -----------------------------------------------
+
+set.seed(12345)
+
+# -----------------------------------------------
+# real distribution
+# -----------------------------------------------
+
+kurt <- moments::kurtosis(example_4$life)
+skew <- moments::skewness(example_4$life)
+mean <- mean(example_4$life, na.rm = TRUE)
+var  <- var(example_4$life, na.rm = TRUE)
+
+# -----------------------------------------------
+# make data
+# -----------------------------------------------
+
+library(PearsonDS)
+par_00 <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_00 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = par_00)
+          )
+
+# -----------------------------------------------
+# make plot
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(sim_00, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 5),
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n'
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+```
+
+## Distribución simétrica
+
+- Ver slides 35 a 42
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# simular distribución
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# set seed
+# -----------------------------------------------
+
+set.seed(12345)
+
+# -----------------------------------------------
+# simetric
+# -----------------------------------------------
+
+kurt <- 4.5
+skew <- 0
+mean <- 60
+var  <- 100
+
+# -----------------------------------------------
+# make data
+# -----------------------------------------------
+
+library(PearsonDS)
+par_01 <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_01 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = par_01)
+          )
+
+# -----------------------------------------------
+# make plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_1 <- ggplot(sim_01, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 5),
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# mostrar plot
+# -----------------------------------------------
+
+plot_1
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'distribution_sim.png'),
+     plot   = plot_1, 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+```
+
+## Distribución uniforme
+
+- Ver slides 35 a 42
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# simular distribución
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# set seed
+# -----------------------------------------------
+
+set.seed(12345)
+
+# -----------------------------------------------
+# uniform
+# -----------------------------------------------
+
+kurt <- 1.5
+skew <- 0
+mean <- 60
+var  <- 100
+
+# -----------------------------------------------
+# make data
+# -----------------------------------------------
+
+library(PearsonDS)
+moments <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_02 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = moments)
+          )
+
+# -----------------------------------------------
+# make plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_2 <- ggplot(sim_02, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 5),
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+
+# -----------------------------------------------
+# mostrar plot
+# -----------------------------------------------
+
+plot_2
+
+```
+
+## Distribución Asimétrica (sesgo a la derecha)
+
+- Ver slides 35 a 42
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# simular distribución
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# set seed
+# -----------------------------------------------
+
+set.seed(12345)
+
+# -----------------------------------------------
+# right bias
+# -----------------------------------------------
+
+kurt <- 4.5
+skew <- 1.5
+mean <- 60
+var  <- 100
+
+# -----------------------------------------------
+# make data
+# -----------------------------------------------
+
+library(PearsonDS)
+moments <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_03 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = moments)
+          )
+
+# -----------------------------------------------
+# make plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_3 <- ggplot(sim_03, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 5),
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# mostrar plot
+# -----------------------------------------------
+
+plot_3
+
+```
+
+## Distribución Asimétrica (sesgo a la izquierda)
+
+- Ver slides 35 a 42
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# simular distribución
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# set seed
+# -----------------------------------------------
+
+set.seed(12345)
+
+# -----------------------------------------------
+# left bias
+# -----------------------------------------------
+
+kurt <- 4.5
+skew <- -1.5
+mean <- 60
+var  <- 100
+
+# -----------------------------------------------
+# make data
+# -----------------------------------------------
+
+library(PearsonDS)
+moments <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_04 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = moments)
+          )
+
+# -----------------------------------------------
+# plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_4 <- ggplot(sim_04, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 5), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+
+# -----------------------------------------------
+# mostrar plot
+# -----------------------------------------------
+
+plot_4
+
+```
+
+## Distribuciones en un solo plot
+
+- Ver slides 35 a 42
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# distribuciones simuladas
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# display plot as grid
+# -----------------------------------------------
+
+library(cowplot)
+plot_grid(plot_1, plot_3, plot_2, plot_4, ncol=2, nrow=2)
+
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'distributions.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+```
+
+
+## Distributions con nombres
+
+- Ver slides 35 a 42
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# simular distribución
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# set seed
+# -----------------------------------------------
+
+set.seed(1234)
+
+
+# -----------------------------------------------
+# simetric
+# -----------------------------------------------
+
+kurt <- 5
+skew <- 0
+mean <- 60
+var  <- 100
+
+# -----------------------------------------------
+# make data
+# -----------------------------------------------
+
+
+library(PearsonDS)
+par_01 <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_01 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = par_01)
+          )
+
+# -----------------------------------------------
+# plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_1 <- ggplot(sim_01, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nDistribución simétrica',
+  breaks = seq(30, 90, by = 5),
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+
+# -----------------------------------------------
+# uniform
+# -----------------------------------------------
+
+kurt <- 1.5
+skew <- 0
+mean <- 60
+var  <- 100
+
+# -----------------------------------------------
+# make data
+# -----------------------------------------------
+
+library(PearsonDS)
+moments <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_02 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = moments)
+          )
+
+
+# -----------------------------------------------
+# make plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_2 <- ggplot(sim_02, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nDistribución uniforme',
+  breaks = seq(30, 90, by = 5),
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+
+
+# -----------------------------------------------
+# right bias
+# -----------------------------------------------
+
+kurt <- 5
+skew <- 1.5
+mean <- 60
+var  <- 100
+
+# -----------------------------------------------
+# make data
+# -----------------------------------------------
+
+library(PearsonDS)
+moments <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_03 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = moments)
+          )
+
+
+# -----------------------------------------------
+# make plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_3 <- ggplot(sim_03, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nAsimetría a la derecha, sesgo positivo',
+  breaks = seq(30, 90, by = 5),
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+
+ggsave(paste0(save_folder,'distribution_right.png'),
+     plot   = plot_3, 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+# -----------------------------------------------
+# left bias
+# -----------------------------------------------
+
+kurt <- 5
+skew <- -1.5
+mean <- 60
+var  <- 100
+
+# -----------------------------------------------
+# make data
+# -----------------------------------------------
+
+library(PearsonDS)
+moments <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_04 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = moments)
+          )
+
+# -----------------------------------------------
+# make plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_4 <- ggplot(sim_04, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nAsimetría a la izquieda, sesgo negativo',
+  breaks = seq(30, 90, by = 5), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+
+ggsave(paste0(save_folder,'distribution_left.png'),
+     plot   = plot_4, 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+# -----------------------------------------------
+# display plot as grid
+# -----------------------------------------------
+
+library(cowplot)
+plot_grid(plot_1, plot_3, plot_2, plot_4, ncol=2, nrow=2)
+
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'distributions_names.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+```
+
+## Distributions without lines
+
+- Ver slides 35 a 42
+
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------
+# set seed
+# -----------------------------------------------
+
+set.seed(1234)
+
+# -----------------------------------------------
+# left bias
+# -----------------------------------------------
+
+kurt <- 4.5
+skew <- -1.5
+mean <- 60
+var  <- 100
+
+# -----------------------------------------------
+# make data
+# -----------------------------------------------
+
+library(PearsonDS)
+moments <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_04 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = moments)
+          )
+
+# -----------------------------------------------
+# make plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_4 <- ggplot(sim_04, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nAsimetría a la izquieda, sesgo negativo',
+  breaks = seq(30, 90, by = 5), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# mostrar plot
+# -----------------------------------------------
+
+plot_4
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'distribution_left.png'),
+     plot   = plot_4, 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+# -----------------------------------------------
+# right bias
+# -----------------------------------------------
+
+kurt <- 4.5
+skew <- 1.5
+mean <- 60
+var  <- 100
+
+# -----------------------------------------------
+# generate data
+# -----------------------------------------------
+
+library(PearsonDS)
+moments <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_03 <- data.frame(
+          life = PearsonDS::rpearson(400, moments = moments)
+          )
+
+
+# -----------------------------------------------
+# plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_3 <- ggplot(sim_03, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nAsimetría a la derecha, sesgo positivo',
+  breaks = seq(30, 90, by = 5),
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# mostrar plot
+# -----------------------------------------------
+
+plot_3
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'distribution_right.png'),
+     plot   = plot_3, 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+```
+
+
+## Distributions with lines
+
+- Ver slides 35 a 42
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------
+# set seed
+# -----------------------------------------------
+
+set.seed(1234)
+
+# -----------------------------------------------
+# left bias
+# -----------------------------------------------
+
+kurt <- 4.5
+skew <- -1.5
+mean <- 60
+var  <- 100
+
+library(PearsonDS)
+moments <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_04 <- data.frame(
+          life = PearsonDS::rpearson(500, moments = moments)
+          )
+
+# -----------------------------------------------
+# plot
+# -----------------------------------------------
+
+library(ggplot2)
+plot_4 <- ggplot(sim_04, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nAsimetría a la izquieda, sesgo negativo',
+  breaks = seq(30, 90, by = 5), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  ) +
+geom_vline(
+  xintercept = mean(sim_04$life), 
+  linetype="dotted", 
+  color = "grey60", 
+  size = 1
+  ) +
+geom_vline(
+  xintercept = median(sim_04$life), 
+  linetype="dotted", 
+  color = "grey40", 
+  size = 1
+  ) +
+geom_vline(
+  xintercept = LaplacesDemon::Mode(sim_04$life), 
+  linetype="dotted",  
+  color = "grey20", 
+  size = 1
+  )
+
+# -----------------------------------------------
+# mostrar plot
+# -----------------------------------------------
+
+plot_4
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'distribution_left_lines.png'),
+     plot   = plot_4, 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+
+# -----------------------------------------------
+# right bias
+# -----------------------------------------------
+
+kurt <- 4.5
+skew <- 1.5
+mean <- 60
+var  <- 100
+
+library(PearsonDS)
+moments <- c(mean = mean, variance = var, skewness = skew, kurtosis = kurt)
+sim_03 <- data.frame(
+          life = PearsonDS::rpearson(400, moments = moments)
+          )
+
+
+# -----------------------------------------------
+# make plot
+# -----------------------------------------------
+
+
+library(ggplot2)
+plot_3 <- ggplot(sim_03, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nAsimetría a la derecha, sesgo positivo',
+  breaks = seq(30, 90, by = 5),
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  limits = c(0,200)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  ) +
+geom_vline(
+  xintercept = mean(sim_03$life), 
+  linetype="dotted", 
+  color = "grey60", 
+  size = 1
+  ) +
+geom_vline(
+  xintercept = median(sim_03$life), 
+  linetype="dotted", 
+  color = "grey40", 
+  size = 1
+  ) +
+geom_vline(
+  xintercept = LaplacesDemon::Mode(sim_03$life), 
+  linetype="dotted",  
+  color = "grey20", 
+  size = 1
+  )
+
+# -----------------------------------------------
+# mostrar plot
+# -----------------------------------------------
+
+plot_3
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'distribution_right_lines.png'),
+     plot   = plot_3, 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+
+```
+
+## Scatter plot
+
+- Ver slides 44 a 49
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------
+# data as stacked
+# -----------------------------------------------
+
+
+income <- readxl::read_xlsx('income_2000.xlsx')
+
+
+# -----------------------------------------------
+# prepare data for plot
+# -----------------------------------------------
+
+example_5 <- life_stacked %>%
+             dplyr::filter(year %in% c(2000)) %>%
+             na.omit() %>%
+             mutate(age = round(life, 0)) %>%
+             mutate(observed = 1) %>%
+             group_by(life) %>%
+             mutate(count = cumsum(observed)) %>%
+             ungroup() %>%
+             dplyr::select(country_name, year, life, count) %>%
+             rename(n = count) %>%
+             dplyr::left_join(., 
+              dplyr::select(income, country_name, income),
+              by = 'country_name') %>%
+             print
+
+
+# -----------------------------------------------
+# plot
+# -----------------------------------------------
+
+library(ggplot2)
+example_5 %>%
+ggplot(aes(x=income, y=life)) +
+geom_point(alpha = 0.4, size = 5, color = '#3876BA') +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )  +
+scale_y_continuous(
+  name = '\nLife expectancy at birth',
+  breaks = seq(30, 90, by = 5),
+  limits = c(30,90)
+  ) +
+scale_x_continuous(
+  name = '\nGross Domestic Product per capita (GDP)',
+  limits = c(0,80000)
+  ) 
+
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'scatter.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+```
+
+## Scatter en R base
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# scatter en R base
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# scatter
+# -----------------------------------------------
+
+plot(
+  x = example_5$income, # define variable eje x
+  y = example_5$life,   # define variable eje y
+  col    = "#397CDA"    # define el color
+  )
+
+
+# -----------------------------------------------
+# scatter con titulos
+# -----------------------------------------------
+
+plot(
+  x = example_5$income, # define variable eje x
+  y = example_5$life,   # define variable eje y
+  col    = "#397CDA",   # define el color
+  main   = 'Scatter life expectancy at birht by GDP',
+  ylab   = 'Life expectancy at birth',
+  xlab   = 'Gross Domestic Product per capita (GDP)'
+  )
+
+
+```
+
+
+## Mosaic Plot
+
+- Ver slides 50 a 51
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------
+# data as stacked
+# -----------------------------------------------
+
+
+income <- readxl::read_xlsx('income_2000.xlsx')
+
+
+# -----------------------------------------------
+# prepare data for plot
+# -----------------------------------------------
+
+example_6 <- life_stacked %>%
+             dplyr::filter(year %in% c(2000)) %>%
+             na.omit() %>%
+             mutate(age = round(life, 0)) %>%
+             mutate(observed = 1) %>%
+             group_by(life) %>%
+             mutate(count = cumsum(observed)) %>%
+             ungroup() %>%
+             dplyr::select(country_name, year, life, count, income_group) %>%
+             rename(n = count) %>%
+             dplyr::left_join(., 
+              dplyr::select(income, country_name, income),
+              by = 'country_name') %>%
+             mutate(life_group = case_when(
+              between(life, 30,50) ~ '30 - 50 years',
+              between(life, 51,70) ~ '51 - 70 years',
+              between(life, 71,100) ~'71 or more years',
+              )) %>%
+             dplyr::select(country_name, life_group, income_group) %>%
+             na.omit() %>%
+             mutate(income_group = factor(income_group, levels = c(
+            'Low income',
+            'Lower middle income',
+            'Upper middle income',
+            'High income'
+            ))) %>% print
+
+# -----------------------------------------------
+# plot
+# -----------------------------------------------
+
+
+
+library(ggmosaic)
+ggplot(data = example_6) +
+  geom_mosaic(aes(x = product(income_group), fill=life_group)) +
+    scale_fill_manual(
+      values = c( 'red', 'grey20', 'grey80'),
+  breaks = c('30 - 50 years', '51 - 70 years','71 or more years')) +
+  theme_mosaic() +
+  theme(
+  axis.ticks = element_blank()
+  )
+
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'mosaic.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+```
+
+
+## Mosaic en R base
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# mosaicplot en R base
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# mosaicplot
+# -----------------------------------------------
+
+cross_table <- table(example_6$income_group, example_6$life_group)
+mosaicplot(cross_table)
+
+# -----------------------------------------------
+# mosaicplot con colores
+# -----------------------------------------------
+
+mosaicplot(
+  cross_table,
+  col = c('red','grey80','grey20')
+  )
+
+# -----------------------------------------------
+# mosaicplot con ejes
+# -----------------------------------------------
+
+mosaicplot(
+  cross_table,
+  col = c('red','grey80','grey20'),
+  main   = 'Mosaic of Life expectancy at birth (ranges) by Income groups',
+  ylab   = 'Life expectancy at birth (ranges)',
+  xlab   = 'Income groups'
+  )
+
+```
+
+
+## Bar plot
+
+- Ver slides 50 a 51
+
+```{r, echo=TRUE}
+
+
+# -----------------------------------------------
+# bar plot
+# -----------------------------------------------
+
+example_6 <- life_stacked %>%
+             dplyr::filter(year %in% c(2000)) %>%
+             na.omit() %>%
+             mutate(age = round(life, 0)) %>%
+             mutate(observed = 1) %>%
+             group_by(life) %>%
+             mutate(count = cumsum(observed)) %>%
+             ungroup() %>%
+             dplyr::select(country_name, year, life, count, income_group) %>%
+             rename(n = count) %>%
+             dplyr::left_join(., 
+              dplyr::select(income, country_name, income),
+              by = 'country_name') %>%
+             mutate(life_group = case_when(
+              between(life, 30,50) ~ '30 - 50 years',
+              between(life, 51,70) ~ '51 - 70 years',
+              between(life, 71,100) ~'71 or more years',
+              )) %>%
+             dplyr::select(country_name, life_group, income_group) %>%
+             na.omit() %>%
+             mutate(income_group = factor(income_group, levels = c(
+            'Low income',
+            'Lower middle income',
+            'Upper middle income',
+            'High income'
+            ))) %>% print
+
+# -----------------------------------------------
+# plot
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data = example_6) +
+  geom_bar(aes(x = life_group)) +
+    scale_fill_manual(
+      values = c( 'red', 'grey20', 'grey80'),
+  breaks = c('30 - 50 years', '51 - 70 years','71 or more years')) +
+ylab('n') +
+xlab('\nGrouped Life Expectancy at birth') +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+# -----------------------------------------------
+# guardar plot
+# -----------------------------------------------
+
+ggsave(paste0(save_folder,'bar_plot.png'),
+     plot   = last_plot(), 
+     width  = 16, 
+     height = 10, 
+     units  = "cm",
+     dpi    = 500,
+     scale  = 2
+     )
+
+```
+
+## Barplot en R base
+
+```{r, echo=TRUE}
+
+#------------------------------------------------------------------------------
+# barplot en R base
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# barplot
+# -----------------------------------------------
+
+data_barplot <- table(example_6$life_group)
+
+barplot(
+  data_barplot
+  )
+
+# -----------------------------------------------
+# barplot con colores
+# -----------------------------------------------
+
+barplot(
+  data_barplot,
+  col = c('#397CDA')
+  )
+
+# -----------------------------------------------
+# barplot con ejes
+# -----------------------------------------------
+
+barplot(
+  data_barplot,
+  col = c('#397CDA'),
+  xlab   = 'Grouped Life Expectancy at birth'
+  )
+
+
+
+```
+
+

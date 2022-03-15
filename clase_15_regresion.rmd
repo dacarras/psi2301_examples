@@ -581,8 +581,11 @@ knitr::kable(., digits = 2)
 # -----------------------------------------------
 
 data_dem <- psi2301::dem_16 %>%
+            # variable en escala original (M = 500, SD = 100)
             mutate(civ_u = civ) %>%
+            # variable centrada a la gran media (M = 0, SD = 100)
             mutate(civ_m = civ - mean(civ, na.rm = TRUE)) %>%
+            # variable estandarizada (M = 0, SD = 1)
             mutate(civ_z = r4sda::z_score(civ)) %>%
             mutate(aut_z = r4sda::z_score(aut)) %>%
             dplyr::glimpse()
@@ -624,6 +627,7 @@ texreg::screenreg(
     booktabs = TRUE,
     single.row = FALSE
     )
+
 
 # -----------------------------------------------------------------------------
 # regression in lavaan
@@ -696,13 +700,17 @@ knitr::kable(., digits = 2)
 # centering variables
 # -----------------------------------------------
 
+set.seed(12345)
 data_par <- psi2301::iccs_09_lat %>%
             dplyr::filter(COUNTRY == 'PRY') %>%
+            # autoritarismo en bruto
             mutate(aut_u = AUTGOV) %>%
+            # diferentes variables estandarizadas
             mutate(aut_z = r4sda::z_score(aut_u)) %>%
             mutate(ses_z = r4sda::z_score(NISB)) %>%
             mutate(int_z = r4sda::z_score(INTPOLS)) %>%
             mutate(eff_z = r4sda::z_score(CITEFF)) %>%
+            # puntajes de conocimiento civico
             mutate(civ_u = PV1CIV) %>%
             mutate(civ_z = r4sda::z_score(civ_u)) %>%
             mutate(civ_c = r4sda::c_mean(civ_z, id_j)) %>%
@@ -710,12 +718,14 @@ data_par <- psi2301::iccs_09_lat %>%
             mutate(civ_m = civ_z - civ_g) %>%
             mutate(civ_w = civ_z - civ_c) %>%
             mutate(civ_b = civ_c - civ_g) %>%
+            # puntajes de apertura a la discusion
             mutate(opd_z = r4sda::z_score(OPDISC)) %>%
             mutate(opd_c = r4sda::c_mean(opd_z, id_j)) %>%
             mutate(opd_g = r4sda::c_mean(opd_z, id_k)) %>%
             mutate(opd_m = opd_z - opd_g) %>%
             mutate(opd_w = opd_z - opd_c) %>%
             mutate(opd_b = opd_c - opd_g) %>%
+            # educación de los padres
             mutate(edu_t = case_when(
                  HISCED == 5 ~ 1,
                  HISCED == 4 ~ 0,
@@ -723,12 +733,14 @@ data_par <- psi2301::iccs_09_lat %>%
                  HISCED == 2 ~ 0,
                  HISCED == 1 ~ 0,
                  HISCED == 0 ~ 0)) %>%
+            # expectativas educativas de los estudiantes
             mutate(exe_t = case_when(
                  SISCED == 4 ~ 1,
                  SISCED == 3 ~ 0,  
                  SISCED == 2 ~ 0,
                  SISCED == 1 ~ 0,
                  SISCED == 0 ~ 0)) %>%    
+            # interes politico de los padres
             mutate(int_t = case_when(
                  PARINT == 3 ~ 1,  
                  PARINT == 2 ~ 1,
@@ -736,13 +748,60 @@ data_par <- psi2301::iccs_09_lat %>%
                  PARINT == 0 ~ 0)) %>%                             
             mutate(int_s = ses_z*int_t) %>%
             # random selection
-            dplyr::sample_n(500, weights = ws) %>%
+            dplyr::sample_n(1000, weights = ws) %>%
             dplyr::glimpse()
 
 
 ```
 
-## Ajustar regresion
+## Ajustar regresion con conocimiento cívico
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------------------------------------
+# ICCS 2016 random sample of 500 cases
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# models with different parametrizations
+# -----------------------------------------------
+
+
+e00 <- as.formula('civ_z ~ 1')
+e01 <- as.formula('civ_z ~ 1 + ses_z')
+e02 <- as.formula('civ_z ~ 1 + ses_z + int_t')
+e03 <- as.formula('civ_z ~ 1 + ses_z + int_t + int_s')
+
+
+c00 <- lm(e00, data = data_par)
+c01 <- lm(e01, data = data_par)
+c02 <- lm(e02, data = data_par)
+c03 <- lm(e03, data = data_par)
+
+texreg::screenreg(
+    list(c00, c01, c02, c03),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+
+# -----------------------------------------------------------------------------
+# interaction plot
+# -----------------------------------------------------------------------------
+
+
+interaction_model <- lm(civ_z ~ ses_z*int_t, data = data_par)
+interactions::johnson_neyman(interaction_model, pred = ses_z, modx = int_t)
+interactions::probe_interaction(interaction_model, pred = ses_z, modx = int_t)
+
+
+```
+
+## Ajustar regresion con autoritarismo
 
 ```{r, echo=TRUE}
 
@@ -785,6 +844,118 @@ texreg::screenreg(
 interaction_model <- lm(aut_z ~ ses_z*int_t, data = data_par)
 interactions::johnson_neyman(interaction_model, pred = ses_z, modx = int_t)
 interactions::probe_interaction(interaction_model, pred = ses_z, modx = int_t)
+
+
+```
+
+# Anexos
+
+## Population Average Model
+
+
+```{r, echo=TRUE}
+
+# -------------------------------------------------------------------
+# lavaan
+# -------------------------------------------------------------------
+
+# -----------------------------------------------
+# prep data
+# -----------------------------------------------
+
+set.seed(12345)
+data_lav <- psi2301::iccs_09_lat %>%
+            dplyr::filter(COUNTRY == 'PRY') %>%
+            mutate(aut_u = AUTGOV) %>%
+            mutate(aut_z = r4sda::z_score(aut_u)) %>%
+            mutate(ses_z = r4sda::z_score(NISB)) %>%
+            mutate(int_z = r4sda::z_score(INTPOLS)) %>%
+            mutate(eff_z = r4sda::z_score(CITEFF)) %>%
+            mutate(civ_u = PV1CIV) %>%
+            mutate(civ_z = r4sda::z_score(civ_u)) %>%
+            mutate(civ_c = r4sda::c_mean(civ_z, id_j)) %>%
+            mutate(civ_g = r4sda::c_mean(civ_z, id_k)) %>%
+            mutate(civ_m = civ_z - civ_g) %>%
+            mutate(civ_w = civ_z - civ_c) %>%
+            mutate(civ_b = civ_c - civ_g) %>%
+            mutate(opd_z = r4sda::z_score(OPDISC)) %>%
+            mutate(opd_c = r4sda::c_mean(opd_z, id_j)) %>%
+            mutate(opd_g = r4sda::c_mean(opd_z, id_k)) %>%
+            mutate(opd_m = opd_z - opd_g) %>%
+            mutate(opd_w = opd_z - opd_c) %>%
+            mutate(opd_b = opd_c - opd_g) %>%
+            mutate(edu_t = case_when(
+                 HISCED == 5 ~ 1,
+                 HISCED == 4 ~ 0,
+                 HISCED == 3 ~ 0,  
+                 HISCED == 2 ~ 0,
+                 HISCED == 1 ~ 0,
+                 HISCED == 0 ~ 0)) %>%
+            mutate(exe_t = case_when(
+                 SISCED == 4 ~ 1,
+                 SISCED == 3 ~ 0,  
+                 SISCED == 2 ~ 0,
+                 SISCED == 1 ~ 0,
+                 SISCED == 0 ~ 0)) %>%    
+            mutate(int_t = case_when(
+                 PARINT == 3 ~ 1,  
+                 PARINT == 2 ~ 1,
+                 PARINT == 1 ~ 0,
+                 PARINT == 0 ~ 0)) %>%                             
+            mutate(int_s = ses_z*int_t) %>%
+            dplyr::glimpse()
+
+# -----------------------------------------------
+# define model
+# -----------------------------------------------
+
+# create survey object
+library(srvyr)
+data_svy_par <- data_lav %>%
+                as_survey_design(
+                weights = ws,
+                strata = id_s, 
+                ids = id_j, 
+                nest = TRUE)
+
+# Note: necesary for single clusters wihin strata
+library(survey)
+options(survey.lonely.psu="adjust")
+
+
+# -----------------------------------------------
+# fit model
+# -----------------------------------------------
+
+e03 <- as.formula('aut_z ~ 1 + ses_z + int_t + int_s')
+svy_01 <- survey::svyglm(e03, design = data_svy_par)
+
+# lm() regresion tradicional
+# survey::svyglm regresion con diseño muestral
+
+# -----------------------------------------------
+# display summary
+# -----------------------------------------------
+
+svy_01 %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
+
+# -----------------------------------------------
+# fit model
+# -----------------------------------------------
+
+e03 <- as.formula('civ_z ~ 1 + ses_z + int_t + int_s')
+svy_01 <- survey::svyglm(e03, design = data_svy_par)
+
+
+# -----------------------------------------------
+# display summary
+# -----------------------------------------------
+
+svy_01 %>%
+broom::tidy() %>%
+knitr::kable(., digits = 2)
 
 
 ```

@@ -1,0 +1,1930 @@
+---
+title: "Visualización de datos y estadística descriptiva"
+subtitle: "PSI2301"
+author: "dacarras"
+date: "Marzo 15, 2022"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ['xaringan-themer.css', 'animate.min.css', 'ninjutsu']
+    self_contained: false # if true, fonts will be stored locally
+    seal: false # show a title slide with YAML information
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: '%current%'
+      countIncrementalSlides: false
+      ratio: '16:9' # alternatives '16:9' or '4:3' or others e.g. 13:9
+      navigation:
+        scroll: true # disable slide transitions by scrolling
+---
+
+
+
+```{r setup_theme, include = FALSE}
+
+library(xaringanthemer)
+style_duo(
+  primary_color = "white",
+  secondary_color = "#3876BA",
+  text_color = "#3876BA",
+#  base_color = '#1068E9',
+#  background_color = 'white',
+  background_position = 'center',
+  header_font_google = google_font("Lato"),
+  text_font_google   = google_font("Lato", "300", "300i"),
+  code_font_google   = google_font("Droid Mono"),
+  code_font_size = '50%',
+  padding = "0.4em 2.4em 0.4em 2.4em",
+  extra_fonts = list(google_font("Lato")),
+  extra_css = 
+  list(
+  ".red"    = list(color = "red"),
+  ".white"  = list(color = "white"),
+  ".grey"  = list(color = "grey80"),  
+  ".bold_white" = list(color = "white", "font-weight" = "bold"),
+  ".small" = list("font-size" = "90%"),
+  ".pull_center"  = list("float" = "center" , "width" = "50%"),
+  ".pull_l_70"  = list("float" = "left" , "width" = "72%"),
+  ".pull_r_30"  = list("float" = "right", "width" = "23%"),
+  ".pull_l_60"  = list("float" = "left" , "width" = "60%"),  
+  ".pull_r_40"  = list("float" = "right", "width" = "33%"),
+  ".pull_l_50"  = list("float" = "left" , "width" = "45%"),
+  ".pull_r_50"  = list("float" = "right", "width" = "45%"),
+  ".small_left"  = list("float" = "left", "width" = "47%", "height" = "50%", "padding-right" = "2%"),
+  ".small_right" = list("float" = "right","width" = "47%", "height" = "50%", "padding-left"  = "2%"),
+  ".left_code" = list("float" = "left",  "width" = "47%", "height" = "100%", "padding-right" = "2%",
+    "font" = "Hack"),
+  ".code_out"  = list("float" = "right", "width" = "47%", "height" = "100%", "padding-left"  = "2%",
+    "font" = "Hack"),
+  ".text_300" = list("font-size" = "300%"),
+  ".text_180" = list("font-size" = "180%"),
+  ".text_170" = list("font-size" = "170%"),
+  ".text_160" = list("font-size" = "160%"),    
+  ".text_150" = list("font-size" = "150%"),
+  ".text_140" = list("font-size" = "140%"),  
+  ".text_130" = list("font-size" = "130%"),
+  ".text_120" = list("font-size" = "120%"),
+  ".text_110" = list("font-size" = "110%"),
+  ".text_110" = list("font-size" = "110%"),
+  ".text_100" = list("font-size" = "100%"),
+  ".text_90" = list("font-size" = "90%"),
+  ".text_80" = list("font-size" = "80%"),
+  ".text_70" = list("font-size" = "70%"),
+  ".text_60" = list("font-size" = "60%"),
+  ".text_50" = list("font-size" = "50%"),
+  ".text_40" = list("font-size" = "40%"),
+  ".text_30" = list("font-size" = "30%"),
+  ".text_20" = list("font-size" = "20%"),
+  ".line_space_11" = list("line-height" = "1.1em;"),
+  ".line_space_09" = list("line-height" = "0.9em;"),
+  ".line_space_07" = list("line-height" = "0.7em;"),
+  ".line_space_05" = list("line-height" = "0.5em;"),
+    ".tiny_text" = list(
+      "font-family" = "Lato", 
+      "font-size"= "70%"
+      ),
+    ".large_text" = list(
+      "font-family" = "Lato", 
+      "font-size"= "150%"
+      ),
+    ".slide_blue" = list(
+      "background-color" = "#3876BA",
+      "color" = "white"
+      ),
+  ".center_image" = list(
+    margin  = "0",
+    position = "absolute",
+    top      = "50%",
+    left     = "50%",
+    '-ms-transform' = "translate(-50%, -50%)",
+    transform = "translate(-50%, -50%)"
+    )
+  )
+)
+
+
+knitr::opts_chunk$set(comment = NA)
+knitr::opts_chunk$set(dpi=1500)
+
+# preview slides
+# xaringan::inf_mr('psi2301_c02_00.rmd')
+
+# padding-top: 0.4em;
+# padding-right: 2.4em;
+# padding-bottom: 0.4em;
+# padding-left: 2.4em;
+
+```
+
+
+class: title-slide, middle, center
+
+## Métodos de investigación cuantitativa en ciencias sociales
+### .text_70[Visualización de datos y estadística descriptiva]
+
+<br>
+
+.text_100[Carrasco, D., PhD]
+
+.text_70[Centro de Medición MIDE UC]
+
+<br>
+
+.text_70[PS2301]
+
+.text_70[Métodos de Investigación en Ciencias Sociales]
+
+.text_70[Santiago, Marzo 15]
+
+<br>
+
+```{r echo=FALSE, out.width = '10%'}
+knitr::include_graphics('./img/mide_uc_2019_logo.svg')
+```
+
+
+---
+
+class: inverse
+
+.text_180[
+
+.bold_white[
+
+Visualización de información cuantitativa
+  ]
+
+]
+
+.pull_l_50[
+
+La excelencia gráﬁca consiste en la exposición bien diseñada de datos interesantes. Es una cuestión de .bold_white[sustancia, estadística y diseño.]
+
+La excelencia gráﬁca consiste en comunicar .bold_white[ideas complejas con claridad, precisión y eﬁcacia.]
+
+La excelencia gráﬁca proporciona al lector el .bold_white[máximo número de ideas en el menor tiempo posible], usando el .bold_white[mínimo espacio] y la .bold_white[menor cantidad de tinta.]
+
+.line_space_05[
+
+.text_70[-- Tufte, 1983]
+
+  ]
+]
+
+
+.pull_r_50[
+
+```{r echo=FALSE, out.width = '75%', fig.retina = 1}
+knitr::include_graphics('./files/tufte_blue.png')
+```
+
+.text_70[Edward Tufte]
+]
+
+---
+
+.pull_l_50[
+
+# Visualización de Datos
+Cuando el problema no es la falta de datos… sino el exceso de estos.
+
+La visualización de datos cuantitativos es una forma de aprovechar nuestra capacidad para identiﬁcar patrones para tratar de entender (grandes cantidades de) datos de forma rápida e intuitiva.
+
+El crear una representación de información cuantitativa debe involucrar, idealmente, **la atención a fundamentos de la percepción visual y del razonamiento cuantitativo.**
+
+Existe una literatura dedicada a la consolidación y aplicación del conocimiento proveniente de la psicología cognitiva de la percepción, el diseño y la estadística
+
+]
+
+.pull_r_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/life_expectancy_chile.png')
+```
+
+.text_50[
+Algunos puntos de partida son:
+
+Tufte, E. R. (1983). The visual display of quantitative information. Cheshire, CT: Graphics press
+
+Cleveland, W. S. (1985). The elements of graphing data. Monterey, CA: Wadsworth Advanced Books and So!tware
+
+Yau, N. (2012). Visualize This!. John Wiley & Sons
+
+Healy, K. (2019). Data Visualization: A Practical Introduction. In IEEE Transactions on Professional Communication. Princeton University Press.
+
+  ] 
+
+]
+
+
+---
+
+class: inverse
+
+.text_180[
+
+.bold_white[
+
+Ejemplo 1: visualización de datos de expectativas de vida
+  ]
+
+]
+
+.pull_l_50[
+
+Vamos a replicar el ejemplo de Nathan Yau, sobre los indicadores de expectativas de vida al nacer de diferentes países.
+
+Esta base de datos compilada por el .bold_white[World Bank] concentra información de 217 países incluyendo a países de Latino America y el Caribe, Europa, Africa, Medio Oriente, y Asia. El registro temporal incluye datos desde 1960 a 2018.
+
+Estos datos son un muy buen ejemplo para ilustrar los diferentes conceptos acerca de las distribuciones de datos, pues contempla observaciones en el tiempo, con datos continuos, que nos permitirian ilustrar diferentes aspectos.
+
+
+]
+
+
+.pull_r_50[
+
+```{r echo=FALSE, out.width = '75%', fig.retina = 1}
+knitr::include_graphics('./files/life_exp_blue.png')
+```
+
+]
+
+---
+
+.text_80[
+**Codigo 01:** cargar datos, transformar datos, y generar plot
+]
+
+
+.pull_l_60[
+```{r echo=TRUE, eval = FALSE}
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
+
+data_life_wide <- readxl::read_xlsx(               #<<
+                  'life_expectancy_2018.xlsx',     #<<
+                  sheet = 'plain_data')            #<<
+
+# -----------------------------------------------
+# transformar datos a long format
+# -----------------------------------------------
+
+life_stacked <- data_life_wide %>%
+                dplyr::filter(type == 'country') %>%
+                tidyr::gather('year', 'life', 
+                  -country_name, -country_code, -indicator_name, -indicator_code, 
+                  -income_group, -region, -type) %>%
+                dplyr::select(country_name, year, life, region, income_group) %>%
+                mutate(year_num = as.numeric(year))
+
+# -----------------------------------------------
+# tabla de datos
+# -----------------------------------------------
+
+r4sda::variables_table(life_stacked) %>%
+knitr::kable()
+
+# -----------------------------------------------
+# generar plot
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data=life_stacked, aes(x=year_num, y=life, group = country_name)) +
+geom_line(linetype = 1, alpha = 0.2) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  ) +
+scale_y_continuous(
+name = 'age',
+breaks = seq(10, 80, by = 10), 
+limits = c(10,90)
+) +
+scale_x_continuous(
+name = 'year',
+breaks = seq(1960, 2020, by = 10), 
+limits = c(1960,2000)
+) 
+
+```
+]
+
+.pull_r_40[
+
+Primero vamos a importar datos que tenemos guardados de "World Bank" de expectativas de vida al nacer.
+
+La **expectativa de vida al nacer** corresponde al promedio de edad de las personas que mueren en el mismo año que nace una persona. 
+
+Es una aproximación respecto a cuanto creemos que puede durar la vida de una persona en un lugar determinado, si las condiciones de mortalidad se mantuvieran constantes entre el momento del nacimiento y su eventual muerte.
+
+En otras palabras **Life expectancy at birth**, es una forma particular de **operacionalización** de "cuánto vive una persona".
+
+
+]
+
+---
+```{r echo=FALSE, out.width = '95%', fig.retina = 1}
+knitr::include_graphics('./files/data_in_wide_01.png')
+```
+
+
+---
+```{r echo=FALSE, out.width = '95%', fig.retina = 1}
+knitr::include_graphics('./files/data_in_wide_02.png')
+```
+
+---
+
+**Cómo importar un archivo excel**
+
+.pull_l_50[
+
+```{r echo=TRUE, eval = FALSE}
+
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
+
+# "data_life_wide" es el objecto que estamos creando
+## readxl es la libreria que estamos ocupando
+### `readxl::read_xlsx` es una manera de llamar la funcion sin abrir la librería                        
+data_life_wide <- readxl::read_xlsx(
+# este es el nombre del archivo que estamos abriendo
+                  'life_expectancy_2018.xlsx',
+# esta es la hoja que queremos importar                  
+                  sheet = 'plain_data')         
+
+```
+
+.text_40[
+
+```text
+
+|variable       |type |values                                                 |labels                    |
+|:--------------|:----|:------------------------------------------------------|:-------------------------|
+|country_name   |chr  |ruba", "Afghanistan", "Angola", "Albania", "Andorra",… |=== no variable label === |
+|country_code   |chr  |BW", "AFG", "AGO", "ALB", "AND", "ARB", "ARE", "ARG",… |=== no variable label === |
+|indicator_name |chr  |ife expectancy at birth, total (years)", "Life expect… |=== no variable label === |
+|indicator_code |chr  |P.DYN.LE00.IN", "SP.DYN.LE00.IN", "SP.DYN.LE00.IN", "… |=== no variable label === |
+|1960           |dbl  |.66200, 32.44600, 37.52400, 62.28300, NA, 46.54691, 5… |=== no variable label === |
+|1961           |dbl  |.07400, 32.96200, 37.81100, 63.30100, NA, 47.14162, 5… |=== no variable label === |
+|1962           |dbl  |.44400, 33.47100, 38.11300, 64.19000, NA, 47.73178, 5… |=== no variable label === |
+|1963           |dbl  |.78700, 33.97100, 38.43000, 64.91400, NA, 48.32043, 5… |=== no variable label === |
+|1964           |dbl  |.11300, 34.46300, 38.76000, 65.46300, NA, 48.91002, 5… |=== no variable label === |
+|1965           |dbl  |.43500, 34.94800, 39.10200, 65.85000, NA, 49.49648, 5… |=== no variable label === |
+|1966           |dbl  |.76200, 35.43000, 39.45400, 66.11000, NA, 50.07295, 5… |=== no variable label === |
+|1967           |dbl  |.09500, 35.91400, 39.81300, 66.30400, NA, 50.63442, 5… |=== no variable label === |
+|1968           |dbl  |.43600, 36.40300, 40.17800, 66.48700, NA, 51.18210, 5… |=== no variable label === |
+|1969           |dbl  |.78400, 36.90000, 40.54600, 66.68900, NA, 51.72202, 6… |=== no variable label === |
+|1970           |dbl  |.14000, 37.40900, 40.91400, 66.93500, NA, 52.26421, 6… |=== no variable label === |
+|1971           |dbl  |.49800, 37.93000, 41.28200, 67.23700, NA, 52.82293, 6… |=== no variable label === |
+|1972           |dbl  |.85100, 38.46100, 41.65000, 67.58200, NA, 53.40689, 6… |=== no variable label === |
+|1973           |dbl  |.19100, 39.00300, 42.01600, 67.95300, NA, 54.01585, 6… |=== no variable label === |
+|1974           |dbl  |.51900, 39.55800, 42.37400, 68.34300, NA, 54.64287, 6… |=== no variable label === |
+|1975           |dbl  |.83300, 40.12800, 42.72100, 68.73600, NA, 55.27799, 6… |=== no variable label === |
+|1976           |dbl  |.14000, 40.71500, 43.05300, 69.11000, NA, 55.90961, 6… |=== no variable label === |
+|1977           |dbl  |.44100, 41.32000, 43.36700, 69.44800, NA, 56.52808, 6… |=== no variable label === |
+|1978           |dbl  |.73600, 41.94400, 43.66000, 69.74200, NA, 57.13390, 6… |=== no variable label === |
+|1979           |dbl  |.02300, 42.58500, 43.93100, 69.99100, NA, 57.73486, 6… |=== no variable label === |
+|1980           |dbl  |.29300, 43.24400, 44.17800, 70.20800, NA, 58.34502, 6… |=== no variable label === |
+|1981           |dbl  |.53800, 43.92300, 44.40400, 70.41600, NA, 58.97736, 6… |=== no variable label === |
+|1982           |dbl  |.75100, 44.61700, 44.61100, 70.63500, NA, 59.63600, 6… |=== no variable label === |
+|1983           |dbl  |.92900, 45.32400, 44.79900, 70.87600, NA, 60.31628, 6… |=== no variable label === |
+|1984           |dbl  |.07100, 46.04000, 44.96600, 71.13400, NA, 61.00376, 6… |=== no variable label === |
+|1985           |dbl  |.18100, 46.76100, 45.10700, 71.38800, NA, 61.67682, 7… |=== no variable label === |
+|1986           |dbl  |.26200, 47.48600, 45.21300, 71.60500, NA, 62.31412, 7… |=== no variable label === |
+|1987           |dbl  |.32500, 48.21100, 45.28300, 71.76000, NA, 62.90135, 7… |=== no variable label === |
+|1988           |dbl  |.37800, 48.93000, 45.31700, 71.84300, NA, 63.42969, 7… |=== no variable label === |
+|1989           |dbl  |.42500, 49.64000, 45.32400, 71.86000, NA, 63.89898, 7… |=== no variable label === |
+|1990           |dbl  |.46800, 50.33100, 45.30600, 71.83600, NA, 64.35158, 7… |=== no variable label === |
+|1991           |dbl  |.50900, 50.99900, 45.27100, 71.80300, NA, 64.73634, 7… |=== no variable label === |
+|1992           |dbl  |.54400, 51.64100, 45.23000, 71.80200, NA, 65.04385, 7… |=== no variable label === |
+|1993           |dbl  |.57300, 52.25600, 45.20100, 71.86000, NA, 65.41491, 7… |=== no variable label === |
+|1994           |dbl  |.59800, 52.84200, 45.20100, 71.99200, NA, 65.78565, 7… |=== no variable label === |
+|1995           |dbl  |.62200, 53.39800, 45.24600, 72.20500, NA, 66.19610, 7… |=== no variable label === |
+|1996           |dbl  |.64600, 53.92400, 45.35000, 72.49500, NA, 66.55410, 7… |=== no variable label === |
+|1997           |dbl  |.67100, 54.42400, 45.51900, 72.83800, NA, 66.89714, 7… |=== no variable label === |
+|1998           |dbl  |.70000, 54.90600, 45.76300, 73.20800, NA, 67.21809, 7… |=== no variable label === |
+|1999           |dbl  |.73800, 55.37600, 46.09300, 73.58700, NA, 67.51769, 7… |=== no variable label === |
+|2000           |dbl  |.78700, 55.84100, 46.52200, 73.95500, NA, 67.80059, 7… |=== no variable label === |
+|2001           |dbl  |.85300, 56.30800, 47.05900, 74.28800, NA, 68.07252, 7… |=== no variable label === |
+|2002           |dbl  |.93700, 56.78400, 47.70200, 74.57900, NA, 68.34025, 7… |=== no variable label === |
+|2003           |dbl  |.03800, 57.27100, 48.44000, 74.82800, NA, 68.61051, 7… |=== no variable label === |
+|2004           |dbl  |.15600, 57.77200, 49.26300, 75.03900, NA, 68.88619, 7… |=== no variable label === |
+|2005           |dbl  |.28700, 58.29000, 50.16500, 75.22800, NA, 69.16468, 7… |=== no variable label === |
+|2006           |dbl  |.42900, 58.82600, 51.14300, 75.42300, NA, 69.43946, 7… |=== no variable label === |
+|2007           |dbl  |.57600, 59.37500, 52.17700, 75.64600, NA, 69.70155, 7… |=== no variable label === |
+|2008           |dbl  |.72500, 59.93000, 53.24300, 75.91200, NA, 69.94217, 7… |=== no variable label === |
+|2009           |dbl  |.87200, 60.48400, 54.31100, 76.22100, NA, 70.15756, 7… |=== no variable label === |
+|2010           |dbl  |.01700, 61.02800, 55.35000, 76.56200, NA, 70.34992, 7… |=== no variable label === |
+|2011           |dbl  |.15800, 61.55300, 56.33000, 76.91400, NA, 70.52877, 7… |=== no variable label === |
+|2012           |dbl  |.29900, 62.05400, 57.23600, 77.25200, NA, 70.70383, 7… |=== no variable label === |
+|2013           |dbl  |.44100, 62.52500, 58.05400, 77.55400, NA, 70.88225, 7… |=== no variable label === |
+|2014           |dbl  |.58300, 62.96600, 58.77600, 77.81300, NA, 71.06429, 7… |=== no variable label === |
+|2015           |dbl  |.72500, 63.37700, 59.39800, 78.02500, NA, 71.24957, 7… |=== no variable label === |
+|2016           |dbl  |.86800, 63.76300, 59.92500, 78.19400, NA, 71.43650, 7… |=== no variable label === |
+|2017           |dbl  |.01000, 64.13000, 60.37900, 78.33300, NA, 71.62253, 7… |=== no variable label === |
+|2018           |dbl  |.15200, 64.48600, 60.78200, 78.45800, NA, 71.80683, 7… |=== no variable label === |
+|income_group   |chr  |igh income", "Low income", "Lower middle income", "Up… |=== no variable label === |
+|region         |chr  |atin America & Caribbean", "South Asia", "Sub-Saharan… |=== no variable label === |
+|type           |chr  |ountry", "country", "country", "country", "country", … |=== no variable label === |
+```
+
+]
+
+]
+
+.pull_r_50[
+```{r echo=FALSE, out.width = '80%', fig.retina = 1}
+knitr::include_graphics('./files/data_in_wide_02.png')
+```
+
+.text_80[
+Los datos importados se encuentran en formato "ancho" (i.e., **wide format**) (Singer & Willet, 2003; Hoffman, 2015). 
+
+Esto quiere decir que cada observación es una fila, y cada atributo registrado, respecto a esta observación se encuentra en columnas diferentes.
+
+En este caso, las observaciones son los países, y el atributo registrado es expectativa de vida al nace ("Life Expectancy at birth").
+
+Vamos a re-estructurar estos datos a lo "largo" (i.e. **long format**), de modo que el año en que se registra la variable de interés tambien sea un atributo en forma de variable en la base de datos.
+  ] 
+]
+
+---
+
+**Re-estructurar datos**
+
+.pull_l_50[
+
+```{r echo=TRUE, eval = FALSE}
+
+# -----------------------------------------------
+# transformar datos de wide a long format
+# -----------------------------------------------
+
+life_stacked <- data_life_wide %>%
+                dplyr::filter(type == 'country') %>%
+                tidyr::gather('year', 'life', 
+                  -country_name, 
+                  -country_code, 
+                  -indicator_name, 
+                  -indicator_code, 
+                  -income_group, 
+                  -region, 
+                  -type) %>%
+                dplyr::select(
+                  country_name, 
+                  year, 
+                  life, 
+                  region, 
+                  income_group
+                  ) %>%
+                mutate(year_num = as.numeric(year))      
+
+```
+
+.text_80[
+
+```text
+
+r4sda::variables_table(life_stacked) %>%
+knitr::kable()
+
+
+# long format: cada atributo de una observación, siempre es una columna
+
+|variable     |type |values                                                 |labels                    |
+|:------------|:----|:------------------------------------------------------|:-------------------------|
+|country_name |chr  |ba", "Afghanistan", "Angola", "Albania", "Andorra", "… |=== no variable label === |
+|year         |chr  |0", "1960", "1960", "1960", "1960", "1960", "1960", "… |=== no variable label === |
+|life         |dbl  |6200, 32.44600, 37.52400, 62.28300, NA, 51.53700, 65.… |=== no variable label === |
+|region       |chr  |in America & Caribbean", "South Asia", "Sub-Saharan A… |=== no variable label === |
+|income_group |chr  |h income", "Low income", "Lower middle income", "Uppe… |=== no variable label === |
+|year_num     |dbl  |, 1960, 1960, 1960, 1960, 1960, 1960, 1960, 1960, 196… |=== no variable label === |
+```
+  ]
+]
+
+
+.pull_r_50[
+
+```{r echo=FALSE, out.width = '80%', fig.retina = 1}
+knitr::include_graphics('./files/life_expectancy_chile.png')
+```
+
+.text_70[
+Para replicar el gráfico que generó Nathan Yau, necesitamos tener los datos en **long format**, porque queremos ocupar la variable **años** y la variable **life**. Además, necesitamos los datos solo de países. En la tabla original tambien hay datos de regiones, y nosotros estamos interesados solo en los datos países. Es decir, queremos tener un gráfico de **observaciones independientes**.
+
+Para estos fines empleamos el comando `tidyr::gather` el cual va a tomar la matriz de `valores*años` y la va a reordenar hacia abajo. En cambio al resto de las variables las vamos a **restar** de esta operación. El resto de las variables son **fijas** al país. Es decir, no varían en el tiempo.
+
+  ] 
+]
+
+---
+
+**Generar plot**
+
+.pull_l_50[
+
+```{r echo=TRUE, eval = FALSE}
+
+# -----------------------------------------------
+# generar plot
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(data=life_stacked,
+  aes(x=year_num, y=life, group = country_name)) +
+geom_line(linetype = 1, alpha = 0.2) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  ) +
+scale_y_continuous(
+name = 'age',
+breaks = seq(10, 80, by = 10), 
+limits = c(10,90)
+) +
+scale_x_continuous(
+name = 'year',
+breaks = seq(1960, 2020, by = 10), 
+limits = c(1960,2000)
+)  
+
+```
+
+.text_80[
+Para producir el plot estamos ocupando la librería `ggplot2`. En esta secuencia de comandos primero especificamos la tabla de datos en long format, en la linea `ggplot(data=life_stacked,`.
+
+Luego, en la línea `aes(x=year_num, y=life, group = country_name)) +` declaramos que vamos a ocupar la variable `year_num`, que es la versión numérica de la variable años., y como **variable dependiente**, incluímos a la variable `life`.
+
+Finalmente, para obtener una línea por país, necesitamos decirle a R, que genere una linea por país. Esto último esta en el argumento `group = country_name`.
+
+  ] 
+
+]
+
+.pull_r_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/life_expectancy_plot.png')
+```
+
+.text_80[
+
+Las líneas de comando `theme(...` estan ahí para borrar aspectos del gráfico que la libreria genera por defecto. Las elíminamos para simplificar la figura. En otras palabras, para disminuir la **cantidad de tinta**, y así aumentar la **proporción de información** que queremos interpretar (ver Tufte, 1983).
+
+Adicionalmente, no solo queremos **interpretar las líneas** incluidas en el gráfico, sino que queremos **resaltar esta información** para mostrarsela a otro. En otras palabras, **queremos comunicar como cambia en el tiempo la expectativa de vida.**
+
+  ] 
+]
+
+---
+
+```{r echo=FALSE, out.width = '95%', fig.retina = 3}
+knitr::include_graphics('./files/life_expectancy_plot.png')
+```
+
+---
+
+**Qué podemos observamos en el gráfico**
+
+.pull_l_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 3}
+knitr::include_graphics('./files/life_expectancy_plot.png')
+```
+]
+
+.pull_r_50[
+**Variabilidad**
+
+En cada año, tenemos una alta variablidad respecto a la expectativa de vida al nacer. Los rangos se extienden entre 30 a 75 años aproximadamente.
+
+
+```text
+
+# code
+life_stacked %>%
+group_by(year_num) %>%
+summarize(
+  minimum = min(life, na.rm = TRUE),
+  maximum = max(life, na.rm = TRUE)
+  ) %>%
+mutate(range = maximum - minimum) %>%
+dplyr::filter(year_num %in% c(1960, 1970, 1980, 1990, 2000, 2010)) %>%
+knitr::kable(., digits = 2)
+
+
+# output
+| year_num| minimum| maximum| range|
+|--------:|-------:|-------:|-----:|
+|     1960|   28.20|   73.55| 45.35|
+|     1970|   32.39|   74.65| 42.26|
+|     1980|   27.54|   76.85| 49.31|
+|     1990|   33.41|   78.84| 45.42|
+|     2000|   39.44|   81.08| 41.64|
+|     2010|   45.10|   82.98| 37.88|
+
+```
+
+
+]
+
+
+---
+
+**Qué podemos observamos en el gráfico**
+
+.pull_l_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 3}
+knitr::include_graphics('./files/life_expectancy_plot.png')
+```
+]
+
+.pull_r_50[
+**Variabilidad en el tiempo**
+
+Además, hay una leve disminución de la variabilidad en el tiempo. Es decir, que la distancia entre la expectativa de vida máxima y mínima entre países parece disminuir en el tiempo.
+
+A ojo desnudo, esto es algo difícil de concluir. Sin embargo, esto podría ser contestado con un modelo estadístico; por ejemplo con un trabajo de investigación. Lo interesante de esta observación es que es una pregunta de investigación referida a la **varianza** de una variable disminuye en el tiempo.
+
+```text
+
+# output
+| year_num| minimum| maximum| range|
+|--------:|-------:|-------:|-----:|
+|     1960|   28.20|   73.55| 45.35|
+|     1970|   32.39|   74.65| 42.26|
+|     1980|   27.54|   76.85| 49.31|
+|     1990|   33.41|   78.84| 45.42|
+|     2000|   39.44|   81.08| 41.64|
+|     2010|   45.10|   82.98| 37.88|
+
+```
+
+
+]
+
+
+---
+
+**Qué podemos observamos en el gráfico**
+
+.pull_l_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 3}
+knitr::include_graphics('./files/life_expectancy_plot.png')
+```
+]
+
+.pull_r_50[
+**Aumento de la expectativa de vida**
+
+Hay una inclinación positiva de la mayoría de las lineas de los países en el tiempo. Es decir que, en años más recientes parece haber una expectativa de vida al nacer, mayor que en años anteriores. Por ejemplo, la mediana de expectativa de vida al nacer en 1960 era de 54.70 años. Cincuentra años después esta cifra crece a 72.72 años.
+
+```text
+
+# code
+life_stacked %>%
+ group_by(year_num) %>%
+ summarize(
+   median = median(life, na.rm = TRUE)
+   ) %>%
+ dplyr::filter(year_num %in% c(1960, 1970, 1980, 1990, 2000, 2010)) %>%
+ knitr::kable(., digits = 2)
+
+# output
+| year_num| median|
+|--------:|------:|
+|     1960|  54.70|
+|     1970|  60.18|
+|     1980|  64.58|
+|     1990|  68.30|
+|     2000|  70.18|
+|     2010|  72.72|
+
+```
+
+.text_60[
+La **mediana**, es una medida que divide a la distribución en dos mitadas. Una fortaleza de este indicador, es que no importa la forma de la distribución, la mediana siempre se ubica en el centro de la distribución, dividiendo al conjunto de datos observados en dos mitades. Esta medida es equivalente al **percentil 50**.
+  
+    ]
+
+]
+
+
+---
+
+**Qué podemos observamos en el gráfico**
+
+.pull_l_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 3}
+knitr::include_graphics('./files/life_expectancy_plot.png')
+```
+]
+
+.pull_r_50[
+**Distribuciones con más de una moda**
+
+Esto es dificil de ver en la gráfica presente. Pero parecieran haber puntos en la ditribución donde hay más observaciones que en otros lugares. Esto se observa respecto a la **densidad** de las líneas. Aquellos lugares donde hay sectores más oscuros, es porque hay más lineas cruzando este lugar. Esto significa que hay más paises en un punto determinado, que en otro sector de la distribución.
+
+Lo anterior, es más fácil de ilustrar con **histogramas**.
+
+
+.text_60[
+La **moda**, es una medida de tendencia crentral que nos indica que tan frecuente es un valor, que tan popular es un punto de la distribución. Cuando una distribucion presenta dos modas, se les llama distribuciones bimodales. En estos casos, muchas veces se sospecha que puede haber una tercera variable que explica esta bimodalidad, y que esto puede ser signo de la presencia de dos distribuciones superpuestas. En el caso de indicadores como la expectativa de vida, esto puede estar relacionado al ingreso per capita de un país, y la calidad general de vida de diferentes grupos de países, la presencia de conflictos armados u otro tipo de factores relevantes para explicar la mortalidad.
+  
+    ]
+
+]
+
+
+---
+
+class: inverse
+
+.text_180[
+
+.bold_white[
+
+Ejemplo 2: visualización de distribución univariada
+  ]
+
+]
+
+.pull_l_50[
+
+La gráfica anterior es bastante compleja. Pues expresa la relación entre expectativas de vida al nacer, para diferentes años, para diferentes países. Por tanto, nos permite resaltar información de tres dimensiones diferentes: expectativas de vida, años y países.
+
+En el siguiente ejemplo, vamos fijarnos en un solo año, en el año 2000. Sobre este año vamos a graficar la distribución de expectativas de vida al nacer de un conjunto pequeño de paises.
+
+Este ejercicio, corresponde a analizar la distribución de una sola variable, para un conjunto de observaciones. Es decir, una distribución univariada. Para este ejemplo, emplearemos las observaciones de Argentina, Bolivia, Brazil, Chile, Colombia, Ecuador, Guatemala, Mexico, Panama, Paraguay, Peru y Uruguay.
+
+
+]
+
+
+.pull_r_50[
+
+```{r echo=FALSE, out.width = '75%', fig.retina = 1}
+knitr::include_graphics('./files/life_exp_blue.png')
+```
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/ex_01.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+      country_name year    age     n
+      <chr>        <chr> <dbl> <dbl>
+*  1 Argentina    2000     74     1
+   2 Bolivia      2000     62     1
+   3 Brazil       2000     70     1
+   4 Chile        2000     76     1
+   5 Colombia     2000     73     1
+   6 Ecuador      2000     73     2
+   7 Guatemala    2000     68     1
+   8 Mexico       2000     74     2
+   9 Panama       2000     75     1
+  10 Peru         2000     71     1
+  11 Paraguay     2000     71     2
+  12 Uruguay      2000     75     2
+
+```
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/ex_02.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+      country_name year    age     n
+      <chr>        <chr> <dbl> <dbl>
+*  1 Argentina    2000     74     1
+*  2 Bolivia      2000     62     1
+   3 Brazil       2000     70     1
+   4 Chile        2000     76     1
+   5 Colombia     2000     73     1
+   6 Ecuador      2000     73     2
+   7 Guatemala    2000     68     1
+   8 Mexico       2000     74     2
+   9 Panama       2000     75     1
+  10 Peru         2000     71     1
+  11 Paraguay     2000     71     2
+  12 Uruguay      2000     75     2
+
+```
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/ex_04.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+      country_name year    age     n
+      <chr>        <chr> <dbl> <dbl>
+*  1 Argentina    2000     74     1
+*  2 Bolivia      2000     62     1
+*  3 Brazil       2000     70     1
+*  4 Chile        2000     76     1
+   5 Colombia     2000     73     1
+   6 Ecuador      2000     73     2
+   7 Guatemala    2000     68     1
+   8 Mexico       2000     74     2
+   9 Panama       2000     75     1
+  10 Peru         2000     71     1
+  11 Paraguay     2000     71     2
+  12 Uruguay      2000     75     2
+
+```
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/ex_08.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+      country_name year    age     n
+      <chr>        <chr> <dbl> <dbl>
+*  1 Argentina    2000     74     1
+*  2 Bolivia      2000     62     1
+*  3 Brazil       2000     70     1
+*  4 Chile        2000     76     1
+*  5 Colombia     2000     73     1
+*  6 Ecuador      2000     73     2
+*  7 Guatemala    2000     68     1
+*  8 Mexico       2000     74     2
+   9 Panama       2000     75     1
+  10 Peru         2000     71     1
+  11 Paraguay     2000     71     2
+  12 Uruguay      2000     75     2
+
+```
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/ex_12.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+      country_name year    age     n
+      <chr>        <chr> <dbl> <dbl>
+*  1 Argentina    2000     74     1
+*  2 Bolivia      2000     62     1
+*  3 Brazil       2000     70     1
+*  4 Chile        2000     76     1
+*  5 Colombia     2000     73     1
+*  6 Ecuador      2000     73     2
+*  7 Guatemala    2000     68     1
+*  8 Mexico       2000     74     2
+*  9 Panama       2000     75     1
+* 10 Peru         2000     71     1
+* 11 Paraguay     2000     71     2
+* 12 Uruguay      2000     75     2
+
+```
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/ex_12.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+      country_name year    age     n
+      <chr>        <chr> <dbl> <dbl>
+*  1 Argentina    2000     74     1
+*  2 Bolivia      2000     62     1
+*  3 Brazil       2000     70     1
+*  4 Chile        2000     76     1
+*  5 Colombia     2000     73     1
+*  6 Ecuador      2000     73     2
+*  7 Guatemala    2000     68     1
+*  8 Mexico       2000     74     2
+*  9 Panama       2000     75     1
+* 10 Peru         2000     71     1
+* 11 Paraguay     2000     71     2
+* 12 Uruguay      2000     75     2
+
+```
+
+Una intuición gráfica básica consiste en posicionar los datos a lo largo del eje horizontal y expresar su frecuencia en el eje vertical.
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/ex_full.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+      country_name year    age     n
+      <chr>        <chr> <dbl> <dbl>
+*  1 Argentina    2000     74     1
+*  2 Bolivia      2000     62     1
+*  3 Brazil       2000     70     1
+*  4 Chile        2000     76     1
+*  5 Colombia     2000     73     1
+*  6 Ecuador      2000     73     2
+*  7 Guatemala    2000     68     1
+*  8 Mexico       2000     74     2
+*  9 Panama       2000     75     1
+* 10 Peru         2000     71     1
+* 11 Paraguay     2000     71     2
+* 12 Uruguay      2000     75     2
+# … with 191 more rows
+[...]
+
+```
+
+Sin embargo, nuestros datos no siempre poseen un set de **valores discretos**, como en este caso los números enteros entre 30 y 90.
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/ex_cont.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+    country_name         year   life     n
+    <chr>                <chr> <dbl> <dbl>
+*  1 Aruba                2000   73.8     1
+*  2 Afghanistan          2000   55.8     1
+*  3 Angola               2000   46.5     1
+*  4 Albania              2000   74.0     1
+*  5 United Arab Emirates 2000   74.3     1
+*  6 Argentina            2000   73.6     1
+*  7 Armenia              2000   71.4     1
+*  8 Antigua and Barbuda  2000   73.9     1
+*  9 Australia            2000   79.2     1
+* 10 Austria              2000   78.1     1
+# … with 191 more rows
+[...]
+
+```
+
+Por el contrario, nuestros comunmente se asemejan a la siguiente distribución, donde pueden tomar diferentes valores entre 30 y 90, no solo numeros enteros.
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/ex_cont.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+    country_name         year   life     n
+    <chr>                <chr> <dbl> <dbl>
+*  1 Aruba                2000   73.8     1
+*  2 Afghanistan          2000   55.8     1
+*  3 Angola               2000   46.5     1
+*  4 Albania              2000   74.0     1
+*  5 United Arab Emirates 2000   74.3     1
+*  6 Argentina            2000   73.6     1
+*  7 Armenia              2000   71.4     1
+*  8 Antigua and Barbuda  2000   73.9     1
+*  9 Australia            2000   79.2     1
+* 10 Austria              2000   78.1     1
+# … with 191 more rows
+[...]
+
+```
+
+En general no tendremos valores repetidos… salvo contadas excepciones. Por tanto, en la gran mayoría de los casos, cada valor observado presentaría una frecuencia de 1.
+
+Este gráﬁco muestra como los datos se ubican, pero no muestra claramente como se concentran.
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/ex_cont.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+    country_name         year   life     n
+    <chr>                <chr> <dbl> <dbl>
+*  1 Aruba                2000   73.8     1
+*  2 Afghanistan          2000   55.8     1
+*  3 Angola               2000   46.5     1
+*  4 Albania              2000   74.0     1
+*  5 United Arab Emirates 2000   74.3     1
+*  6 Argentina            2000   73.6     1
+*  7 Armenia              2000   71.4     1
+*  8 Antigua and Barbuda  2000   73.9     1
+*  9 Australia            2000   79.2     1
+* 10 Austria              2000   78.1     1
+# … with 191 more rows
+[...]
+
+```
+
+Lo que podríamos hacer es agrupar los valores en intervalos.
+
+Al agrupar los datos en intervalos, por ejemplo de 1 año, podemos graficar la frecuencia observada de datos **discretizando** la distribución original.
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/hist_width_01.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+     country_name             year   life     n
+     <chr>                    <chr> <dbl> <dbl>
+*  1 Sierra Leone             2000   39.4     1
+*  2 Zambia                   2000   44       1
+*  3 Central African Republic 2000   44.2     1
+*  4 Zimbabwe                 2000   44.6     1
+*  5 Malawi                   2000   45.1     1
+*  6 Uganda                   2000   46.2     1
+*  7 Nigeria                  2000   46.3     1
+*  8 Angola                   2000   46.5     1
+*  9 Eswatini                 2000   47.5     1
+* 10 Lesotho                  2000   47.7     1
+# … with 191 more rows
+[...]
+
+```
+
+
+Los **histogramas** grafican la frecuencia de valores que se encuentran en un intervalo. En este caso el intervalos definido es de un año, y pasado .5, la función aproxima el valor observado al intervalo siguiente.
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/hist_width_01.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+     country_name             year   life     n
+     <chr>                    <chr> <dbl> <dbl>
+*  1 Sierra Leone             2000   39.4     1
+*  2 Zambia                   2000   44       1
+*  3 Central African Republic 2000   44.2     1
+*  4 Zimbabwe                 2000   44.6     1
+*  5 Malawi                   2000   45.1     1
+*  6 Uganda                   2000   46.2     1
+*  7 Nigeria                  2000   46.3     1
+*  8 Angola                   2000   46.5     1
+*  9 Eswatini                 2000   47.5     1
+* 10 Lesotho                  2000   47.7     1
+# … with 191 more rows
+[...]
+
+```
+
+
+Los **histogramas** grafican la frecuencia de valores que se encuentran en un intervalo. En este caso el intervalos definido es de un año, y pasado .5, la función aproxima el valor observado al intervalo siguiente.
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/hist_width_01.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+     country_name             year   life     n
+     <chr>                    <chr> <dbl> <dbl>
+*  1 Sierra Leone             2000   39.4     1
+*  2 Zambia                   2000   44       1
+*  3 Central African Republic 2000   44.2     1
+*  4 Zimbabwe                 2000   44.6     1
+*  5 Malawi                   2000   45.1     1
+*  6 Uganda                   2000   46.2     1
+*  7 Nigeria                  2000   46.3     1
+*  8 Angola                   2000   46.5     1
+*  9 Eswatini                 2000   47.5     1
+* 10 Lesotho                  2000   47.7     1
+# … with 191 more rows
+[...]
+
+```
+
+Al igual que los graficos anteriores, el **eje y** continua siendo una frecuencia. Es decir, que lo podemos interpretar como cantidad de casos que se encuentran entre ciertos valores.
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/hist_width_01_empty.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+     country_name             year   life     n
+     <chr>                    <chr> <dbl> <dbl>
+*  1 Sierra Leone             2000   39.4     1
+*  2 Zambia                   2000   44       1
+*  3 Central African Republic 2000   44.2     1
+*  4 Zimbabwe                 2000   44.6     1
+*  5 Malawi                   2000   45.1     1
+*  6 Uganda                   2000   46.2     1
+*  7 Nigeria                  2000   46.3     1
+*  8 Angola                   2000   46.5     1
+*  9 Eswatini                 2000   47.5     1
+* 10 Lesotho                  2000   47.7     1
+# … with 191 more rows
+[...]
+
+```
+
+Cuando no hay datos en un intervalo ese grupo es representado como cero, mostrando un vacío.
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/hist_width_01.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+# -----------------------------------------------
+# histogram binwidth = 1
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(example_4, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 1
+  ) +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n',
+  breaks = seq(1, 17, by = 1)
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+```
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/hist_width_05.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+# -----------------------------------------------
+# histogram binwidth = 5
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(example_4, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n'
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+```
+
+.text_80[
+El ancho del "bin", es decir el intervalos con los que se cuentan la cantidad de observaciones puede ser definido por el usuario.
+
+En este ejemplo, definimos el intervalos del bin en 5 años. De esta forma cada una de las barras cuenta la cantidad de casos que se encuentran cada 5 años. El eje horizontal esta dividido en 9 grupos iguales (con el mismo intervalo).
+
+  ]
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/hist_width_05_yaxis.png')
+```
+  
+]
+
+.pull_r_30[
+
+```{r echo=TRUE, eval=FALSE}
+
+# -----------------------------------------------
+# histogram binwidth = 5
+# -----------------------------------------------
+
+library(ggplot2)
+ggplot(example_4, aes(x = life)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill = '#3876BA',
+  binwidth = 5
+  ) +
+scale_x_continuous(
+  name = '\nLife Expectancy at birth',
+  breaks = seq(30, 90, by = 1), 
+  limits = c(30,90)
+  ) +
+scale_y_continuous(
+  name = 'n'
+  ) +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank()
+  )
+
+```
+
+.text_60[
+Al cambiar el intervalo del histograma, puede afectar a los límites del eje y. Ahora estamos contando más casos en intervalos de 5 años, y por tanto los limites del eje y pueden ser distintos a cuando los intervalos empleados eran de solo un año.
+
+¿Cómo uno decide respecto al ancho del intervalo? El grado de detalle que comuniquen las barras del histograma debe ser juzgado en base al propósito que se tenga. Si el foco se encuentra en identificar "vacíos", entonces se puede recurrir al maximo de resolución (1 una unidad). Si el interés esta inclinado respecto a identificar **sesgo de la distribución**, 10 a 30 bins pueden ser suficientes.
+
+  ]
+]
+
+---
+
+class: inverse
+
+Metodología cuantitativa
+
+.text_300[.bold_white[PAUSA]]
+
+Recreo antes de pasar a la segunda parte del curso
+
+
+---
+
+class: inverse
+
+.text_180[
+
+.bold_white[
+
+Ejemplo 2: Distribuciones
+  ]
+
+]
+
+.pull_l_50[
+
+La gráfica anterior era sencilla. Expresa la distribución de una variable, incluyendo sus parámetros de locación (e.g., media, moda, y mediana), junto a los parámetros de dispersión (e.g., rango, desviación estandar, y varianza).
+
+
+Las distribuciones de las variables pueden tomar diferentes formas. Las más comunes son las las formas simétricas, uniformes, y asimétricas.
+
+Es importante distinguir entre las distribuciones simétricas y las distribuciones asimétricas. Cuan informativas son los promedios y la desviación estándar, dependen de que tan simétricas sean las distribuciones. Para el caso de distribuciones asimétricas, la mediana puede puede ser un mejor descriptor de valor típico.
+
+]
+
+
+.pull_r_50[
+
+```{r echo=FALSE, out.width = '75%', fig.retina = 1}
+knitr::include_graphics('./files/distributions_names.png')
+```
+
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/distributions.png')
+```
+  
+]
+
+.pull_r_30[
+
+
+.text_80[
+
+Los datos no siempre se distribuyen de la misma manera…
+
+La forma en que los datos se distribuyen es llamada en estadística “distribución”.
+
+Algunas de estas formas tienden a repetirse en muchos tipos de datos. Estas distribuciones recurrentes han sido estudiadas en estadística y juegan un rol importante en el análisis estadístico de datos.
+
+  ]
+]
+
+---
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/distributions_names.png')
+```
+  
+]
+
+.pull_r_30[
+
+
+.text_80[
+
+Los datos no siempre se distribuyen de la misma manera…
+
+La forma en que los datos se distribuyen es llamada en estadística **“distribución”.**
+
+Algunas de estas formas tienden a repetirse en muchos tipos de datos. Estas distribuciones recurrentes han sido estudiadas en estadística y juegan un rol importante en el análisis estadístico de datos.
+
+Las **distribuciones simétricas**, se caracterizan por tener media, moda y mediana en la misma ubicación (... o muy cercanas).
+
+En contraste, las **distribuciones asimétricas** se caracterizan por presentar medias que son muy diferentes de la mediana. Y por tanto, las medias tienden a subestimar, o sobre estimar, cual es el valor más probable. En estos escenarios, es mejor emplear a la mediana como forma de descripción de punto central de la distribución.
+
+  ]
+]
+
+---
+
+# Distribución simétrica
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/distribution_sim.png')
+```
+  
+]
+
+.pull_r_30[
+
+
+.text_80[
+
+La distribución simétrica es la que comúnmente llamamos distribución normal.
+
+La idea general respecto a esta distribución es que **mediana** y **media** se encuentran muy cercanas. De modo tal, que cerca del 50% de los casos se encuentra sobre la media, y bajo la media.
+
+La media expresa el punto de la distribución donde se minimizan todas las distancias con respecto al resto de los valores de la distribución. Y al mismo tiempo, tiende a ser el valor más típico de esta distribución.
+
+Cuando las distribuciones de las variables se asemejan a esta forma, cifras como el **promedio**, o **media**, son muy informativas respecto a esta distribución.
+
+
+  ]
+]
+
+---
+
+# Distribución asimétrica
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/distribution_left.png')
+```
+  
+]
+
+.pull_r_30[
+
+
+.text_80[
+
+La distribución asimétrica son aquellas que se desvian de la forma de la distribución normal.
+
+La idea general respecto a estas distribuciones es que **mediana** y **media** son muy diferentes. De modo tal, que el promedio deja de ser el punto cenntral de la distribución, y por tanto es más recomendable emplear cifras como la **mediana** para describir el parametro central de esta distribución.
+
+La **mediana** expresa el punto medio de la distribución, sobre el cual se encuentra el 50% de las observaciones, y bajo el cual se encuentra el otro 50% de la distribución.
+
+
+
+  ]
+]
+
+---
+
+# Distribución asimétrica
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/distribution_left_lines.png')
+```
+  
+]
+
+.pull_r_30[
+
+
+.text_80[
+
+
+Se habla de asimetría a la izquierda, cuando la cola de los valores menores se extiende hacia a la izquierda. También se suele hablar de un **sesgo negativo**. En estas distribuciones se cumple que:
+
+**Media** < **Mediana** < **Moda**
+
+
+  ]
+]
+
+---
+
+# Distribución asimétrica
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/distribution_right.png')
+```
+  
+]
+
+.pull_r_30[
+
+
+.text_80[
+
+
+Se habla de asimetría a la derecha, cuando la cola de los valores mayores se extiende hacia a la derecha. También se suele hablar de un **sesgo positivo**. En estas distribuciones se cumple que:
+
+**Media** > **Mediana** > **Moda**
+
+
+  ]
+]
+
+---
+
+# Distribución asimétrica
+
+.pull_l_70[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/distribution_right_lines.png')
+```
+  
+]
+
+.pull_r_30[
+
+
+.text_80[
+
+
+Se habla de asimetría a la derecha, cuando la cola de los valores mayores se extiende hacia a la derecha. También se suele hablar de un sesgo positivos. En estas distribuciones se cumple que:
+
+**Moda** < **Mediana** < **Media**
+
+
+  ]
+]
+
+---
+
+class: inverse
+
+.text_180[
+
+.bold_white[
+
+Ejemplo 3: visualización de distribución bivariada
+  ]
+
+]
+
+.pull_l_50[
+
+La gráfica anterior era sencilla. Expresa la distribución de una variable, incluyendo sus parámetros de locación (e.g., media, moda, y mediana), junto a los parámetros de dispersión (e.g., rango, desviación estandar, y varianza).
+
+En el siguiente ejemplo, vamos visualizar dos dimensiones de forma conjunta: la expectativa de vida al nacer de los países, en conjunto al proudcto interno bruto per capita (Gross Domestic Product), en dólares.
+
+En este ejemplo, vamos a representar como puntos en un plano cartesiano cada observación de cada país, y emplearemos como coordenadas de cada eje a las variables elegidas. En el eje y, ubicaremos a la expectativa de vida. En el eje x, colocaremos los valores de GDP. Estos son los mismos datos anteriores, para todos los países (n = 201).
+
+Este tipo de gráfico se llama .bold_white[dispersiograma], i.e. scatter plot.
+
+
+]
+
+
+.pull_r_50[
+
+```{r echo=FALSE, out.width = '75%', fig.retina = 1}
+knitr::include_graphics('./files/scatter.png')
+```
+
+]
+
+---
+
+```{r echo=FALSE, out.width = '90%', fig.retina = 1}
+knitr::include_graphics('./files/scatter.png')
+```
+
+---
+
+# Correlación r = .9
+
+.pull_l_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/corr_09.png')
+```
+  
+]
+
+.pull_r_50[
+
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/corr_n09.png')
+```
+
+]
+
+---
+
+# Correlación r = .7
+
+.pull_l_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/corr_07.png')
+```
+  
+]
+
+.pull_r_50[
+
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/corr_n07.png')
+```
+
+]
+
+---
+
+# Correlación r = .5
+
+.pull_l_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/corr_05.png')
+```
+  
+]
+
+.pull_r_50[
+
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/corr_n05.png')
+```
+
+]
+
+---
+
+# Correlación r = .3
+
+.pull_l_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/corr_03.png')
+```
+  
+]
+
+.pull_r_50[
+
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/corr_n03.png')
+```
+
+]
+
+---
+
+# Correlación r = .1
+
+.pull_l_50[
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/corr_01.png')
+```
+  
+]
+
+.pull_r_50[
+
+
+```{r echo=FALSE, out.width = '100%', fig.retina = 1}
+knitr::include_graphics('./files/corr_n01.png')
+```
+
+]
+
+---
+
+class: inverse
+
+.text_180[
+
+.bold_white[
+
+Ejemplo 4: visualización de distribución bivariada entre variables discretas
+  ]
+
+]
+
+.pull_l_50[
+
+De forma similar a como se puede visualizar la distribución conjunta de datos continuos, es posible producir gráficas que representen la distribución conjunta de dos variables discretas.
+
+A este tipo de gráficos se les llama gráfico de .bold_white[mosaico].
+
+
+]
+
+
+.pull_r_50[
+
+```{r echo=FALSE, out.width = '75%', fig.retina = 1}
+knitr::include_graphics('./files/mosaic.png')
+```
+
+]
+
+---
+
+```{r echo=FALSE, out.width = '90%', fig.retina = 1}
+knitr::include_graphics('./files/mosaic.png')
+```
+
+---
+
+class: inverse
+
+.text_180[
+
+.bold_white[
+
+Ejemplo 5: visualización de distribución univariada entre variables discretas
+  ]
+
+]
+
+.pull_l_50[
+
+Podemos graficar la distribución de variables discretas. Sin embargo a diferencia de las variables continuas, en este caso lo que se grafica son .bold_white[frecuencia] o .bold_white[proporciones] de un valor; y por tanto estamos graficando **puntos estimados.**
+
+A este tipo de gráficos se les llama gráfico de .bold_white[barras].
+
+
+]
+
+
+.pull_r_50[
+
+```{r echo=FALSE, out.width = '75%', fig.retina = 1}
+knitr::include_graphics('./files/bar_plot.png')
+```
+
+]
+
+---
+
+```{r echo=FALSE, out.width = '90%', fig.retina = 1}
+knitr::include_graphics('./files/bar_plot.png')
+```
+
+---
+
+```{r echo=FALSE, out.width = '90%', fig.retina = 1}
+knitr::include_graphics('./files/summary_plot.png')
+```
+
+---
+
+class: inverse
+
+.text_180[
+
+.bold_white[
+
+Referencias
+  ]
+
+]
+
+.pull_l_50[
+
+Singer, J. D., & Willett, J. B. (2003). Applied longitudinal data analysis: modeling change and event occurrence. Oxford University Press.
+
+Hoffman, L. (2015). Longitudinal Analysis: Modeling Within-Person Fluctuation and Change. Psychology Press. http://www.pilesofvariance.com/
+
+
+
+]
+
+
+.pull_r_50[
+
+
+]
+
+---
+
+
+class: title-slide, middle, center
+
+
+## Muchas gracias!
+### .text_70[Visualización de datos y estadística descriptiva]
+
+<br>
+
+.text_100[Carrasco, D., PhD]
+
+.text_70[Centro de Medición MIDE UC]
+
+<br>
+
+.text_70[PS2301]
+
+.text_70[Métodos de Investigación en Ciencias Sociales]
+
+.text_70[Santiago, Marzo 15]
+
+<br>
+

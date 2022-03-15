@@ -185,7 +185,6 @@ geom_point(alpha = .3) +
 geom_smooth(method = "lm", colour = "Red") +
 labs(x = "parents", y = "child") +
 ggpubr::stat_cor(method="pearson", label.y = 1.98) +
-ggpubr::stat_cor(method="pearson") +
 theme_linedraw()
 
 # -----------------------------------------------
@@ -275,6 +274,11 @@ knitr::kable(., digits = 2)
 reg_model <- '
 sheight ~ b0*1       # intercept
 sheight ~ b1*fheight # slope
+'
+
+
+reg_model <- '
+sheight ~ fheight
 '
 
 # -----------------------------------------------
