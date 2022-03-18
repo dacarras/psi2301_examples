@@ -78,7 +78,7 @@ install.packages('tidyverse')
 
 install.packages('devtools')
 
-credentials::set_github_pat()
+# credentials::set_github_pat()
 
 devtools::install_github(
   'dacarras/psi2301',
