@@ -175,6 +175,7 @@ header=TRUE, stringsAsFactors = FALSE)
 
 library(dplyr) # cargamos dplyr, para poder ocupar "%>%" entre comandos
 data_model <- data_16 %>%
+              psi2301::remove_labels() %>%
               dplyr::left_join(., country_list,
                 by = 'IDCNTRY')
 

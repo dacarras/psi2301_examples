@@ -1,9 +1,9 @@
 ---
-title: "Ejemplo de template de RMD para producir análisis, que se guardan en Word"
+title: "Ejemplo de template de RMD para producir análisis, que se guardan en PDF"
 subtitle: "template 001"
 author: "[incluir nombre o nickname aqui]"
 date: '`r format(Sys.time(), "%a %b %d, %Y")`'
-output: word_document
+output: pdf_document
 ---
 
 
@@ -17,6 +17,8 @@ output: word_document
 knitr::opts_chunk$set(dev = 'png')
 options(knitr.kable.NA = '', digits = 2)
 options(scipen = 999999)
+# higher resolution for plots
+knitr::opts_chunk$set(dpi=300,fig.width=7)
 
 # remove all previous objects
 rm(list = ls())
