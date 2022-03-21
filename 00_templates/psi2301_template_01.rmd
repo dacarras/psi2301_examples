@@ -1,0 +1,1075 @@
+---
+title: "Ejemplo de template de RMD para producir análisis, que se guardan en HTML"
+subtitle: "template 001"
+author: "[incluir nombre o nickname aqui]"
+date: '`r format(Sys.time(), "%a %b %d, %Y")`'
+output:
+  html_document:
+    theme: paper
+    highlight: kate
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    fig_width: 10 
+    fig_height: 8 
+---
+
+<style>
+  .main-container {
+    max-width: 1600px !important;
+  }
+  .list-group-item.active, 
+  .list-group-item.active:focus, 
+  .list-group-item.active:hover {
+    background-color: #373334;
+  }
+</style>
+
+
+```{r setup, include=FALSE}
+
+#----------------------------------------------------------
+# setup
+#----------------------------------------------------------
+
+# knitr option
+knitr::opts_chunk$set(dev = 'png')
+options(knitr.kable.NA = '', digits = 2)
+options(scipen = 999999)
+
+# remove all previous objects
+rm(list = ls())
+
+# fonts
+Sys.setenv(LANG="en_US.UTF-8")
+
+
+# ------------------------------------------------------
+# get times
+# ------------------------------------------------------
+
+start_time <- Sys.time()
+
+
+```
+
+
+# Abrir datos
+
+## Cargar datos
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# abrir datos
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# crear objeto de datos
+#----------------------------------------------------------
+
+data_16 <- psi2301::iccs_2016
+
+```
+
+## Inspeccionar datos
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# inspeccionar datos
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# dimensiones
+#----------------------------------------------------------
+
+dim(data_16)
+
+# Resultado: dim() nos entrega dos resultados,
+#            toma como input a una tabla o matriz
+#            la cantidad de filas (i.e., casos)
+#            la cantidad de columnas (i.e., variables)
+
+#----------------------------------------------------------
+# inspeccionar datos con codigo base
+#----------------------------------------------------------
+
+str(data_16)
+
+# Resultado: str() nos entrega la estructura de un objeto
+#            despues de cada $ indica el nombre de un vector o variable
+#            luego, despliega cada atributo que posee la tabla
+
+#----------------------------------------------------------
+# inspeccionar con glimpse
+#----------------------------------------------------------
+
+dplyr::glimpse(data_16)
+
+# Resultado: dplyr::glimpse() entrega información resumida de los datos
+#            en las primeras lineas entrega las filas y columnas
+#            el resto de la información que entrega es de cada vector
+#            de la tabla, su tipo (e.g., chr, dbl) y  una muestra de valores.
+
+```
+
+
+# Cantidad de casos por cluster
+
+Los datos de ICCS 2016, se encuentran anidados por por dos factores relevantes: escuelas, y paises.
+
+En los siguientes ejemplos, obtendremos la cantidad de cada cluster: paises y escuelas.
+       
+- La variable país es 'IDCNTRY'
+- La variable escuela es 'IDSCHOOL'
+
+
+## Cantidad de casos por país
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# casos por país
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# nombres de paises
+#----------------------------------------------------------
+
+country_list <- read.table(text = "
+IDCNTRY        ctry_text              
+100     'Bulgaria'
+152     'Chile'
+158     'Chinese Taipei'
+170     'Colombia'
+191     'Croatia'
+208     'Denmark'
+214     'Dominican Republic'
+233     'Estonia'
+246     'Finland'
+344     'Hong Kong SAR'
+380     'Italy'
+410     'Korea, Republic of'
+428     'Latvia'
+440     'Lithuania'
+470     'Malta'
+484     'Mexico'
+528     'Netherlands'
+578     'Norway'
+604     'Peru'
+643     'Russian Federation'
+705     'Slovenia'
+752     'Sweden'
+956     'Belgium (Flemish)'
+276001  'North Rhine-Westphalia'
+",
+header=TRUE, stringsAsFactors = FALSE)
+
+# Nota: ctry_text es la variable que contendrá los nombres de paises.
+
+#----------------------------------------------------------
+# agregar nombres de paises
+#----------------------------------------------------------
+
+library(dplyr) # cargamos dplyr, para poder ocupar "%>%" entre comandos
+data_model <- data_16 %>%
+              dplyr::left_join(., country_list,
+                by = 'IDCNTRY')
+
+# Nota: dplyr::left_join() nos permite agregar
+#       informacion a una tabla pre-existente, empleando
+#       empleando una segunda tabla. El argumento
+#       "by = '[variable_clace o viables_clave]' "
+#       es requerida para que R haga un match uno a uno respecto
+#       a donde agregar las variables nuevas.
+
+
+#----------------------------------------------------------
+# cantidad de casos por país via table()
+#----------------------------------------------------------
+
+table(data_model$ctry_text)
+
+#----------------------------------------------------------
+# cantidad de casos por país via xtabs()
+#----------------------------------------------------------
+
+xtabs(~ ctry_text, data = data_model)
+
+#----------------------------------------------------------
+# cantidad de casos por país via dplyr::count
+#----------------------------------------------------------
+
+data_model %>%
+dplyr::count(ctry_text) %>%
+knitr::kable()
+
+
+```
+
+## Gráfico de cantidad de casos por país (via `barplot`)
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# casos por país
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# nombres de paises
+#----------------------------------------------------------
+
+sample_i <- data_model %>%
+            dplyr::count(ctry_text) %>%
+            arrange(n)
+
+# Nota: a la tabla que describe la cantidad de casos, la llamaremos
+#       'sample_i'; mientras que a la tabla de escuelas, la llamaremos
+#       'sample_j'. En datos que se encuentran anidados, es muy comun
+#       refereir a los casos como "i" (de 1 a n), y referir
+#       a los clusters como "j" (de 1 a n). De modo tal, que se
+#       habla del caso "i" en el cluster "j" (e.g., estudiante "i", en la escuela "j").
+
+#----------------------------------------------------------
+# gráfico simple
+#----------------------------------------------------------
+
+barplot(
+        height = sample_i$n,             # cifra graficada
+        names.arg = sample_i$ctry_text,  # nombres de cada barra en eje x
+        )
+
+#----------------------------------------------------------
+# gráfico editado
+#----------------------------------------------------------
+
+
+# definir margenes del plot
+par(mar=c(10,4,4,4))
+
+# ‘mar’ A numerical vector of the form ‘c(bottom, left, top, right)’
+#        which gives the number of lines of margin to be specified on
+#        the four sides of the plot.  The default is ‘c(5, 4, 4, 2) +
+#        0.1’.
+
+barplot(
+        height = sample_i$n,             # cifra graficada
+        names.arg = sample_i$ctry_text,  # nombres de cada barra en eje x
+        col = c('#397CDA'),               # color de barras
+        las=2,                            # mueve los nombres de cada barra en perpendicular al graficp
+        cex.names=.8                      # tamaño de los textos
+        )
+
+```
+
+
+## Gráfico de cantidad de casos por país (via `ggplot`)
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# casos por país
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# nombres de paises
+#----------------------------------------------------------
+
+data_plot <- data_model %>%
+             dplyr::count(ctry_text) %>%
+             arrange(n)
+
+#----------------------------------------------------------
+# gráfico simple
+#----------------------------------------------------------
+
+
+library(ggplot2)
+ggplot(
+        data = data_plot, 
+        aes(
+            x = ctry_text, 
+            y = n
+            )
+        ) +
+    geom_bar(stat="identity")
+
+
+#----------------------------------------------------------
+# gráfico editado
+#----------------------------------------------------------
+
+library(ggplot2)
+ggplot(
+        data = data_plot,                # datos a graficar
+        aes(
+            x = reorder(ctry_text, n),   # reorden de las barras a graficar
+            y = n                        # vector que contiene las cifras que se grafican
+            )
+        ) +
+    geom_bar(                            # objeto empleado para visualizar barras
+        colour = "black",                # color de los bordes de las barras
+        stat = "identity",               # especifica que se emplean las cifras de la tabla 
+        fill = "#397CDA"                 # especifica el color de las barras en su interior
+        ) +
+    theme_minimal() +                    # aplica un template basico de plot
+    ylab('Tamaño Muestral') +            # indica el titulo del eje y
+    xlab('Países') +                     # indica el titulo del eje x
+    guides(                              # edita la dirección del texto del eje x
+        x =  guide_axis(angle = 90)
+        )
+
+```
+
+## Cantidad de escuelas por país
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# cantidad de escuelas
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# seleccionar variables y y filtrar casos críticos
+#----------------------------------------------------------
+
+data_schools <- data_model %>%
+                # conservar solo las variables que necesitamos: paises y escuelas
+                dplyr::select(ctry_text, IDSCHOOL) %>%
+                # elminar todos los casos redundantes
+                unique()
+
+# Nota: si seleccionamos solo las variables de país (ctry_text)
+#       y escuela (IDSCHOOL), ahora tenemos una gran tabla
+#       que tiene a los casos de estudiantes, de cada escuela, en cada país.
+#       Lo anterior, lo logramos aplicando la función 'dplyr::select()'.
+#       Debido a que queremos solo la información de las escuelas, necesitamos
+#       solo conservar la información "no redundante". Es decir,                 
+#       necesitamos la cantidad de escuelas de cada pais. Aplicamos
+#       la función "unique()". En esta secuencia, el resultado de "unique()" es
+#       una tabla que contiene a cada pais, y una fila por cada escuela.
+
+#----------------------------------------------------------
+# tabla de cantidad de escuelas por país
+#----------------------------------------------------------
+
+xtabs(~ ctry_text, data = data_schools) %>%
+tibble::as_tibble() %>%
+knitr::kable()
+
+# Nota: podemos transformar el reusltados de "xtabs" a una tabla
+#       tipo tibble, y luego este objeto lo podemos
+#       mostrar como una tabla en la consola.
+
+#----------------------------------------------------------
+# tabla de cantidad de escuelas por país
+#----------------------------------------------------------
+
+dplyr::count(data_schools, ctry_text)
+
+# Nota: el resultado de "dplyr::count()" es muy similar al
+#       conjunto de funciones aplicadas en la secuencia anterior.
+
+
+```
+
+
+## Gráfico de cantidad de escuelas por país (via `barplot`)
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# casos por país
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# nombres de paises
+#----------------------------------------------------------
+
+sample_j <- data_schools %>%
+            dplyr::count(ctry_text) %>%
+            arrange(n)
+
+
+# Nota: a la tabla que describe la cantidad de casos, la llamaremos
+#       'sample_i'; mientras que a la tabla de escuelas, la llamaremos
+#       'sample_j'. En datos que se encuentran anidados, es muy comun
+#       refereir a los casos como "i" (de 1 a n), y referir
+#       a los clusters como "j" (de 1 a n). De modo tal, que se
+#       habla del caso "i" en el cluster "j" (e.g., estudiante "i", en la escuela "j").
+
+#----------------------------------------------------------
+# gráfico simple
+#----------------------------------------------------------
+
+barplot(
+        height = sample_j$n,             # cifra graficada
+        names.arg = sample_j$ctry_text,  # nombres de cada barra en eje x
+        )
+
+#----------------------------------------------------------
+# gráfico editado
+#----------------------------------------------------------
+
+
+# definir margenes del plot
+par(mar=c(10,4,4,4))
+
+# ‘mar’ A numerical vector of the form ‘c(bottom, left, top, right)’
+#        which gives the number of lines of margin to be specified on
+#        the four sides of the plot.  The default is ‘c(5, 4, 4, 2) +
+#        0.1’.
+
+barplot(
+        height = sample_j$n,             # cifra graficada
+        names.arg = sample_j$ctry_text,  # nombres de cada barra en eje x
+        col = c('#397CDA'),              # color de barras
+        las=2,                           # mueve los nombres de cada barra en perpendicular al graficp
+        cex.names=.8                     # tamaño de los textos
+        )
+
+```
+
+
+## Gráfico de cantidad de escuelas por país (via `ggplot`)
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# casos por país
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# nombres de paises
+#----------------------------------------------------------
+
+sample_j <- data_schools %>%
+            dplyr::count(ctry_text) %>%
+            arrange(n)
+
+
+# Nota: a la tabla que describe la cantidad de casos, la llamaremos
+#       'sample_i'; mientras que a la tabla de escuelas, la llamaremos
+#       'sample_j'. En datos que se encuentran anidados, es muy comun
+#       refereir a los casos como "i" (de 1 a n), y referir
+#       a los clusters como "j" (de 1 a n). De modo tal, que se
+#       habla del caso "i" en el cluster "j" (e.g., estudiante "i", en la escuela "j").
+
+#----------------------------------------------------------
+# gráfico simple
+#----------------------------------------------------------
+
+
+library(ggplot2)
+ggplot(
+        data = sample_j, 
+        aes(
+            x = ctry_text, 
+            y = n
+            )
+        ) +
+    geom_bar(stat="identity")
+
+
+#----------------------------------------------------------
+# gráfico editado
+#----------------------------------------------------------
+
+library(ggplot2)
+ggplot(
+        data = sample_j,                # datos a graficar
+        aes(
+            x = reorder(ctry_text, n),   # reorden de las barras a graficar
+            y = n                        # vector que contiene las cifras que se grafican
+            )
+        ) +
+    geom_bar(                            # objeto empleado para visualizar barras
+        colour = "black",                # color de los bordes de las barras
+        stat = "identity",               # especifica que se emplean las cifras de la tabla 
+        fill = "#397CDA"                 # especifica el color de las barras en su interior
+        ) +
+    theme_minimal() +                    # aplica un template basico de plot
+    ylab('Cantidad de escuelas') +            # indica el titulo del eje y
+    xlab('Países') +                     # indica el titulo del eje x
+    guides(                              # edita la dirección del texto del eje x
+        x =  guide_axis(angle = 90)
+        )
+
+```
+
+
+# Tipos de cluster
+
+Los datos de ICCS 2016, incluye a muestras representativas de estudiantes de cada país.
+Se muestrean escuelas, y dentro de las escuelas, se muestrean estudiantes de una misma sala de clases.
+Cada país tiene diferentes tipos de escuelas. Una clasificación comúna varios países participantes, son las escuelas **privadas**.
+
+Para obtener descriptivos de la cantidad de escuelas de cada tipo, emplearemos las siguientes variables:
+       
+- La variable país es 'IDCNTRY'
+- La variable escuela es 'IDSCHOOL'
+- La variable escuela es 'C_PRIVATE'
+        + Valores de la variable C_PRIVATE
+
+```
+
+  value label           
+  <chr> <chr>           
+1 0     Public school   
+2 1     Private school  
+3 7     Invalid         
+4 8     Not administered
+5 9     Omitted     
+
+```
+
+## Cantidad de escuelas por tipo en toda la muestra
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# cantidad de escuelas por pais
+#------------------------------------------------------------------------------
+
+
+#----------------------------------------------------------
+# seleccionar variables y y filtrar casos críticos
+#----------------------------------------------------------
+
+school_type <- data_model %>%
+                # conservar solo las variables que necesitamos: paises y escuelas
+                dplyr::select(ctry_text, IDSCHOOL, C_PRIVATE) %>%
+                # elminar todos los casos redundantes
+                unique()
+
+# Nota: si seleccionamos solo las variables de país (ctry_text)
+#       y escuela (IDSCHOOL), ahora tenemos una gran tabla
+#       que tiene a los casos de estudiantes, de cada escuela, en cada país.
+#       Lo anterior, lo logramos aplicando la función 'dplyr::select()'.
+#       Debido a que queremos solo la información de las escuelas, necesitamos
+#       solo conservar la información "no redundante". Es decir,                 
+#       necesitamos la cantidad de escuelas de cada pais. Aplicamos
+#       la función "unique()". En esta secuencia, el resultado de "unique()" es
+#       una tabla que contiene a cada pais, y una fila por cada escuela.
+
+
+#----------------------------------------------------------
+# cantidad de casos por país via table()
+#----------------------------------------------------------
+
+table(school_type$C_PRIVATE)
+
+
+#----------------------------------------------------------
+# cantidad de casos por país via table() incluyendo NA
+#----------------------------------------------------------
+
+table(school_type$C_PRIVATE, useNA = "always")
+
+#----------------------------------------------------------
+# cantidad de casos por país via table() y with()
+#----------------------------------------------------------
+
+with(school_type, table(C_PRIVATE))
+
+# Nota: ocupamos la funcion with() de modo que la función table() 
+#       resuelve los resultados, empleando a la tabla de datos
+#       'school_type'
+
+
+#----------------------------------------------------------
+# cantidad de casos por país via xtabs()
+#----------------------------------------------------------
+
+xtabs(~ C_PRIVATE, data = school_type)
+
+#----------------------------------------------------------
+# cantidad de casos por país via xtabs() incluyendo a los NA
+#----------------------------------------------------------
+
+xtabs(~ C_PRIVATE, data = school_type, addNA = TRUE)
+
+#----------------------------------------------------------
+# cantidad de casos por país via dplyr::count
+#----------------------------------------------------------
+
+school_type %>%
+dplyr::count(C_PRIVATE) %>%
+knitr::kable()
+
+
+# Nota: la función dplyr::count() cuenta a todos los casos posibles.
+#       Lo anterior, incluye a las escuelas sin clasificación.
+
+#----------------------------------------------------------
+# tabla tipo APA (empleando base)
+#----------------------------------------------------------
+
+tabla_1 <- table(school_type$C_PRIVATE, useNA = "always")
+tabla_1 <- as.data.frame(tabla_1)
+tabla_1$n <- tabla_1$Freq
+tabla_1$porcentaje <- tabla_1$Freq/sum(tabla_1$Freq)
+tabla_1$tipo <- NA
+tabla_1$tipo[is.na(tabla_1$Var1)] <- 'Sin información'
+tabla_1$tipo[tabla_1$Var1==0] <- 'Públicas'
+tabla_1$tipo[tabla_1$Var1==1] <- 'Privadas'
+tabla_1 <- tabla_1[c('tipo','n','porcentaje')]
+tabla_1
+
+knitr::kable(tabla_1)
+
+#----------------------------------------------------------
+# tabla tipo APA (empleando dplyr)
+#----------------------------------------------------------
+
+table_1 <- school_type %>%
+           dplyr::count(C_PRIVATE) %>%
+           mutate(tipo = case_when(
+                C_PRIVATE == 0 ~ 'Públicas',
+                C_PRIVATE == 1 ~ 'Privadas',
+                TRUE ~ 'Sin información'
+                )) %>%
+           mutate(porcentaje = n/sum(n)) %>%
+           dplyr::select(tipo, n, porcentaje)
+
+knitr::kable(table_1)
+
+```
+
+## Cantidad de escuelas por tipo en cada país
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# cantidad de escuelas por pais
+#------------------------------------------------------------------------------
+
+
+#----------------------------------------------------------
+# seleccionar variables y y filtrar casos críticos
+#----------------------------------------------------------
+
+school_type <- data_model %>%
+                # conservar solo las variables que necesitamos: paises y escuelas
+                dplyr::select(ctry_text, IDSCHOOL, C_PRIVATE) %>%
+                # elminar todos los casos redundantes
+                unique()
+
+# Nota: si seleccionamos solo las variables de país (ctry_text)
+#       y escuela (IDSCHOOL), ahora tenemos una gran tabla
+#       que tiene a los casos de estudiantes, de cada escuela, en cada país.
+#       Lo anterior, lo logramos aplicando la función 'dplyr::select()'.
+#       Debido a que queremos solo la información de las escuelas, necesitamos
+#       solo conservar la información "no redundante". Es decir,                 
+#       necesitamos la cantidad de escuelas de cada pais. Aplicamos
+#       la función "unique()". En esta secuencia, el resultado de "unique()" es
+#       una tabla que contiene a cada pais, y una fila por cada escuela.
+
+
+#----------------------------------------------------------
+# cantidad de casos por país via table()
+#----------------------------------------------------------
+
+table(school_type$ctry_text, school_type$C_PRIVATE)
+
+
+#----------------------------------------------------------
+# cantidad de casos por país via table() y with()
+#----------------------------------------------------------
+
+with(school_type, table(ctry_text, C_PRIVATE))
+
+# Nota: ocupamos la funcion with() de modo que la función table() 
+#       resuelve los resultados, empleando a la tabla de datos
+#       'school_type'
+
+#----------------------------------------------------------
+# cantidad de casos por país via xtabs()
+#----------------------------------------------------------
+
+xtabs(~ ctry_text + C_PRIVATE, data = school_type)
+
+#----------------------------------------------------------
+# cantidad de casos por país via dplyr::count
+#----------------------------------------------------------
+
+school_type %>%
+dplyr::count(ctry_text, C_PRIVATE) %>%
+tidyr::spread(
+        key = 'C_PRIVATE',
+        value = 'n'
+        ) %>%
+knitr::kable()
+
+
+# Nota: la función dplyr::count() cuenta a todos los casos posibles.
+#       Lo anterior, incluye a las escuelas sin clasificación.
+
+
+```
+
+## Cantidad de escuelas por tipo en cada país en porcentajes por país
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# cantidad de escuelas por pais
+#------------------------------------------------------------------------------
+
+
+#----------------------------------------------------------
+# seleccionar variables y y filtrar casos críticos
+#----------------------------------------------------------
+
+school_type <- data_model %>%
+                # conservar solo las variables que necesitamos: paises y escuelas
+                dplyr::select(ctry_text, IDSCHOOL, C_PRIVATE) %>%
+                # elminar todos los casos redundantes
+                unique()
+
+# Nota: si seleccionamos solo las variables de país (ctry_text)
+#       y escuela (IDSCHOOL), ahora tenemos una gran tabla
+#       que tiene a los casos de estudiantes, de cada escuela, en cada país.
+#       Lo anterior, lo logramos aplicando la función 'dplyr::select()'.
+#       Debido a que queremos solo la información de las escuelas, necesitamos
+#       solo conservar la información "no redundante". Es decir,                 
+#       necesitamos la cantidad de escuelas de cada pais. Aplicamos
+#       la función "unique()". En esta secuencia, el resultado de "unique()" es
+#       una tabla que contiene a cada pais, y una fila por cada escuela.
+
+
+#----------------------------------------------------------
+# cantidad de casos por país via table()
+#----------------------------------------------------------
+
+table(school_type$ctry_text, school_type$C_PRIVATE) %>%
+proportions(margin = 1)
+
+#----------------------------------------------------------
+# cantidad de casos por país via table() y with()
+#----------------------------------------------------------
+
+with(school_type, table(ctry_text, C_PRIVATE)) %>%
+proportions(margin = 1)
+
+
+# Nota: ocupamos la funcion with() de modo que la función table() 
+#       resuelve los resultados, empleando a la tabla de datos
+#       'school_type'
+
+#----------------------------------------------------------
+# cantidad de casos por país via xtabs()
+#----------------------------------------------------------
+
+xtabs(~ ctry_text + C_PRIVATE, data = school_type) %>%
+proportions(margin = 1)
+
+#----------------------------------------------------------
+# cantidad de casos por país via dplyr::count
+#----------------------------------------------------------
+
+school_type %>%
+dplyr::count(ctry_text, C_PRIVATE) %>%
+tidyr::spread(
+        key = 'C_PRIVATE',
+        value = 'n'
+        ) %>%
+rename(
+publicas = 2,
+privadas = 3,
+sin_info = 4
+) %>%
+mutate(n_tot = rowSums(cbind(publicas, privadas, sin_info), na.rm=TRUE)) %>%
+mutate(p_pub = publicas/n_tot) %>%
+mutate(p_pri = privadas/n_tot) %>%
+mutate(p_sin = sin_info/n_tot) %>%
+dplyr::select(
+        ctry_text, 
+        n_tot,
+        publicas,
+        privadas,
+        sin_info,
+        p_pub,
+        p_pri,
+        p_sin
+        ) %>%
+knitr::kable()
+
+# Nota: la función dplyr::count() cuenta a todos los casos posibles.
+#       Lo anterior, incluye a las escuelas sin clasificación.
+
+
+```
+
+
+# Datos por cluster
+
+## Preparar datos
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# preparar datos
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# preparar datos
+#----------------------------------------------------------
+
+school_data <- data_model %>%
+                # conservar solo las variables que necesitamos: paises y escuelas
+                dplyr::select(IDCNTRY, ctry_text, IDSCHOOL, C_PRIVATE, PV1CIV) %>%
+                # preparar datos
+                mutate(id_k = as.factor(paste0(IDCNTRY))) %>%
+                mutate(id_k = as.numeric(id_k)) %>%
+                mutate(id_j = as.factor(paste0(IDCNTRY, "_",IDSCHOOL))) %>%
+                mutate(id_j = as.numeric(id_j)) %>%
+                mutate(y_ij = PV1CIV) %>%
+                mutate(y_j  = psi2301::c_mean(y_ij, id_j)) %>%
+                mutate(adm = case_when(
+                     C_PRIVATE == 0 ~ 'Públicas',
+                     C_PRIVATE == 1 ~ 'Privadas',
+                     TRUE ~ 'Sin información')) %>%                
+                dplyr::select(id_k, ctry_text, id_j, adm, y_j) %>%
+                # elminar todos los casos redundantes
+                unique()
+
+```
+
+# Distribuciones de puntajes de escuelas
+
+## Obtener datos de una escuela
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# resultados por escuela
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# mostrar solo el dato de puntaje (via codigo base)
+#----------------------------------------------------------
+
+school_data[school_data$id_j == 3591,'y_j']
+
+#----------------------------------------------------------
+# mostrar toda la fila de puntaje (via codigo base)
+#----------------------------------------------------------
+
+school_data[school_data$id_j == 3591,]
+
+#----------------------------------------------------------
+# mostrar solo el dato de puntaje (via dplyr)
+#----------------------------------------------------------
+
+school_data %>%
+dplyr::filter(id_j == 3591) %>%
+dplyr::select(y_j) %>%
+knitr::kable()
+
+#----------------------------------------------------------
+# mostrar toda la fila de puntaje (via dplyr)
+#----------------------------------------------------------
+
+school_data %>%
+dplyr::filter(id_j == 3591) %>%
+knitr::kable()
+
+
+```
+
+# Distribuciones de puntajes de escuelas
+
+## Histogramas con Base
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# histogramas para visualizar distribuciones
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# via hist
+#----------------------------------------------------------
+
+par(mfrow = c(1,1))
+hist(school_data$y_j[school_data$adm=='Públicas'], 
+        breaks = 40,
+        las = 1,
+        ylim=c(0,400),
+        xlim=c(200,800),
+        xlab = 'Score',
+        main = 'Públicas'
+        )
+
+par(mfrow = c(1,1))
+hist(school_data$y_j[school_data$adm=='Privadas'], 
+        breaks = 40,
+        las = 1,
+        ylim=c(0,400),
+        xlim=c(200,800),
+        xlab = 'Score',
+        main = 'Privadas'
+        )
+
+par(mfrow = c(1,1))
+hist(school_data$y_j[school_data$adm=='Sin información'], 
+        breaks = 40,
+        las = 1,
+        ylim=c(0,400),
+        xlim=c(200,800),
+        xlab = 'Score',
+        main = 'Sin información'
+        )
+
+```
+
+
+## Histogramas con ggplot
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# histogramas para visualizar distribuciones
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# via ggplot
+#----------------------------------------------------------
+
+library(ggplot2)
+plot_1 <- school_data %>%
+dplyr::filter(adm == 'Públicas') %>%
+ggplot(. , aes(x = y_j)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill  = '#3876BA',
+  binwidth = 10
+  ) +
+xlab('Score') +
+ylab('Frequency') +
+labs(title="Públicas") +
+ylim(c(0,250)) +
+theme_minimal() +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank(),
+  plot.title = element_text(hjust = 0.5)
+  )
+plot_1
+
+
+library(ggplot2)
+plot_2 <- school_data %>%
+dplyr::filter(adm == 'Privadas') %>%
+ggplot(. , aes(x = y_j)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill  = '#3876BA',
+  binwidth = 10
+  ) +
+xlab('Score') +
+ylab('Frequency') +
+labs(title="Públicas") +
+ylim(c(0,250)) +
+theme_minimal() +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank(),
+  plot.title = element_text(hjust = 0.5)
+  )
+plot_2
+
+
+library(ggplot2)
+plot_3 <- school_data %>%
+dplyr::filter(adm == 'Sin información') %>%
+ggplot(. , aes(x = y_j)) +
+geom_histogram(
+  position = "identity", 
+  alpha = 0.4, 
+  color = '#3876BA',
+  fill  = '#3876BA',
+  binwidth = 10
+  ) +
+xlab('Score') +
+ylab('Frequency') +
+labs(title="Públicas") +
+ylim(c(0,250)) +
+theme_minimal() +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank(),
+  plot.title = element_text(hjust = 0.5)
+  )
+plot_3
+
+
+```
+
+## Histogramas con ggplot
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# histogramas para visualizar distribuciones
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# histogramas superpuestos
+#----------------------------------------------------------
+
+school_data %>%
+psi2301::remove_labels() %>%
+ggplot(., 
+ aes(
+ x = y_j, 
+ color  = adm,
+ fill  = adm
+        )
+ ) +
+geom_histogram(
+        binwidth = 10,
+        position="identity", 
+        alpha=0.5
+        ) +
+scale_color_manual(
+values = c(
+  'Públicas'         = 'black',
+  'Privadas'         = 'black',
+  'Sin información'  = 'black'
+  )
+) +
+scale_fill_manual(
+values = c(
+  'Públicas'         = '#FCFAF9',
+  'Privadas'         = '#FFCF00',
+  'Sin información'  = '#ED271D'
+  )
+) +
+ylab('n') +
+xlab('Score') +
+theme_minimal() +
+theme(
+  panel.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),            
+  axis.ticks = element_blank(),
+  plot.title = element_text(hjust = 0.5)
+  )
+
+```
+
+
