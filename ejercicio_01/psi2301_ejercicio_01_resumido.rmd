@@ -1,0 +1,294 @@
+---
+title: "Ejercicio Para Tarea 1"
+subtitle: "Ejercicios"
+author: "dacarras"
+date: '`r format(Sys.time(), "%a %b %d, %Y")`'
+output:
+  html_document:
+    theme: paper
+    highlight: kate
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    fig_width: 10 
+    fig_height: 8 
+---
+
+<style>
+  .main-container {
+    max-width: 1600px !important;
+  }
+  .list-group-item.active, 
+  .list-group-item.active:focus, 
+  .list-group-item.active:hover {
+    background-color: #373334;
+  }
+</style>
+
+
+```{r setup, include=FALSE}
+
+#----------------------------------------------------------
+# setup
+#----------------------------------------------------------
+
+# knitr option
+knitr::opts_chunk$set(dev = 'png')
+options(knitr.kable.NA = '', digits = 2)
+options(scipen = 999999)
+
+# remove all previous objects
+rm(list = ls())
+
+# fonts
+Sys.setenv(LANG="en_US.UTF-8")
+
+
+```
+
+
+# Abrir datos
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# abrir datos
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# cargar datos desde url
+#----------------------------------------------------------
+
+data_model <- readr::read_csv(
+    url(
+        'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/iccs_16_schools.csv'
+        )
+    )
+
+dplyr::glimpse(data_model)
+
+#----------------------------------------------------------
+# variables de la base de datos
+#----------------------------------------------------------
+
+# muestra de datos
+
+# $ ctry_text <chr> "Belgium (Flemish)", "Belgium (Flemish)"
+# $ id_j      <dbl> 231001, 231002, 231003, 231004, 231005, 
+# $ civ       <dbl> 632.5517, 474.1082, 571.4747, 528.0111, 
+# $ ses       <dbl> 0.89565217, -0.57647059, 0.52352941, -0.
+# $ priv      <dbl> 1, 1, NA, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 
+# $ urba      <dbl> 0, 0, NA, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 
+
+# Valores
+
+# ctry_text = nombre país (texto)
+# id_j      = código único de escuelas
+# civ       = Conocimiento Cívico (escuelas)
+# ses       = Nivel Socioeconómico (escuelas)
+# priv      = Administración Escolar (1 = privada, 0 = pública)
+# urba      = Ubicación de la escuela (1 = Urbana, 0 = Rural)
+
+
+#----------------------------------------------------------
+# crear datos
+#----------------------------------------------------------
+
+set.seed(20220322) # definir seed, emplear rut propio
+data_sample <- data_model[sample(1:nrow(data_model), 1000), ]
+
+
+```
+
+# Frecuencias
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# Pregunta 1
+#----------------------------------------------------------
+
+# Ejericicio
+
+# Genera un gráfico que muestre el número casos por país. 
+# Identifique los países con más observaciones, y describa
+# que países poseen más observaciones.
+
+#------------------------------------------------------------------------------
+# casos por país
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# frecuencia con dplyr
+#----------------------------------------------------------
+
+library(dplyr)
+tabla_1 <- data_sample %>%
+           dplyr::count(ctry_text) %>%
+           arrange(n)
+
+#----------------------------------------------------------
+# mostrar tabla
+#----------------------------------------------------------
+
+
+tabla_1 %>%
+knitr::kable()
+
+#----------------------------------------------------------
+# gráfico editado
+#----------------------------------------------------------
+
+# definir margenes del plot
+par(mar=c(10,4,4,4))
+
+# ‘mar’ A numerical vector of the form ‘c(bottom, left, top, right)’
+#        which gives the number of lines of margin to be specified on
+#        the four sides of the plot.  The default is ‘c(5, 4, 4, 2) +
+#        0.1’.
+
+barplot(
+        height = tabla_1$n,             # cifra graficada
+        names.arg = tabla_1$ctry_text,  # nombres de cada barra en eje x
+        col = c('#397CDA'),             # color de barras
+        # mueve los nombres de cada barra en perpendicular al 
+        las=2,                          
+        cex.names=.8,                   # tamaño de los textos
+        )
+
+```
+
+# Tabla Cruzada
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# Pregunta 2
+#----------------------------------------------------------
+
+# Ejericicio
+
+# Genere una tabla en formato APA que muestre el 
+# número de escuelas según su administración escolar
+# (pública o privada), y luego describa los resultados.
+
+
+#----------------------------------------------------------
+# cantidad de casos por país via dplyr::count
+#----------------------------------------------------------
+
+data_sample %>%
+dplyr::count(priv) %>%
+knitr::kable()
+
+
+# Nota: la función dplyr::count() cuenta a todos los casos posibles.
+#       Lo anterior, incluye a las escuelas sin clasificación.
+
+#----------------------------------------------------------
+# tabla tipo APA (empleando dplyr)
+#----------------------------------------------------------
+
+tabla_2 <- data_sample %>%
+           dplyr::count(priv) %>%
+           mutate(tipo = case_when(
+                priv == 0 ~ 'Públicas',
+                priv == 1 ~ 'Privadas',
+                TRUE ~ 'Sin información'
+                )) %>%
+           mutate(porcentaje = n/sum(n)) %>%
+           dplyr::select(tipo, n, porcentaje)
+
+knitr::kable(tabla_2)
+
+#----------------------------------------------------------
+# exportar a excel
+#----------------------------------------------------------
+
+tabla_2 %>%
+openxlsx::write.xlsx(
+    'tabla_2_raw.xlsx',
+    overwrite = TRUE
+    )
+
+#----------------------------------------------------------
+# formato apa
+#----------------------------------------------------------
+
+# Nota: edición finales, se hacen en excel y word.
+#       Ver archvivos en el siguiente orden:
+#          - tabla_2_raw.xlsx
+#          - tabla_2_editada.xlsx
+#          - tabla_2_formato_apa.docx
+
+```
+
+
+# Distribución de puntajes para más de un grupo
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# Pregunta 3
+#----------------------------------------------------------
+
+# Ejericicio
+
+# ¿Cómo se distribuye el puntaje de Conocimiento
+# Cívico entre las escuelas? En particular, compare 
+# los resultados de las escuelas urbanas y rurales
+# empleando un grafico.
+
+#----------------------------------------------------------
+# boxplot via base, editado
+#----------------------------------------------------------
+
+par(bg="transparent")
+
+data_sample %>%
+mutate(urbano = case_when(
+    urba == 0 ~ 'rural',
+    urba == 1 ~ 'urbanas'
+    )) %>%
+boxplot(civ~urbano,data=., 
+  main="Conocimiento Cívico y Ubicación de las escuelas",
+  xlab="Ubicación de las escuelas",
+  ylab="Conocimiento Cívico"
+  )
+
+
+```
+x
+
+# Identificar Valores de un caso
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# Pregunta 4
+#----------------------------------------------------------
+
+# Ejericicio
+
+# ¿Qué valor de Nivel Socioeconómico (ses), posee la
+# escuela 23 de su base de datos? Obtenga este valor empleando
+# código R.
+
+#----------------------------------------------------------
+# código base
+#----------------------------------------------------------
+
+data_sample[23,'ses']
+
+#----------------------------------------------------------
+# código base, con dos digitos
+#----------------------------------------------------------
+
+options(digits = 5)
+data_sample[23,'ses'] %>%
+knitr::kable(., digits = 2)
+
+```
+
+
