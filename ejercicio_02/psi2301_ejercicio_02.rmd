@@ -1,0 +1,914 @@
+---
+title: "Ejercicios Para Tarea 2"
+subtitle: "Cómo generar descriptivos de detendencia central"
+author: "dacarras"
+date: '`r format(Sys.time(), "%a %b %d, %Y")`'
+output:
+  html_document:
+    theme: paper
+    highlight: kate
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    fig_width: 10 
+    fig_height: 8 
+---
+
+<style>
+  .main-container {
+    max-width: 1600px !important;
+  }
+  .list-group-item.active, 
+  .list-group-item.active:focus, 
+  .list-group-item.active:hover {
+    background-color: #373334;
+  }
+</style>
+
+
+```{r setup, include=FALSE}
+
+#----------------------------------------------------------
+# setup
+#----------------------------------------------------------
+
+# knitr option
+knitr::opts_chunk$set(dev = 'png')
+options(knitr.kable.NA = '', digits = 2)
+options(scipen = 999999)
+
+# remove all previous objects
+rm(list = ls())
+
+# fonts
+Sys.setenv(LANG="en_US.UTF-8")
+
+
+```
+
+# Introducción
+
+En el siguiente ejercicio revisaremos diferentes formas de producir descriptivos de tendencia central (e.g., medias, medianas, modas), y otros estadigrafos.
+
+Revisaremos como calcular estas cifras para vectores (i.e., listados de números), para variables en bases de datos, y para grupos diferentes de una misma base de datos.
+
+
+
+
+# Abrir datos
+
+```{r , echo=TRUE, warning=FALSE}
+
+#------------------------------------------------------------------------------
+# abrir datos
+#------------------------------------------------------------------------------
+
+#----------------------------------------------------------
+# cargar datos desde url
+#----------------------------------------------------------
+
+data_model <- readr::read_csv(
+    url(
+        'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/iccs_16_schools.csv'
+        )
+    )
+
+dplyr::glimpse(data_model)
+
+#----------------------------------------------------------
+# variables de la base de datos
+#----------------------------------------------------------
+
+# muestra de datos
+
+# $ ctry_text <chr> "Belgium (Flemish)", "Belgium (Flemish)"
+# $ id_j      <dbl> 231001, 231002, 231003, 231004, 231005, 
+# $ civ       <dbl> 632.5517, 474.1082, 571.4747, 528.0111, 
+# $ ses       <dbl> 0.89565217, -0.57647059, 0.52352941, -0.
+# $ priv      <dbl> 1, 1, NA, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 
+# $ urba      <dbl> 0, 0, NA, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 
+
+# Valores
+
+# ctry_text = nombre país (texto)
+# id_j      = código único de escuelas
+# civ       = Conocimiento Cívico (escuelas)
+# ses       = Nivel Socioeconómico (escuelas)
+# priv      = Administración Escolar (1 = privada, 0 = pública)
+# urba      = Ubicación de la escuela (1 = Urbana, 0 = Rural)
+
+
+#----------------------------------------------------------
+# crear datos
+#----------------------------------------------------------
+
+set.seed(20220329) # definir seed, emplear rut propio
+data_sample <- data_model[sample(1:nrow(data_model), 1000), ]
+
+
+```
+
+# Cómo calcular medidas de tendencia central
+
+Para calcular medidas de tendencia central, emplearemos las siguientes funciones:
+
+- `mean()` para calcular medias y/o promedios
+- `median()` para calcular medias y/o promedios
+- `mode()` para obtener modas
+  + Esta ultima función no existe en código base, asi que la incluiremos entre nuestro código.
+
+
+**Código de funcion para obtener moda**
+
+```{r , echo=TRUE, warning=FALSE}
+
+mode <- function(v) {
+  uniqv <- unique(v)
+  uniqv[which.max(tabulate(match(v, uniqv)))] 
+# source # https://www.tutorialspoint.com/r/r_mean_median_mode.htm
+}
+
+# Nota: esta sección es un coódigo para obtener # la moda de una distribución. No hay muchas # librerías que contengan una función para # obtener modas.
+
+
+```
+
+## Calculo de medidas de tendencia central sobre vectores
+
+Primero, veamos la aplicación más basica de las funciones de tendencia central:
+
+- imaginemos que tenemos un vector de 5 numeros `c(2,3,2,4,5)`
+  + Sobre este vector, vamos a calcular las tres medidas de tendencia central:
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# mean
+#----------------------------------------------------------
+
+vector_de_numeros <- c(2,3,2,4,5)
+
+mean(vector_de_numeros)
+
+
+```
+
+El promedio de los números observados es `r mean(vector_de_numeros)`.
+
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# median
+#----------------------------------------------------------
+
+vector_de_numeros <- c(2,3,2,4,5)
+
+median(vector_de_numeros)
+
+
+```
+
+La mediana de los números observados es `r median(vector_de_numeros)`.
+
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# mode
+#----------------------------------------------------------
+
+vector_de_numeros <- c(2,3,2,4,5)
+
+mode(vector_de_numeros)
+
+
+```
+
+La mediana de los números observados es `r mode(vector_de_numeros)`.
+
+
+## Calculo de medidas de tendencia central empleado una base de datos
+
+- Para calcular medias, medianas y modas, empleando las variables de una base de datos, existen varias formas realizar esta operación.
+  + En este ejercicio, emplearemos operaciones de "tidy framework".
+  + Esto quiere decir, que vamos a declarar una serie de operaciones en secuencia sobre un objeto.
+  + Generalmente, esta forma de trabajo implica que uno primero indica le objeto con el quiere trabajar, y luego aplica una función, y luego otra función, y otra función en secuencias, hasta que llega al resultado perseguido.
+  + Estas funciones toman la siguiente forma general:
+
+
+```
+
+nombre_del_objeto_o_base_de_datos %>% 
+funcion_1() %>%
+funcion_2() %>%
+funcion_3() %>%
+print
+
+
+```
+
+
+Este tipo de códigos, enlaza la aplicación de funciones empleando el simbolo `%>%`, llamado pipe, el cual puede ser interpretado como "aplica una función **luego**, realiza la siguiente operación",
+
+Para que R pueda interpretar este tipo de códigos, debemos cargar a la libreria **dplyr** en sesión, con el comando `library(dplyr)`.
+
+Para ilustrar el calculo de medidas de tendencia central, vamos a emplear los datos **iccs_16_schools**, los cuales estan disponibles en el siguiente link:
+
+```
+
+'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/iccs_16_schools.csv'
+
+```
+
+Primero vamos a abrir los datos:
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# cargar datos
+#----------------------------------------------------------
+
+
+data_model <- readr::read_csv(
+    url(
+        'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/iccs_16_schools.csv'
+        )
+    )
+
+dplyr::glimpse(data_model)
+
+#----------------------------------------------------------
+# variables de la base de datos
+#----------------------------------------------------------
+
+# muestra de datos
+
+# $ ctry_text <chr> "Belgium (Flemish)", "Belgium (Flemish)"
+# $ id_j      <dbl> 231001, 231002, 231003, 231004, 231005, 
+# $ civ       <dbl> 632.5517, 474.1082, 571.4747, 528.0111, 
+# $ ses       <dbl> 0.89565217, -0.57647059, 0.52352941, -0.
+# $ priv      <dbl> 1, 1, NA, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 
+# $ urba      <dbl> 0, 0, NA, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 
+
+# Valores
+
+# ctry_text = nombre país (texto)
+# id_j      = código único de escuelas
+# civ       = Conocimiento Cívico (escuelas)
+# ses       = Nivel Socioeconómico (escuelas)
+# priv      = Administración Escolar (1 = privada, 0 = pública)
+# urba      = Ubicación de la escuela (1 = Urbana, 0 = Rural)
+
+```
+
+
+Luego, vamos a crear un subconjunto de datos:
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# crear datos
+#----------------------------------------------------------
+
+set.seed(20220329) # definir seed, emplear rut propio
+data_sample <- data_model[sample(1:nrow(data_model), 1000), ]
+
+
+#--------------------------------------
+# explorar datos
+#--------------------------------------
+
+dplyr::glimpse(data_sample)
+
+
+
+```
+
+Finalmente, vamos a calcular las medidas de tendencia central de las dos variables continuas que posee la base de datos:
+
++ civ = Conocimiento Cívico (escuelas)
++ ses = Nivel Socioeconómico (escuelas)
+
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos con dplyr
+#----------------------------------------------------------
+
+#--------------------------------------
+# calcular tabla
+#--------------------------------------
+
+library(dplyr)
+data_sample %>%
+summarize(
+  civ_mean   = mean(civ, na.rm = TRUE),
+  civ_median = median(civ, na.rm = TRUE),
+  civ_mode   = mode(civ),
+  ses_mean   = mean(ses, na.rm = TRUE),
+  ses_median = median(ses, na.rm = TRUE),
+  ses_mode   = mode(ses)
+) %>%
+knitr::kable(., digits = 2)
+
+```
+
+>Nota: la función `mode()` no requiere al argumento `na.rm = TRUE`. Lo que realiza este argumento en las funciones de `mean()` y `median()` es remover a los casos con datos perdidos, de modo que considere solo a los casos con observaciones válidas. Por su parte, `mode()` solo identifica al tipo de valor o texto, con mayor frecuencia de un vector, independiente de que hayan datos perdidos, o hayan datos completos.
+
+## Otras formas de obtener descriptivos
+
+En código base, es decir, sin cargar librerias adicionales tambien puede obtenerse descriptivos. La manera más tradicional de obtener este tipo de cifras, es emplear la función `summary()` sobre un vector de datos.
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos con código base
+#----------------------------------------------------------
+
+#--------------------------------------
+# descriptivos de la base completa
+#--------------------------------------
+
+summary(data_sample)
+
+#--------------------------------------
+# descriptivos de una sola variable
+#--------------------------------------
+
+summary(data_sample$ses)
+
+
+```
+
+`summary()` produce los siguientes descriptivos:
+
+```text
+
+# descriptivos de ses
+Min.   :-1.51   # valor mínimo
+1st Qu.:-0.39   # primer cuartil
+Median :-0.07   # mediana
+Mean   :-0.02   # media
+3rd Qu.: 0.33   # tercer cuartil
+Max.   : 1.92   # valor máximo
+NA's   :1       # cantidad de observaciones sin valor observado
+
+```
+
+Cada uno de estos valores los podemos obtener de forma separada:
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos con código base por cifra
+#----------------------------------------------------------
+
+#--------------------------------------
+# mínimo
+#--------------------------------------
+
+min(data_sample$ses, na.rm = TRUE)
+
+#--------------------------------------
+# primer cuartil
+#--------------------------------------
+
+quantile(data_sample$ses, probs = .25, na.rm = TRUE)
+
+#--------------------------------------
+# segundo cuartil
+#--------------------------------------
+
+quantile(data_sample$ses, probs = .50, na.rm = TRUE)
+
+#--------------------------------------
+# tercer cuartil
+#--------------------------------------
+
+quantile(data_sample$ses, probs = .75, na.rm = TRUE)
+
+#--------------------------------------
+# media
+#--------------------------------------
+
+mean(data_sample$ses, na.rm = TRUE)
+
+
+#--------------------------------------
+# mediana
+#--------------------------------------
+
+median(data_sample$ses, na.rm = TRUE)
+
+#--------------------------------------
+# datos perdidos
+#--------------------------------------
+
+sum(is.na(data_sample$ses))
+
+```
+
+La diferencia entre obtener descriptivos con `summary()` y las operaciones en secuencia de `dplyr()`, en particular la función `summarize()`, es que en el segundo caso se produce una tabla. Mientras, que en el primero, es un objeto que podemos ver en consola, pero no que no es una tabla. Una forma de *ver* esto es aplicar la función `class()`.
+
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# que clase produce cada descriptivo
+#----------------------------------------------------------
+
+#--------------------------------------
+# que clase es summary()
+#--------------------------------------
+
+summary(data_sample$ses) %>%
+class()
+
+
+#--------------------------------------
+# que clase es summarize()
+#--------------------------------------
+
+data_sample %>%
+summarize(
+  min = min(ses, na.rm = TRUE),
+  max = max(ses, na.rm = TRUE),
+  range = max - min,
+  ) %>%
+class()
+
+
+```
+
+Una ventaje de producir tablas de descriptivos con `summarize()`, es que las columnas creadas, las podemos tratar como variables. Y por tanto, podemos crear descriptivos que aplican operanciones sobre los descriptivos generados. El siguiente código produce los cuatriles primero, segundo, y tercero y además nos entrega el intervalo intercuartil.
+
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos de cuartiles
+#----------------------------------------------------------
+
+#--------------------------------------
+# calculo de rango intercuartil
+#--------------------------------------
+
+data_sample %>%
+summarize(
+  q1 = quantile(ses, probs = .25, na.rm = TRUE),
+  q2 = quantile(ses, probs = .50, na.rm = TRUE),
+  q3 = quantile(ses, probs = .75, na.rm = TRUE),
+  ric = q3 - q1
+  ) %>%
+knitr::kable(., digits = 2)
+
+```
+
+## Cómo saber cuantos datos observados fueron empleados en cada variable
+
+Para saber cuantos datos observados hay en una variable, se requiere una función que cuente los casos observados. En los ejemplos anteriores, empleamos al código `sum(is.na(x))` para obtener los datos perdidos. Tambien, podemos ocupar su inverso, y obtener la cantidad de casos con valores no perdidos, es decir, el conjunto de observaciones que posee datos analizables. Vamos a incluir esta pieza de información en nuestra tabla de descriptivos.
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos con dplyr
+#----------------------------------------------------------
+
+#--------------------------------------
+# calcular tabla
+#--------------------------------------
+
+library(dplyr)
+data_sample %>%
+summarize(
+  mean     = mean(ses, na.rm = TRUE),
+  median   = median(ses, na.rm = TRUE),
+  mode     = mode(ses),
+  min      = min(ses, na.rm = TRUE),
+  max      = max(ses, na.rm = TRUE),
+  missing  = sum(is.na(ses)),
+  observed = sum(!is.na(data_sample$ses))
+  )%>%
+knitr::kable(., digits = 2)
+
+```
+
+Debido a que el producto de `summarize()` es una tabla, podemos ordenar las columnas como quisieramos, empleando a la función `select()`. Esta función, lo que hace es "seleccionar" columnas, y la podemos emplear para re-ubicar nuestras columnas. Vamos a conolar los observados primero, y luego los datos perdidos, y finalmente al resto de las columnas que generamos anteriormente.
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos con dplyr
+#----------------------------------------------------------
+
+#--------------------------------------
+# reordenando tabla
+#--------------------------------------
+
+library(dplyr)
+data_sample %>%
+summarize(
+  mean     = mean(ses, na.rm = TRUE),
+  median   = median(ses, na.rm = TRUE),
+  mode     = mode(ses),
+  min      = min(ses, na.rm = TRUE),
+  max      = max(ses, na.rm = TRUE),
+  missing  = sum(is.na(ses)),
+  observed = sum(!is.na(data_sample$ses))
+  ) %>%
+dplyr::select(observed, missing, mean, median, mode,
+  min, max) %>%
+knitr::kable(., digits = 2)
+
+```
+
+## Cómo obtener descriptivos por grupos
+
+Anteponiendo la función `group_by()` a `summarize`, podemos obtener resultados descriptivos condicionales a la membresia de los observaciones a un factor. Es decir, generar resultados descriptivos por grupos. En el siguiente código vamos a generr descriptivos por país.
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos con dplyr
+#----------------------------------------------------------
+
+#--------------------------------------
+# descriptivos por país
+#--------------------------------------
+
+library(dplyr)
+data_sample %>%
+group_by(ctry_text) %>%
+summarize(
+  mean     = mean(ses, na.rm = TRUE),
+  median   = median(ses, na.rm = TRUE),
+  mode     = mode(ses),
+  min      = min(ses, na.rm = TRUE),
+  max      = max(ses, na.rm = TRUE),
+  missing  = sum(is.na(ses)),
+  observed = sum(!is.na(data_sample$ses))
+  ) %>%
+knitr::kable(., digits = 2)
+
+```
+
+
+Supongamos que queremos aislar los resultados, solo a los paises de latinoamerica (e.g., Chile, Colombia, Dominican Republic, Mexico, Peru). Para "filtrar" casos, podemos ocupar la función `filter()`. Esta función, en general requiere que le incluyamos listados de objetos, o ooperaciones lógicas, y con esto puede filtrar por los escasos que se quiera obtener. En siguiente ejemplo, empleamos una lista exhaustiva de casos que se requiera filtrar.
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos con dplyr
+#----------------------------------------------------------
+
+#--------------------------------------
+# filtrando tablas
+#--------------------------------------
+
+library(dplyr)
+data_sample %>%
+group_by(ctry_text) %>%
+summarize(
+  mean     = mean(ses, na.rm = TRUE),
+  median   = median(ses, na.rm = TRUE),
+  mode     = mode(ses),
+  min      = min(ses, na.rm = TRUE),
+  max      = max(ses, na.rm = TRUE),
+  missing  = sum(is.na(ses)),
+  observed = sum(!is.na(data_sample$ses))
+  ) %>%
+dplyr::filter(ctry_text %in% 
+c('Chile', 'Colombia', 'Dominican Republic', 'Mexico', 'Peru')
+) %>%
+knitr::kable(., digits = 2)
+
+```
+
+Tambien, se puede filtrar por valores. Por ejemplo, vamos filtrar por los paises que poseen `ses` mayores a cero.
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos con dplyr
+#----------------------------------------------------------
+
+#--------------------------------------
+# filtrando tablas por valor
+#--------------------------------------
+
+library(dplyr)
+data_sample %>%
+group_by(ctry_text) %>%
+summarize(
+  mean     = mean(ses, na.rm = TRUE),
+  median   = median(ses, na.rm = TRUE),
+  mode     = mode(ses),
+  min      = min(ses, na.rm = TRUE),
+  max      = max(ses, na.rm = TRUE),
+  missing  = sum(is.na(ses)),
+  observed = sum(!is.na(data_sample$ses))
+  ) %>%
+dplyr::filter(
+mean > 0
+) %>%
+knitr::kable(., digits = 2)
+
+```
+
+
+# Cómo calcular medidas de posición
+
+Para calcular medidas posición como los cuartiles, deciles y percentiles, en R, podemos emplear la función `quantile()`. Esta función posee un argumento llamado `probs = c()`, al cual le podemos entregar el percentil que queremos obtener. De este modo, si nuestra variable fuera `x`, podemos obtener los cuartiles, deciles, y percentiles de la siguiente forma:
+
+- Cuartiles
+  + Cuartil 1 = `quantile(x, probs = .25, na.rm = TRUE)`
+  + Cuartil 2 = `quantile(x, probs = .50, na.rm = TRUE)`
+  + Cuartil 3 = `quantile(x, probs = .75, na.rm = TRUE)`
+
+- Deciles
+  + Decil 1 = `quantile(x, probs = .1, na.rm = TRUE)`
+  + Decil 5 = `quantile(x, probs = .5, na.rm = TRUE)`
+  + Decil 9 = `quantile(x, probs = .9, na.rm = TRUE)`
+
+- Percentiles
+  + Percentil 01 = `quantile(x, probs = .01, na.rm = TRUE)`
+  + Percentil 33 = `quantile(x, probs = .33, na.rm = TRUE)`
+  + Percentil 66 = `quantile(x, probs = .66, na.rm = TRUE)`
+  + Percentil 99 = `quantile(x, probs = .99, na.rm = TRUE)`
+
+Veamos cómo calcular cuartiles, deciles, y percentiles sobre una base de datos, empleando `dplyr`.
+
+## Cuartiles
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos de cuartiles
+#----------------------------------------------------------
+
+#--------------------------------------
+# cuartiles y calculo de rango intercuartil
+#--------------------------------------
+
+data_sample %>%
+summarize(
+  q1 = quantile(ses, probs = .25, na.rm = TRUE),
+  q2 = quantile(ses, probs = .50, na.rm = TRUE),
+  q3 = quantile(ses, probs = .75, na.rm = TRUE),
+  ric = q3 - q1
+  ) %>%
+knitr::kable(., digits = 2)
+
+```
+
+## Deciles
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos de deciles
+#----------------------------------------------------------
+
+#--------------------------------------
+# deciles 1 a 9
+#--------------------------------------
+
+data_sample %>%
+summarize(
+  d01 = quantile(ses, probs = .1, na.rm = TRUE),
+  d02 = quantile(ses, probs = .2, na.rm = TRUE),
+  d03 = quantile(ses, probs = .3, na.rm = TRUE),
+  d04 = quantile(ses, probs = .4, na.rm = TRUE),
+  d05 = quantile(ses, probs = .5, na.rm = TRUE),
+  d06 = quantile(ses, probs = .6, na.rm = TRUE),
+  d07 = quantile(ses, probs = .7, na.rm = TRUE),
+  d08 = quantile(ses, probs = .8, na.rm = TRUE),
+  d09 = quantile(ses, probs = .9, na.rm = TRUE)
+  ) %>%
+knitr::kable(., digits = 2)
+
+```
+
+## Percentiles
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos de deciles
+#----------------------------------------------------------
+
+#--------------------------------------
+# deciles 1 a 9
+#--------------------------------------
+
+data_sample %>%
+summarize(
+  p01 = quantile(ses, probs = .01, na.rm = TRUE),
+  p02 = quantile(ses, probs = .02, na.rm = TRUE),
+  p25 = quantile(ses, probs = .25, na.rm = TRUE),
+  p33 = quantile(ses, probs = .33, na.rm = TRUE),
+  p50 = quantile(ses, probs = .50, na.rm = TRUE),
+  p66 = quantile(ses, probs = .66, na.rm = TRUE),
+  p75 = quantile(ses, probs = .75, na.rm = TRUE),
+  p98 = quantile(ses, probs = .98, na.rm = TRUE),
+  p99 = quantile(ses, probs = .99, na.rm = TRUE)
+  ) %>%
+knitr::kable(., digits = 2)
+
+```
+
+# Cómo calcular medidas de dispersión
+
+En clases, hemos revisado diferentes medidas de dispersión. Las que hemos revisado son las siguientes:
+
+- desviación estandar = distancia típica de todos los valores, a la media de una distribución de valores
+- varianza de los puntajes = variabilidad en area, de todas las distancias de todas las observaciones de una distribuación
+- rango = distancia entre el valor mínimo y máximos observados, de una distribución
+- rango intercuartil = distancia entre el cuartil 1 y cuartil 3 de una distribución.
+
+A continuación calcularemos medidas de dispersión, sobre la variable `civ`.
+
+## Medidas de dispersión
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# descriptivos
+#----------------------------------------------------------
+
+#--------------------------------------
+# medidas de dispersión
+#--------------------------------------
+
+data_sample %>%
+summarize(
+  sd    = sd(civ, na.rm = TRUE),     # desviación estandar
+  var   = var(civ, na.rm = TRUE),    # varianza
+  min   = min(civ, na.rm = TRUE),    # mínimo
+  max   = max(civ, na.rm = TRUE),    # máximo
+  range = max - min,                 # rango
+  q1 = quantile(civ, probs = .25, na.rm = TRUE), # cuartil 1
+  q3 = quantile(civ, probs = .75, na.rm = TRUE), # cuartil 3
+  ric   = q3 - q1                                # rango intercuartil
+  ) %>%
+knitr::kable(., digits = 2)
+
+```
+
+# Tablas de contingencia
+
+Las tablas de contingencia nos brindan información acerca de la cantidad de observaciones, para dos variables categóricas. A continuación veremos ejemplos de como contruir estas tablas. Empleando los datos `data_sample` veremos la asociación entre escuelas privadas y públicas, y la ubicación de las escuelas en lugares urbanos o rurales. Es decir, que vamos a cruzar la forma de administración de las escuelas, con la ubicación que poseen las escuelas.
+
+Primero, exploremos los datos.
+
+## Tabla de frecuencia de dos factores
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# tablas de contingencia
+#----------------------------------------------------------
+
+#--------------------------------------
+# variables
+#--------------------------------------
+
+# Valores
+
+# ctry_text = nombre país (texto)
+# id_j      = código único de escuelas
+# civ       = Conocimiento Cívico (escuelas)
+# ses       = Nivel Socioeconómico (escuelas)
+# priv      = Administración Escolar (1 = privada, 0 = pública)
+# urba      = Ubicación de la escuela (1 = Urbana, 0 = Rural)
+
+#--------------------------------------
+# tabla de frecuencia de dos factores
+#--------------------------------------
+
+dplyr::count(data_sample, urba, priv)
+
+```
+
+Para explorar los datos, primero generamos una tabla de frecuencia "plana". Es decir, que generamos datos para cada "mezcla" de los factores que queremos evaluar con una tabla de contigencia. Con los resultados de esta tabla obtenemos:
+
+```
+
+> dplyr::count(data_sample, urba, priv)
+# A tibble: 6 × 3
+   urba  priv     n
+  <dbl> <dbl> <int>
+1     0     0   512 # Cantidad de escuelas en lugares rurales, y de adm. pública
+2     0     1    86 # Cantidad de escuelas en lugares rurales, y de adm. privada
+3     1     0   270 # Cantidad de escuelas en lugares urbanos, y de adm. pública
+4     1     1    65 # Cantidad de escuelas en lugares urbanos, y de adm. privada
+5    NA     0     8 # Cantidad de escuelas en sin información de lugar, y de adm. pública
+6    NA    NA    59 # Cantidad de escuelas en sin información para ambos factores
+
+```
+## Tabla de contigencia
+
+Una tabla de contigencia, resume la misma información anterior, pero en una tabla de doble entrada.
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# tablas de contingencia
+#----------------------------------------------------------
+
+#--------------------------------------
+# tabla de contigencia
+#--------------------------------------
+
+with(data_sample, table(urba, priv))
+
+```
+
+Al igual que con la tabla anterior, sabemos que:
+
+-  512 escuelas, son escuelas rurales, de administración pública
+-  270 escuelas, son escuelas urbanas, de administración pública
+-  86 escuelas, son escuelas rurales, de administración privada
+-  65 escuelas, son escuelas urbanas, de administración privada
+
+
+## Tabla de contigencia con datos perdidos
+
+**Qué pasa con los datos perdidos?** Por defecto, la función `table()` no incluye a los valores perdidos. Pero agregando el argumento `useNA = "always"`, podemos incluir a los valores perdidos. Adicionalmente, podemos emplear el `useNA = 'ifany'` el cual incluye a los valores perdidos, solo en caso de que los hubiera.
+
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# tablas de contingencia
+#----------------------------------------------------------
+
+#--------------------------------------
+# tabla de contigencia forzando a mostrar datos perdidos
+#--------------------------------------
+
+with(data_sample, table(urba, priv, useNA = 'always'))
+
+#--------------------------------------
+# tabla de contigencia forzando a mostrar datos perdidos, si los hubiera
+#--------------------------------------
+
+with(data_sample, table(urba, priv, useNA = 'ifany'))
+
+```
+
+## Proporciones de un tabla de contigencia
+
+Para interpretar una tabla de contigencia, el usuario debe decidir que quiere interpretar. Por ejemplo, si queremos saber que proporción de escuelas privadas se ubica en lugares urbanos, necesitamos que los porcentajes se produzcan con respecto a las columnas. Vamos a emplear la función `prop.table()` para obtener estas cifra.
+
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# tablas de contingencia
+#----------------------------------------------------------
+
+#--------------------------------------
+# proporcion por columna
+#--------------------------------------
+
+with(data_sample, table(urba, priv)) %>%
+prop.table(2)
+
+
+```
+
+Con los resultados observados podemos indicar que 35% de las escuelas públicas se encuentra en lugares urbanos, y 65% de las escuelas públicas se encuentra en lugares rurales. Por su parte las escuelas privadas, se agrupan, en su mayoría en lugares rurales (57%); y solo un 43% de las escuelas privadas se encuentran en lugares urbanos.
+
+>Nota: recuerde que estos datos se encuentran condicionados por el proceso de aleatorización que ocurre al inicio. Donde seleccionamos solo 1000 casos, entre varios países. Y por tanto, los resultados observados no poseen mayor valor sustantivo.
+
+
+Si quisieramos describir los resultados desde otro punto de vista, por ejemplo desde como se distribuye la administración de las escuelas entre las escuelas rurales y urbanas podemos realizar lo siguiente: calculamos las proporciones relativas entre las escuelas rurales, y las escuelas urbanas, por separado.
+
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# tablas de contingencia
+#----------------------------------------------------------
+
+#--------------------------------------
+# proporcion por filas
+#--------------------------------------
+
+with(data_sample, table(urba, priv)) %>%
+prop.table(1)
+
+
+```
+
+Con estos resultados podemos indicar que entre las escuelas rurales, un 86% de las escuelas sonde administración pública; y en consecuencia, un 14% de las escuelas es de administración privada. Por otro lado, entre las escuelas urbanas, un 81% presentan administración pública, y 19% presenta adminitración privada.
+
+
+Tradicionalmente, se plantea que en la construccion de tablas de contingencia, la variable de respuesta, o variable de interés es la variable que se coloca en las columnas. Mientras que, la variable condicional, o la covariabl, se coloca entre las filas de la tabla de contigencia. No obstante, en ejercicios de exploración de datos, que variable consideramos de respuesta (i.e. variable dependiente), y que consideramos covariable (i.e., variable independiente), no siempre es claro. Lo que si es relevante en la interpretación de tablas de contigencia, es para que lado las proporciones suman 100. Si sumando los valores de cada columna (`prop.table(2)`); o si es sumando los valores de cada fila (`prop.table(2)`).
+
+
+
