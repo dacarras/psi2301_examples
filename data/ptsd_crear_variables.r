@@ -1,37 +1,16 @@
----
-title: "Paper: Rehabilitating civilian victims of war"
-subtitle: "add mean scores"
-output: github_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(dpi=300,fig.width=7)
-```
-
-# Paper
-
-
-- Title: "Rehabilitating civilian victims of war through psychosocial intervention in Sierra Leone"
-
-- References
-
-Mughal, U., Carrasco, D., Brown, R., & Ayers, S. (2015). Rehabilitating civilian victims of war through psychosocial intervention in Sierra Leone. Journal of Applied Social Psychology, 45(11), 593–601. https://doi.org/10.1111/jasp.12322
-
-
-# Agregar puntajes de escalas
-
-```{r, echo=TRUE}
-
-# -----------------------------------------------------------------------------
-# mean scores
-# -----------------------------------------------------------------------------
-
 # -----------------------------------------------
-# measures presented in the paper
+# abir datos
 # -----------------------------------------------
 
-library(dplyr)
-data_ptsd <- psi2301::ptsd_data %>%
+# data_ptsd <- psi2301::ptsd_data
+
+data_ptsd <- read.csv(url('https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/ptsd_data.csv'))
+
+# -----------------------------------------------
+# creación de variables en el articulo
+# -----------------------------------------------
+
+data_ptsd <- data_ptsd %>%
               # PTSD
               mutate(ptsd = psi2301::mean_score(
               ie01, # Any reminder brought back feelings about it
@@ -124,9 +103,8 @@ data_ptsd <- psi2301::ptsd_data %>%
                 )) %>%
               dplyr::glimpse()
 
-
 # -----------------------------------------------
-# add labels
+# incluir labels
 # -----------------------------------------------
 
 data_ptsd <- data_ptsd %>%
@@ -157,9 +135,3 @@ labelled::look_for() %>%
 labelled::lookfor_to_long_format() %>%
 tibble::as_tibble() %>%
 knitr::kable()
-
-
-
-
-```
-
