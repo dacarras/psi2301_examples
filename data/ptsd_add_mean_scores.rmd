@@ -32,7 +32,7 @@ Mughal, U., Carrasco, D., Brown, R., & Ayers, S. (2015). Rehabilitating civilian
 
 data_ptsd <- psi2301::ptsd_data %>%
               # PTSD
-              mutate(ptsd = r4sda::mean_score(
+              mutate(ptsd = psi2301::mean_score(
               ie01, # Any reminder brought back feelings about it
               ie02, # I had trouble staying asleep
               ie03, # Other things kept making me think about it
@@ -51,10 +51,10 @@ data_ptsd <- psi2301::ptsd_data %>%
                 )) %>%
               # Intergroup anxiety
               ## create reverse scores
-              mutate(anx1_r = r4sda::reverse(anx1)) %>%
-              mutate(anx4_r = r4sda::reverse(anx4)) %>%
+              mutate(anx1_r = psi2301::reverse(anx1)) %>%
+              mutate(anx4_r = psi2301::reverse(anx4)) %>%
               ## mean score
-              mutate(anxi = r4sda::mean_score(
+              mutate(anxi = psi2301::mean_score(
               anx1_r  ,  # [R] Relaxed
               anx2    ,  # Threatened
               anx3    ,  # Awkward
@@ -63,24 +63,24 @@ data_ptsd <- psi2301::ptsd_data %>%
               anx6       # Anxious
               )) %>%
               # Out-group blame
-              mutate(outb = r4sda::mean_score(
+              mutate(outb = psi2301::mean_score(
               noe6,      # I think that the rebels are entirely to blame for what they have done during the war 
               noe7       # I think that the rebels are responsible for everything they did
               )) %>%
               # Intergroup forgiveness
-              mutate(ifor = r4sda::mean_score(
+              mutate(ifor = psi2301::mean_score(
               for6,  # I think my group should reach out to the rebels and forgive them what they have done
               for5   # I should forgive the rebels their misdeeds              
               )) %>%
               # In-group (National) Identification
-              mutate(iden = r4sda::mean_score(
+              mutate(iden = psi2301::mean_score(
               ide1,  # I am proud to be a Sierra Leonine
               ide2   # I have very strong ties with Sierra Leone
               )) %>%
               # Out-group contact
               mutate(cont = con) %>%
               # Personal War Trauma Experience
-              mutate(wart = r4sda::mean_score(
+              mutate(wart = psi2301::mean_score(
               war2,  # I have seen dead people
               war3,  # I have lost people of my family in the war
               war4,  # I was attacked
