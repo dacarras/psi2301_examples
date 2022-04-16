@@ -1,4 +1,3 @@
-
 # acciones colectivas
 data_ac <- read.csv(
 	url(
@@ -17,7 +16,7 @@ data_ptsd <- read.csv(
 data_hom <- read.csv2(
 	url(
 'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/homonegatividad.csv'
-	)
+	), na.strings = -99
 )
 
 # integracion universitaria
@@ -40,4 +39,3 @@ data_terce <- read.csv(
 'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/terce_n.csv'
 	)
 )
-
