@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAAAZwABAAAAAACFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEU0lHAAAGaAAAAAgAAAAIAAAAAUdTVUIAAAZcAAAACgAAAAoAAQAAT1MvMgAAAyQAAABJAAAAYFYEU3RjbWFwAAADcAAAAEUAAACAAJThvmN2dCAAAATkAAAABAAAAAQAAAAAZnBnbQAAA7gAAACyAAABCUM+8IhnYXNwAAAGTAAAABAAAAAQABoAI2dseWYAAAFsAAABPAAAAZwcEq9taGVhZAAAAsgAAAA0AAAANgh4a91oaGVhAAADCAAAABoAAAAkCA8DRGhtdHgAAAL8AAAADAAAAAwGAACfbG9jYQAAAsAAAAAIAAAACABiATBtYXhwAAACqAAAABgAAAAgAA8ASm5hbWUAAAToAAABQgAAAlXu73sOcG9zdAAABiwAAAAeAAAAME3QpOBwcmVwAAAEbAAAAHYAAAB/aFGpk3jaTY6xa8JAGMW/O62BDi0tJLYQincXEypYIiGJjSgHniQ6umTsUEyLm5BV6NDBP8Tpts6F0v+k/0an2i+itHDw3v2+9+DBKTzsJNnWJNTgHEy4BgG3EMI9DCEDOGEXzDADU5hBKMIgNPZqoD3SilVaXZCER3/I7AtxEJLtzzuZfI+VVkprxTlXShWKb3TBecG11rwoNlmmn1P2WYcJczl32etSpKnziC7lQyWe1smVPy/Lt7Kc+0vWY/gAgIIEqAN9we0pwKXreiMasxvabDQMM4riO+qxM2ogwDGOZTXxwxDiycQIcoYFBLj5K3EIaSctAq2kTYiw+ymhce7vwM9jSqO8JyVd5RH9gyTt2+J/yUmYlIR0s04n6+7Vm1ozezUeLEaUjhaDSuXHwVRgvLJn1tQ7xiuVv/ocTRF42mNgZGBgYGbwZOBiAAFGJBIMAAizAFoAAABiAGIAznjaY2BkYGAA4in8zwXi+W2+MjCzMIDApSwvXzC97Z4Ig8N/BxYGZgcgl52BCSQKAA3jCV8CAABfAAAAAAQAAEB42mNgZGBg4f3vACQZQABIMjKgAmYAKEgBXgAAeNpjYGY6wTiBgZWBg2kmUxoDA4MPhGZMYzBi1AHygVLYQUCaawqDA4PChxhmh/8ODDEsvAwHgMKMIDnGL0x7gJQCAwMAJd4MFwAAAHjaY2BgYGaA4DAGRgYQkAHyGMF8NgYrIM3JIAGVYYDT+AEjAwuDFpBmA9KMDEwMCh9i/v8H8sH0/4dQc1iAmAkALaUKLgAAAHjaTY9LDsIgEIbtgqHUPpDi3gPoBVyRTmTddOmqTXThEXqrob2gQ1FjwpDvfwCBdmdXC5AVKFu3e5MfNFJ29KTQT48Ob9/lqYwOGZxeUelN2U2R6+cArgtCJpauW7UQBqnFkUsjAY/kOU1cP+DAgvxwn1chZDwUbd6CFimGXwzwF6tPbFIcjEl+vvmM/byA48e6tWrKArm4ZJlCbdsrxksL1AwWn/yBSJKpYbq8AXaaTb8AAHja28jAwOC00ZrBeQNDQOWO//sdBBgYGRiYWYAEELEwMTE4uzo5Zzo5b2BxdnFOcALxNjA6b2ByTswC8jYwg0VlNuoCTWAMqNzMzsoK1rEhNqByEyerg5PMJlYuVueETKcd/89uBpnpvIEVomeHLoMsAAe1Id4AAAAAAAB42oWQT07CQBTGv0JBhagk7HQzKxca2sJCE1hDt4QF+9JOS0nbaaYDCQfwCJ7Au3AHj+LO13FMmm6cl7785vven0kBjHCBhfpYuNa5Ph1c0e2Xu3jEvWG7UdPDLZ4N92nOm+EBXuAbHmIMSRMs+4aUEd4Nd3CHD8NdvOLTsA2GL8M9PODbcL+hD7C1xoaHeLJSEao0FEW14ckxC+TU8TxvsY6X0eLPmRhry2WVioLpkrbp84LLQPGI7c6sOiUzpWIWS5GzlSgUzzLBSikOPFTOXqly7rqx0Z1Q5BAIoZBSFihQYQOOBEdkCOgXTOHA07HAGjGWiIjaPZNW13/+lm6S9FT7rLHFJ6fQbkATOG1j2OFMucKJJsxIVfQORl+9Jyda6Sl1dUYhSCm1dyClfoeDve4qMYdLEbfqHf3O/AdDumsjAAB42mNgYoAAZQYjBmyAGYQZmdhL8zLdDEydARfoAqIAAAABAAMABwAKABMAB///AA8AAQAAAAAAAAAAAAAAAAABAAAAAA==) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="paper-rehabilitating-civilian-victims-of-war">Paper: Rehabilitating civilian victims of war</h1>
+<h1 id="paper">Paper</h1>
+<ul>
+<li><p>Title: “Rehabilitating civilian victims of war through psychosocial intervention in Sierra Leone”</p></li>
+<li><p>References</p></li>
+</ul>
+<p>Mughal, U., Carrasco, D., Brown, R., &amp; Ayers, S. (2015). Rehabilitating civilian victims of war through psychosocial intervention in Sierra Leone. Journal of Applied Social Psychology, 45(11), 593–601. <a href="https://doi.org/10.1111/jasp.12322">https://doi.org/10.1111/jasp.12322</a></p>
+<h1 id="agregar-puntajes-de-escalas">Agregar puntajes de escalas</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mean scores</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># mean_score functiion</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mean_score <span class="ot">&lt;-</span> <span class="cf">function</span> (..., <span class="at">na.rm =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rowMeans</span>(<span class="fu">cbind</span>(...), <span class="at">na.rm =</span> na.rm)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># reverse function</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>reverse <span class="ot">&lt;-</span> <span class="cf">function</span> (var) {</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    var <span class="ot">&lt;-</span> labelled<span class="sc">::</span><span class="fu">remove_labels</span>(var)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    var <span class="ot">&lt;-</span> haven<span class="sc">::</span><span class="fu">zap_labels</span>(var)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    max <span class="ot">&lt;-</span> <span class="fu">max</span>(var, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    min <span class="ot">&lt;-</span> <span class="fu">min</span>(var, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(max <span class="sc">+</span> min <span class="sc">-</span> var)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># measures presented in the paper</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ptsd</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>data_ptsd <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">url</span>(</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/ptsd_data.csv&#39;</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># measures presented in the paper</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;
+
+## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag
+
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_ptsd <span class="ot">&lt;-</span> data_ptsd <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>              <span class="co"># PTSD</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">ptsd =</span> <span class="fu">mean_score</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>              ie01, <span class="co"># Any reminder brought back feelings about it</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>              ie02, <span class="co"># I had trouble staying asleep</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>              ie03, <span class="co"># Other things kept making me think about it</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>              ie04, <span class="co"># I felt irritable and angry</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>              ie05, <span class="co"># I avoided letting myself get upset when I thought about it or was reminded of it</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>              ie06, <span class="co"># I thought about it when I didn&#39;t mean to</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>              ie07, <span class="co"># I felt as if it hadn&#39;t happened or wasn&#39;t real.</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>              ie08, <span class="co"># Pictures about it popped into my head</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>              ie09, <span class="co"># I was jumpy and easily startled</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>              ie10, <span class="co"># I was aware that I still had a lot of feelings about it, but I didn&#39;t deal with them</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>              ie11, <span class="co"># I found myself acting or feeling like I was back at that time</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>              ie12, <span class="co"># I had waves of strong feelings about it</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>              ie14, <span class="co"># I had trouble concentrating</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>              ie15, <span class="co"># Reminders of it caused me to have physical reactions such as sweating, trouble breathing, nausea or a pounding heart</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>              ie16  <span class="co"># I felt watchful and on-guard</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>              <span class="co"># Intergroup anxiety</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>              <span class="do">## create reverse scores</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">anx1_r =</span> <span class="fu">reverse</span>(anx1)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">anx4_r =</span> <span class="fu">reverse</span>(anx4)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>              <span class="do">## mean score</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">anxi =</span> <span class="fu">mean_score</span>(</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>              anx1_r  ,  <span class="co"># [R] Relaxed</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>              anx2    ,  <span class="co"># Threatened</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>              anx3    ,  <span class="co"># Awkward</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>              anx4_r  ,  <span class="co"># [R] Safe</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>              anx5    ,  <span class="co"># Nervous</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>              anx6       <span class="co"># Anxious</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>              )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>              <span class="co"># Out-group blame</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">outb =</span> <span class="fu">mean_score</span>(</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>              noe6,      <span class="co"># I think that the rebels are entirely to blame for what they have done during the war </span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>              noe7       <span class="co"># I think that the rebels are responsible for everything they did</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>              )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>              <span class="co"># Intergroup forgiveness</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">ifor =</span> <span class="fu">mean_score</span>(</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>              for6,  <span class="co"># I think my group should reach out to the rebels and forgive them what they have done</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>              for5   <span class="co"># I should forgive the rebels their misdeeds              </span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>              )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>              <span class="co"># In-group (National) Identification</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">iden =</span> <span class="fu">mean_score</span>(</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>              ide1,  <span class="co"># I am proud to be a Sierra Leonine</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>              ide2   <span class="co"># I have very strong ties with Sierra Leone</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>              )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>              <span class="co"># Out-group contact</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">cont =</span> con) <span class="sc">%&gt;%</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>              <span class="co"># Personal War Trauma Experience</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">wart =</span> <span class="fu">mean_score</span>(</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>              war2,  <span class="co"># I have seen dead people</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>              war3,  <span class="co"># I have lost people of my family in the war</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>              war4,  <span class="co"># I was attacked</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>              war5,  <span class="co"># I have seen how people were killed</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>              war6   <span class="co"># I have been fighting                </span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>              )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>              <span class="co"># dummy variables</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>              <span class="do">## sex</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">sex_original =</span> sex) <span class="sc">%&gt;%</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>sex) <span class="sc">%&gt;%</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>                sex_original <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>, <span class="co"># male</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>                sex_original <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">0</span>  <span class="co"># female</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>                )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>              <span class="do">## employment</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">emp_original =</span> emp) <span class="sc">%&gt;%</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>emp) <span class="sc">%&gt;%</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">emp =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>                emp_original <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">0</span>, <span class="co"># unemployed</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>                emp_original <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">1</span>  <span class="co"># employed</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>                )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>              <span class="do">## marital status</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">mar_original =</span> mar) <span class="sc">%&gt;%</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>mar) <span class="sc">%&gt;%</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">mar =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>                mar_original <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>, <span class="co"># married</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>                mar_original <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">0</span>  <span class="co"># not married</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>                )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>              <span class="do">## religion</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">rel_original =</span> rel) <span class="sc">%&gt;%</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>rel) <span class="sc">%&gt;%</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">rel =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>                rel_original <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">0</span>, <span class="co"># muslim</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>                <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">1</span>               <span class="co"># non-muslim</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>                )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>              <span class="do">## treated</span></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">trt =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>                cond <span class="sc">==</span> <span class="st">&#39;c1&#39;</span> <span class="sc">~</span> <span class="dv">0</span>, <span class="co"># delayed control</span></span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>                cond <span class="sc">==</span> <span class="st">&#39;t1&#39;</span> <span class="sc">~</span> <span class="dv">1</span>  <span class="co"># treated</span></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>                )) <span class="sc">%&gt;%</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
+<pre><code>## Rows: 100
+## Columns: 76
+## $ id_i         &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17…
+## $ cond         &lt;chr&gt; &quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c1…
+## $ ie01         &lt;int&gt; 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 4, 5, 5, 5, 5, …
+## $ ie02         &lt;int&gt; 5, 4, 2, 5, 5, 5, 1, 1, 4, 5, 1, 5, 3, 4, 4, 5, 1, 2, 4, …
+## $ ie03         &lt;int&gt; 4, 3, 4, 5, 5, 5, 4, 4, 3, 5, 5, 5, 5, 3, 4, 5, 5, 5, 5, …
+## $ ie04         &lt;int&gt; 5, 4, 4, 5, 3, 5, 3, 3, 4, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, …
+## $ ie05         &lt;int&gt; 4, 4, 5, 5, 5, 5, 4, 4, 3, 5, 5, 1, 1, 2, 3, 4, 5, 5, 4, …
+## $ ie06         &lt;int&gt; 4, 4, 5, 5, 5, 2, 3, 4, 4, 5, 4, 3, 5, 3, 5, 4, 3, 5, 4, …
+## $ ie07         &lt;int&gt; 5, 4, 4, 1, 3, 4, 5, 3, 4, 5, 5, 3, 5, 1, 1, 1, 3, 1, 5, …
+## $ ie08         &lt;int&gt; 5, 4, 1, 5, 5, 5, 4, 2, 3, 5, 5, 4, 3, 5, 5, 3, 5, 5, 4, …
+## $ ie09         &lt;int&gt; 5, 5, 2, 5, 5, 5, 3, 3, 2, 5, 5, 4, 3, 5, 5, 1, 5, 3, 2, …
+## $ ie10         &lt;int&gt; 4, 3, 2, 1, 4, 4, 1, 4, 4, 2, 1, 4, 3, 5, 5, 5, 5, 2, 3, …
+## $ ie11         &lt;int&gt; 4, 4, 2, 5, 5, 4, 1, 2, 1, 5, 5, 4, 1, 2, 1, 3, 1, 4, 1, …
+## $ ie12         &lt;int&gt; 5, 3, 2, 5, 3, 5, 5, 5, 4, 5, 5, 4, 5, 5, 5, 5, 5, 4, 3, …
+## $ ie13         &lt;int&gt; 3, 4, 5, 3, 2, 5, 3, 4, 3, 1, 1, 2, 4, 4, 5, 4, 4, 4, 4, …
+## $ ie14         &lt;int&gt; 4, 3, 1, 5, 3, 5, 1, 1, 1, 5, 5, 5, 4, 2, 1, 4, 2, 4, 3, …
+## $ ie15         &lt;int&gt; 5, 3, 1, 5, 4, 5, 3, 2, 3, 1, 5, 4, 4, 2, 3, 3, 2, 5, 4, …
+## $ ie16         &lt;int&gt; 4, 4, 1, 5, 4, 5, 2, 4, 4, 5, 5, 5, 4, 3, 5, 4, 2, 5, 3, …
+## $ ie17         &lt;int&gt; 4, 3, 1, 1, 4, 5, 4, 5, 3, 1, 1, 2, 4, 5, 5, 5, 5, 5, 3, …
+## $ ptc1         &lt;int&gt; 3, 3, 1, 2, 4, 1, 3, 3, 4, 4, 1, 4, 2, 5, 1, 2, 5, 2, 4, …
+## $ ptc2         &lt;int&gt; 2, 4, 1, 1, 4, 2, 3, 4, 5, 1, 5, 4, 4, 1, 1, 1, 2, 2, 5, …
+## $ ide1         &lt;int&gt; 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1, 5, 5, 5, 1, 5, 5, 2, …
+## $ ide2         &lt;int&gt; 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 4, …
+## $ noe1         &lt;int&gt; 5, 5, 5, 5, 5, 2, 4, 5, 3, 1, 5, 5, 5, 5, 5, 5, 4, 5, 2, …
+## $ noe2         &lt;int&gt; 5, 4, 5, 4, 5, 5, 3, 3, 1, 1, 5, 5, 5, 5, 5, 5, 3, 5, 1, …
+## $ for1         &lt;int&gt; 4, 4, 5, 4, 3, 1, 4, 4, 3, 1, 1, 4, 4, 1, 3, 5, 3, 4, 3, …
+## $ for2         &lt;int&gt; 3, 4, 5, 5, 3, 1, 2, 5, 4, 5, 1, 4, 2, 1, 3, 5, 4, 2, 5, …
+## $ for3         &lt;int&gt; 3, 4, 2, 3, 3, 1, 4, 5, 3, 1, 5, 4, 4, 1, 3, 3, 4, 2, 4, …
+## $ for4         &lt;int&gt; 3, 4, 1, 3, 4, 1, 4, 3, 4, 5, 2, 1, 2, 4, 4, 2, 4, 4, 3, …
+## $ for5         &lt;int&gt; 3, 5, 1, 4, 4, 1, 4, 3, 4, 5, 2, 1, 4, 4, 4, 2, 4, 4, 2, …
+## $ con          &lt;int&gt; 3, 5, 1, 3, 3, 1, 3, 3, 3, 5, 1, 1, 4, 1, 1, 2, 3, 1, 1, …
+## $ noe3         &lt;int&gt; 3, 4, 1, 3, 4, 2, 3, 4, 3, 5, 5, 5, 4, 5, 1, 2, 1, 5, 3, …
+## $ noe4         &lt;int&gt; 4, 3, 5, 4, 4, 5, 4, 2, 4, 5, 5, 5, 3, 2, 1, 1, 1, 4, 5, …
+## $ noe5         &lt;int&gt; 4, 3, 1, 1, 5, 5, 3, 3, 1, 1, 5, 5, 4, 4, 5, 1, 3, 5, 5, …
+## $ for6         &lt;int&gt; 4, 3, 1, 4, 5, 5, 2, 3, 3, 5, 5, 1, 4, 4, 4, 1, 4, 4, 3, …
+## $ noe6         &lt;int&gt; 5, 5, 1, 5, 4, 1, 3, 5, 3, 5, 1, 5, 4, 4, 1, 1, 2, 4, 2, …
+## $ noe7         &lt;int&gt; 5, 5, 1, 5, 5, 1, 2, 5, 4, 5, 1, 5, 4, 1, 1, 5, 4, 5, 4, …
+## $ noe8         &lt;int&gt; 2, 3, 3, 4, 2, 4, 4, 2, 5, 1, 1, 5, 1, 1, 3, 2, 3, 1, 3, …
+## $ anx1         &lt;int&gt; 2, 4, 5, 3, 4, 1, 4, 2, 1, 5, 1, 1, 4, 5, 3, 2, 5, 1, 4, …
+## $ anx2         &lt;int&gt; 4, 2, 1, 1, 2, 5, 1, 5, 1, 1, 5, 5, 1, 1, 3, 4, 1, 5, 4, …
+## $ anx3         &lt;int&gt; 4, 3, 3, 1, 4, 5, 3, 5, 2, 1, 5, 5, 1, 1, 1, 5, 1, 1, 2, …
+## $ anx4         &lt;int&gt; 3, 4, 3, 5, 4, 1, 4, 2, 4, 5, 1, 1, 1, 1, 3, 1, 5, 5, 3, …
+## $ anx5         &lt;int&gt; 4, 2, 4, 2, 4, 5, 1, 5, 1, 1, 5, 5, 5, 5, 1, 1, 1, 1, 5, …
+## $ anx6         &lt;int&gt; 5, 1, 1, 4, 4, 5, 1, 2, 5, 1, 5, 1, 5, 1, 1, 5, 5, 1, 4, …
+## $ war1         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ war2         &lt;int&gt; 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, …
+## $ war3         &lt;int&gt; 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, …
+## $ war4         &lt;int&gt; 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, …
+## $ war5         &lt;int&gt; 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, …
+## $ war6         &lt;int&gt; 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, …
+## $ war7         &lt;int&gt; 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, …
+## $ war8         &lt;int&gt; 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, …
+## $ ie18         &lt;int&gt; 2, 1, 2, 4, 3, 4, 3, 5, 3, 1, 3, 3, 3, 2, 3, 1, 3, 2, 3, …
+## $ fut1         &lt;int&gt; 2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, …
+## $ fut2         &lt;int&gt; 3, 5, 5, 4, 2, 4, 5, 3, 5, 5, 5, 5, 4, 5, 5, 1, 5, 4, 2, …
+## $ age          &lt;int&gt; 47, 38, 34, 65, 28, 37, 43, 45, 27, 22, 15, 18, 27, 25, 3…
+## $ nat          &lt;chr&gt; &quot;TAM&quot;, &quot;MAK&quot;, &quot;SLE&quot;, &quot;MAP&quot;, &quot;MAK&quot;, &quot;MAK&quot;, &quot;SLE&quot;, &quot;MAK&quot;, &quot;…
+## $ ski          &lt;int&gt; 1, 1, 2, 1, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2, 2, 1, 2, 2, 2, …
+## $ ptsd         &lt;dbl&gt; 4.466667, 3.733333, 2.666667, 4.466667, 4.266667, 4.60000…
+## $ anx1_r       &lt;int&gt; 4, 2, 1, 3, 2, 5, 2, 4, 5, 1, 5, 5, 2, 1, 3, 4, 1, 5, 2, …
+## $ anx4_r       &lt;int&gt; 3, 2, 3, 1, 2, 5, 2, 4, 2, 1, 5, 5, 5, 5, 3, 5, 1, 1, 3, …
+## $ anxi         &lt;dbl&gt; 4.000000, 2.000000, 2.166667, 2.000000, 3.000000, 5.00000…
+## $ outb         &lt;dbl&gt; 5.0, 5.0, 1.0, 5.0, 4.5, 1.0, 2.5, 5.0, 3.5, 5.0, 1.0, 5.…
+## $ ifor         &lt;dbl&gt; 3.5, 4.0, 1.0, 4.0, 4.5, 3.0, 3.0, 3.0, 3.5, 5.0, 3.5, 1.…
+## $ iden         &lt;dbl&gt; 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 3.0, 1.…
+## $ cont         &lt;int&gt; 3, 5, 1, 3, 3, 1, 3, 3, 3, 5, 1, 1, 4, 1, 1, 2, 3, 1, 1, …
+## $ wart         &lt;dbl&gt; 0.4, 1.0, 1.0, 0.8, 0.6, 0.2, 0.0, 0.4, 0.8, 0.0, 0.4, 0.…
+## $ sex_original &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 2, 1, 2, 2, 2, 1, 1, 2, …
+## $ sex          &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, …
+## $ emp_original &lt;int&gt; 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 1, 2, 1, 1, …
+## $ emp          &lt;dbl&gt; 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, …
+## $ mar_original &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 1, …
+## $ mar          &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, …
+## $ rel_original &lt;int&gt; 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, …
+## $ rel          &lt;dbl&gt; 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, …
+## $ trt          &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># add labels</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>data_ptsd <span class="ot">&lt;-</span> data_ptsd <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>labelled<span class="sc">::</span><span class="fu">set_variable_labels</span>(</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">ptsd   =</span> <span class="st">&#39;post traumatic stress disorder&#39;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">anx1_r =</span> <span class="st">&#39;[R] Relaxed&#39;</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="at">anx4_r =</span> <span class="st">&#39;[R] Safe&#39;</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="at">anxi   =</span> <span class="st">&#39;Anxiety&#39;</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="at">outb   =</span> <span class="st">&#39;Outgroup blame&#39;</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="at">ifor   =</span> <span class="st">&#39;Intergroup forgiveness&#39;</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="at">iden   =</span> <span class="st">&#39;Ingroup (national) identification&#39;</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="at">cont   =</span> <span class="st">&#39;Outgroup contact&#39;</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="at">wart   =</span> <span class="st">&#39;War trauma&#39;</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="at">sex    =</span> <span class="st">&#39;Sex (1 = male, 0 = female)&#39;</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="at">emp    =</span> <span class="st">&#39;Employment Status (1 = employed, 0 = unemployed)&#39;</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="at">mar    =</span> <span class="st">&#39;Marital Status (1 = married, 0 = not married&#39;</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="at">rel    =</span> <span class="st">&#39;Religion (1 = not muslim, 0 = muslim)&#39;</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="at">trt    =</span> <span class="st">&#39;Treated (1 = treated, 0 = not treated&#39;</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># chequear value labels</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>data_ptsd <span class="sc">%&gt;%</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>labelled<span class="sc">::</span><span class="fu">look_for</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>labelled<span class="sc">::</span><span class="fu">lookfor_to_long_format</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">pos</th>
+<th align="left">variable</th>
+<th align="left">label</th>
+<th align="left">col_type</th>
+<th align="left">levels</th>
+<th align="left">value_labels</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">id_i</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">cond</td>
+<td align="left">NA</td>
+<td align="left">chr</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">ie01</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="left">ie02</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="left">ie03</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="left">ie04</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="left">ie05</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="left">ie06</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="left">ie07</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="left">ie08</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="left">ie09</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="left">ie10</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="left">ie11</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="left">ie12</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="left">ie13</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">16</td>
+<td align="left">ie14</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="left">ie15</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="left">ie16</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="left">ie17</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="left">ptc1</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">21</td>
+<td align="left">ptc2</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">22</td>
+<td align="left">ide1</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">23</td>
+<td align="left">ide2</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">24</td>
+<td align="left">noe1</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">25</td>
+<td align="left">noe2</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">26</td>
+<td align="left">for1</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">27</td>
+<td align="left">for2</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">28</td>
+<td align="left">for3</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">29</td>
+<td align="left">for4</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">30</td>
+<td align="left">for5</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">31</td>
+<td align="left">con</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">32</td>
+<td align="left">noe3</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">33</td>
+<td align="left">noe4</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">34</td>
+<td align="left">noe5</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">35</td>
+<td align="left">for6</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">36</td>
+<td align="left">noe6</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">37</td>
+<td align="left">noe7</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">38</td>
+<td align="left">noe8</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">39</td>
+<td align="left">anx1</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">40</td>
+<td align="left">anx2</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">41</td>
+<td align="left">anx3</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">42</td>
+<td align="left">anx4</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">43</td>
+<td align="left">anx5</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">44</td>
+<td align="left">anx6</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">45</td>
+<td align="left">war1</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">46</td>
+<td align="left">war2</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">47</td>
+<td align="left">war3</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">48</td>
+<td align="left">war4</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">49</td>
+<td align="left">war5</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">50</td>
+<td align="left">war6</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">51</td>
+<td align="left">war7</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">52</td>
+<td align="left">war8</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">53</td>
+<td align="left">ie18</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">54</td>
+<td align="left">fut1</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">55</td>
+<td align="left">fut2</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">56</td>
+<td align="left">age</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">57</td>
+<td align="left">nat</td>
+<td align="left">NA</td>
+<td align="left">chr</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">58</td>
+<td align="left">ski</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">59</td>
+<td align="left">ptsd</td>
+<td align="left">post traumatic stress disorder</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">60</td>
+<td align="left">anx1_r</td>
+<td align="left">[R] Relaxed</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">61</td>
+<td align="left">anx4_r</td>
+<td align="left">[R] Safe</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">62</td>
+<td align="left">anxi</td>
+<td align="left">Anxiety</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">63</td>
+<td align="left">outb</td>
+<td align="left">Outgroup blame</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">64</td>
+<td align="left">ifor</td>
+<td align="left">Intergroup forgiveness</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">65</td>
+<td align="left">iden</td>
+<td align="left">Ingroup (national) identification</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">66</td>
+<td align="left">cont</td>
+<td align="left">Outgroup contact</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">67</td>
+<td align="left">wart</td>
+<td align="left">War trauma</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">68</td>
+<td align="left">sex_original</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">69</td>
+<td align="left">sex</td>
+<td align="left">Sex (1 = male, 0 = female)</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">70</td>
+<td align="left">emp_original</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">71</td>
+<td align="left">emp</td>
+<td align="left">Employment Status (1 = employed, 0 = unemployed)</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">72</td>
+<td align="left">mar_original</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">73</td>
+<td align="left">mar</td>
+<td align="left">Marital Status (1 = married, 0 = not married</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">74</td>
+<td align="left">rel_original</td>
+<td align="left">NA</td>
+<td align="left">int</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">75</td>
+<td align="left">rel</td>
+<td align="left">Religion (1 = not muslim, 0 = muslim)</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">76</td>
+<td align="left">trt</td>
+<td align="left">Treated (1 = treated, 0 = not treated</td>
+<td align="left">dbl</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>
