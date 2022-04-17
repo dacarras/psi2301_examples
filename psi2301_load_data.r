@@ -39,3 +39,4 @@ data_terce <- read.csv(
 'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/terce_n.csv'
 	)
 )
+
