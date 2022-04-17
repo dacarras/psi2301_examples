@@ -48,7 +48,7 @@ reverse <- function (var) {
 }
 
 # -----------------------------------------------
-# measures presented in the paper
+# load data from url
 # -----------------------------------------------
 
 # ptsd
@@ -59,7 +59,7 @@ data_ptsd <- read.csv(
 )
 
 # -----------------------------------------------
-# measures presented in the paper
+# add measures presented in the paper
 # -----------------------------------------------
 
 library(dplyr)
@@ -158,7 +158,7 @@ data_ptsd <- data_ptsd %>%
 
 
 # -----------------------------------------------
-# add labels
+# add labels (optional code)
 # -----------------------------------------------
 
 data_ptsd <- data_ptsd %>%
@@ -181,7 +181,7 @@ trt    = 'Treated (1 = treated, 0 = not treated'
 
 
 # -----------------------------------------------
-# chequear value labels
+# check value labels
 # -----------------------------------------------
 
 data_ptsd %>%
