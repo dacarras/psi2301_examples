@@ -5,6 +5,13 @@ data_ac <- read.csv(
 	)
 )
 
+# coes 2014
+data_coes <- read.csv(
+	url(
+'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/encuesta_coes_2014.csv'
+	)
+)
+
 # ptsd
 data_ptsd <- read.csv(
 	url(
