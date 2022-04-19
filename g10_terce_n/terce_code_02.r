@@ -89,3 +89,35 @@ knitr::kable(., digits = 2)
 
 
 
+# -----------------------------------------------
+# como guardar a excel
+# -----------------------------------------------
+
+tabla_2 <- data_terce %>%
+dplyr::select(serv_b) %>%
+na.omit() %>%
+mutate(serv_c = case_when(
+  between(serv_b,  0, .1) ~ '0.0 - 0.1',
+  between(serv_b, .1, .2) ~ '0.1 - 0.1',
+  between(serv_b, .2, .3) ~ '0.2 - 0.3',
+  between(serv_b, .3, .4) ~ '0.3 - 0.4',
+  between(serv_b, .4, .5) ~ '0.4 - 0.5',
+  between(serv_b, .5, .6) ~ '0.5 - 0.6',
+  between(serv_b, .6, .7) ~ '0.6 - 0.7',
+  between(serv_b, .7, .8) ~ '0.7 - 0.8',
+  between(serv_b, .8, .9) ~ '0.8 - 0.9',
+  between(serv_b, .9,  1) ~ '0.9 - 1.0'
+  )) %>%
+group_by(serv_c) %>%
+summarize(
+  n       = n()
+) %>%
+mutate(p = n/sum(n)) %>%
+mutate(cumulativo = cumsum(p))
+
+
+knitr::kable(tabla_2, digits = 2)
+
+
+tabla_2 %>%
+openxlsx::write.xlsx(., 'tabla_2.xlsx', overwrite = TRUE)
