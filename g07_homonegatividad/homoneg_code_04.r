@@ -23,6 +23,10 @@ data_hom <- data_hom %>%
 data_hom %>%
 group_by(sexo) %>%
 summarize(
-mean = mean(afect_mujeres, na.rm = TRUE)
+mean = mean(afect_mujeres, na.rm = TRUE),
+median = median(afect_mujeres, na.rm = TRUE),
+sd = sd(afect_mujeres, na.rm = TRUE),
+n_obs = sum(!is.na(afect_mujeres)),
+n_miss = sum(is.na(afect_mujeres))
 ) %>%
 knitr::kable(., digits = 2)
