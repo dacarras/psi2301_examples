@@ -132,3 +132,42 @@ summarize(
   n = n()
 ) %>%
 knitr::kable(., digits = 3)
+
+
+#--------------------------------------
+# comparacion de medias con t test
+#--------------------------------------
+
+
+t.test(formula = ursdia ~ sexo,
+       data = data_tarea_3,
+       alternative = c("two.sided"),
+       mu = 0, 
+       paired = FALSE, 
+       var.equal = TRUE,
+       conf.level = 0.95)
+
+
+#--------------------------------------
+# prueba Z para medias
+#--------------------------------------
+
+x_vector <- data_tarea_3 %>%
+            dplyr::filter(sexo == 'Hombre') %>%
+            dplyr::select(ursdia) %>%
+            dplyr::pull()
+
+y_vector <- data_tarea_3 %>%
+            dplyr::filter(sexo == 'Mujer') %>%
+            dplyr::select(ursdia) %>%
+            dplyr::pull()
+
+BSDA::z.test(
+  x = x_vector,
+  sigma.x=sd_pop, 
+  y = y_vector, 
+  sigma.y=sd_pop,
+  mu=0)
+
+
+
