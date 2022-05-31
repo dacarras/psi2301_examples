@@ -14,10 +14,22 @@ url('https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/bdr
 set.seed(83838383) # reemplazar este valor con su rut
 
 # crear datos específicos para el usuario
+
+#--------------------------------------
+# opcion para sacar los datos perdidos.
+#--------------------------------------
+
+# bdrrss <- na.omit(bdrrss) #
+
+#--------------------------------------
+# crear datos para usuario
+#--------------------------------------
+
 data_tarea_3 <- bdrrss[sample(1:nrow(bdrrss), 1000), ]
 
 # dimensiones esperadas (filas = 1000, columnas = 3)
 dim(data_tarea_3)
+
 
 #--------------------------------------
 # variables datos
