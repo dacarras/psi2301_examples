@@ -1,0 +1,551 @@
+---
+title: "Regresión con datos de psicomotor"
+output: github_document
+---
+
+# Pregunta: como evalar la influencia relativa de varios factores
+
+Estimado profesor, le escribo porque como grupo nos surgió una duda con respecto al trabajo semestral. Nosotros elegimos la base de datos de psicomotor y planteamos la siguiente pregunta de investigación; 
+
+**¿Cómo influye la participación y estimulación del padre en el desarrollo psicomotor del bebé?**
+
+
+Con la información de la base de datos construimos 2 variables, una combinando los item de la escala de participación paterna y otro tomando uno de los item del cuestionario Ages and Stages (el item de desarrollo socio individual) y utilizamos además la variable sexo del niño y edad gestacional del niño al nacer.
+
+Para la entrega pasada se nos pedía cruzar una variable continua y una categórica y reportar los resultados de estos cruces, nosotros lo hicimos y nos evaluaron bien, sin embargo, nos dimos cuenta de que no respondemos a la pregunta de investigación que planteamos en un principio, porque para poder hacer esto tendríamos que cruzar las variables construidas y ambas son continuas.
+
+**¿Existe algún código para poder hacer esto? ¿O no se podría hacer?**
+
+
+# Preparar datos
+
+## Abrir datos
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# abrir dplyr y los datos
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# actualizar psi2301
+# -----------------------------------------------
+
+# credentials::set_github_pat()
+# devtools::install_github("dacarras/psi2301", force = TRUE)
+
+
+# -----------------------------------------------------------------------------
+# funciones para crear puntajes
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# reverse
+# -----------------------------------------------
+
+reverse <- function (var)  {
+    var <- labelled::remove_labels(var)
+    var <- haven::zap_labels(var)
+    max <- max(var, na.rm = TRUE)
+    min <- min(var, na.rm = TRUE)
+    return(max + min - var)
+}
+
+# -----------------------------------------------
+# mean_score
+# -----------------------------------------------
+
+mean_score <- function (..., na.rm = TRUE)  {
+    rowMeans(cbind(...), na.rm = na.rm)
+}
+
+# -----------------------------------------------
+# z score
+# -----------------------------------------------
+
+z_score <- function (x)  {
+    return(as.numeric(scale(x, center = TRUE, scale = TRUE)))
+}
+
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
+
+library(dplyr)
+datos_desarollo <- psi2301::desarollo_psicomotor
+
+# -----------------------------------------------
+# preparar los datos
+# -----------------------------------------------
+
+datos_desarollo <- datos_desarollo %>%
+                   rename_all(tolower) %>%
+                   dplyr::glimpse()
+
+# -----------------------------------------------
+# descriptivo de frecuencias
+# -----------------------------------------------
+
+datos_desarollo %>%
+  dplyr::select(a8com1:a8si6) %>%
+  r4sda::wide_resp() %>%
+  knitr::kable(., digits = 2)
+
+# Nota: items invertidos `a8mfin2` y `a8si1`
+
+```
+
+## Items invertidos
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# items invertidos
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# invertir items
+# -----------------------------------------------
+
+datos_desarollo <- datos_desarollo %>%
+                   mutate(a8mfin2_raw = a8mfin2) %>%
+                   mutate(a8mfin2 = case_when(
+                     a8mfin2 ==  0 ~ 10,
+                     a8mfin2 ==  5 ~ 5,
+                     a8mfin2 == 10 ~ 0
+                   )) %>% 
+                   mutate(a8si1_raw = a8si1) %>%
+                   mutate(a8si1 = case_when(
+                     a8si1 ==  0 ~ 10,
+                     a8si1 ==  5 ~ 5,
+                     a8si1 == 10 ~ 0
+                   ))
+                      
+# -----------------------------------------------
+# revisar items invertidos
+# -----------------------------------------------
+
+dplyr::count(datos_desarollo, a8mfin2_raw, a8mfin2)
+dplyr::count(datos_desarollo, a8si1_raw, a8si1)
+
+
+
+```
+
+## Variables dependientes
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# indices de desarollo
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# crear puntajes promedios
+# -----------------------------------------------
+
+com_items <- dplyr::select(datos_desarollo, a8com1:a8com6)
+amp_items <- dplyr::select(datos_desarollo, a8mamp1:a8mamp6)
+fin_items <- dplyr::select(datos_desarollo, a8mfin1:a8mfin6)
+pro_items <- dplyr::select(datos_desarollo, a8rp1:a8rp6)
+soc_items <- dplyr::select(datos_desarollo, a8si1:a8si6)
+
+datos_desarollo <- datos_desarollo %>%
+                   mutate(com = psi2301::mean_score(com_items)) %>%
+                   mutate(amp = psi2301::mean_score(amp_items)) %>%
+                   mutate(fin = psi2301::mean_score(fin_items)) %>%
+                   mutate(pro = psi2301::mean_score(pro_items)) %>%
+                   mutate(soc = psi2301::mean_score(soc_items))
+
+# -----------------------------------------------
+# listado de putajes generados
+# -----------------------------------------------
+
+# com = comunicación
+# amp = motricidad gruesa
+# fin = motricidad fina
+# pro = resolucion de problemas
+# soc = socio individual (relaciones interpersonales)
+
+
+```
+
+## Covariables
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# covariables
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# nivel socioeconómico
+# -----------------------------------------------
+
+# crear nse con valores texto
+datos_desarollo <- datos_desarollo %>%
+                   mutate(nse_group = case_when(
+                     nse == 1 ~ 'alto',
+                     nse == 2 ~ 'medio',
+                     nse == 3 ~ 'bajo'
+                   )) %>%
+                   mutate(nse_1 = dplyr::if_else(nse == 3, 1, 0)) %>% # bajo
+                   mutate(nse_2 = dplyr::if_else(nse == 2, 1, 0)) %>% # medio
+                   mutate(nse_3 = dplyr::if_else(nse == 1, 1, 0)) %>% # alto
+                   dplyr::glimpse()
+
+
+# -----------------------------------------------------------------------------
+# involucramiento parental
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# participación paterna
+# -----------------------------------------------
+
+datos_desarollo <- datos_desarollo %>%
+                   mutate(pad_mudar_r = reverse(pad_mudar)) %>%
+                   mutate(parinv = mean_score(pad_mudar_r, pad_jugar, pad_dormir,pad_alim, pad_med)) %>%
+                   mutate(par_z  = z_score(parinv))
+                    
+
+# -----------------------------------------------
+# reliability analysis
+# -----------------------------------------------
+
+datos_desarollo %>%
+dplyr::select(pad_mudar,pad_mudar_r, pad_jugar, pad_dormir,pad_alim, pad_med) %>%
+psych::alpha()
+
+
+datos_desarollo %>%
+dplyr::select(pad_mudar_r, pad_jugar, pad_dormir,pad_alim, pad_med) %>%
+psych::alpha()
+
+# -----------------------------------------------------------------------------
+# edad gestacional
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# edad gestacional
+# -----------------------------------------------
+
+datos_desarollo <- datos_desarollo %>%
+                   mutate(ges_1= case_when(  
+                   between(edad_gest, 24, 32) ~ 'muy prematuro', 
+                   between(edad_gest, 33, 37) ~ 'prematuro',
+                   between(edad_gest, 38, 42) ~ 'normal'
+                   )) %>%
+                   mutate(ges_2= case_when(  
+                   between(edad_gest, 24, 32) ~ 'muy prematuro', 
+                   between(edad_gest, 33, 37) ~ 'prematuro',
+                   between(edad_gest, 38, 42) ~ 'normal'
+                   )) %>%
+                   mutate(ges_3= case_when(  
+                   ges_2 == "muy prematuro" ~ 1  , 
+                   ges_2 == "prematuro" ~ 2 ,
+                   ges_2 == "normal" ~ 3
+                   )) %>%
+                   mutate(risk_2 = dplyr::if_else(ges_3 == 1, 1, 0)) %>% # muy prematuro
+                   mutate(risk_1 = dplyr::if_else(ges_3 == 2, 1, 0)) %>% # prematuro
+                   mutate(risk_0 = dplyr::if_else(ges_3 == 3, 1, 0)) %>% # normal
+                   dplyr::glimpse()
+
+# -----------------------------------------------
+# sexo del niño
+# -----------------------------------------------
+
+datos_desarollo <- datos_desarollo %>%
+                   mutate(male = case_when(  
+                   sex == 1 ~ 1, # male
+                   sex == 2 ~ 0  # female
+                   )) %>%
+                   mutate(female = case_when(  
+                   sex == 1 ~ 0, # male
+                   sex == 2 ~ 1  # female
+                   ))
+
+
+# -----------------------------------------------------------------------------
+# revision de datos
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# inspeccionar base de datos creada
+# -----------------------------------------------
+
+datos_desarollo %>%
+r4sda::variables_table() %>%
+knitr::kable()
+
+
+# -----------------------------------------------------------------------------
+# correlaciones
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# correlation matrix
+# -----------------------------------------------
+
+datos_desarollo %>%
+dplyr::select(parinv,
+com, #  = comunicación
+amp, #  = motricidad gruesa
+fin, #  = motricidad fina
+pro, #  = resolucion de problemas
+soc  #  = socio individual (relaciones interpersonales)
+) %>%
+corrr::correlate() %>%
+corrr::shave() %>%
+knitr::kable(., digits = 2)
+
+
+# -----------------------------------------------
+# correlation matrix
+# -----------------------------------------------
+
+
+datos_desarollo %>%
+dplyr::select(parinv, par_z,
+com, #  = comunicación
+amp, #  = motricidad gruesa
+fin, #  = motricidad fina
+pro, #  = resolucion de problemas
+soc  #  = socio individual (relaciones interpersonales)
+) %>%
+corrr::correlate() %>%
+corrr::focus(parinv, par_z) %>%
+knitr::kable(., digits = 2)
+
+
+# |term | parinv| involucramiento parental
+# |:----|------:|
+# |com  |   0.02| comunicación
+# |amp  |   0.00| motricidad gruesa
+# |fin  |   0.06| motricidad fina
+# |pro  |   0.12| resolución de problemas
+# |soc  |   0.02| relaciones interpersonales
+
+# -----------------------------------------------
+# missing data
+# -----------------------------------------------
+
+
+library(VIM)
+datos_desarollo %>%
+dplyr::select(parinv, par_z,
+com, #  = comunicación
+amp, #  = motricidad gruesa
+fin, #  = motricidad fina
+pro, #  = resolucion de problemas
+soc, #  = socio individual (relaciones interpersonales)
+nse_group, # SES
+ges_1      # edad gestacional  
+) %>%
+VIM::aggr(., 
+  combine=TRUE, 
+  cex.lab=.8, 
+  cex.axis=.6,
+  col = c("white", "black"),
+  ylabs="Pattern of omissions"
+  )
+
+
+```
+
+
+
+# Pregunta
+
+**¿Cómo influye la participación y estimulación del padre en el desarrollo psicomotor del bebé?**
+
+## Estudio 1: involucramiento parental y desarollo socio individiual
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# regresion
+#----------------------------------------------------------
+
+data_model <- datos_desarollo
+
+#--------------------------------------
+# formulas
+#--------------------------------------
+
+f01 <- as.formula(soc  ~ + 1)
+f02 <- as.formula(soc  ~ + 1 + parinv)
+f03 <- as.formula(soc  ~ + 1 + parinv + as.factor(ges_1))
+f04 <- as.formula(soc  ~ + 1 + parinv + as.factor(ges_1) + male)
+f05 <- as.formula(soc  ~ + 1 + parinv + as.factor(ges_1) + male + as.factor(nse_group))
+
+#--------------------------------------
+# ajustar modelos
+#--------------------------------------
+
+m01 <- lm(f01, data = data_model)
+m02 <- lm(f02, data = data_model)
+m03 <- lm(f03, data = data_model)
+m04 <- lm(f04, data = data_model)
+m05 <- lm(f05, data = data_model)
+
+#--------------------------------------
+# tabla de modelos
+#--------------------------------------
+
+texreg::screenreg(
+    list(m01, m02, m03, m04, m05),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+
+```
+
+## Estudio 2: involucramiento parental y desarollo de resolución de problemas
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# regresion
+#----------------------------------------------------------
+
+data_model <- datos_desarollo
+
+#--------------------------------------
+# formulas
+#--------------------------------------
+
+f01 <- as.formula(pro  ~ + 1)
+f02 <- as.formula(pro  ~ + 1 + parinv)
+f03 <- as.formula(pro  ~ + 1 + parinv + as.factor(ges_1))
+f04 <- as.formula(pro  ~ + 1 + parinv + as.factor(ges_1) + male)
+f05 <- as.formula(pro  ~ + 1 + parinv + as.factor(ges_1) + male + as.factor(nse_group))
+
+#--------------------------------------
+# ajustar modelos
+#--------------------------------------
+
+m01 <- lm(f01, data = data_model)
+m02 <- lm(f02, data = data_model)
+m03 <- lm(f03, data = data_model)
+m04 <- lm(f04, data = data_model)
+m05 <- lm(f05, data = data_model)
+
+#--------------------------------------
+# tabla de modelos
+#--------------------------------------
+
+texreg::screenreg(
+    list(m01, m02, m03, m04, m05),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE
+    )
+
+
+
+```
+
+## Estudio 3: involucramiento parental y desarollo (efectos fijos)
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# regresion
+#----------------------------------------------------------
+
+data_model <- datos_desarollo
+
+#--------------------------------------
+# regresion
+#--------------------------------------
+
+f01 <- as.formula(com  ~ + 1 + par_z + nse_1 + nse_3 + risk_1 + risk_2)
+f02 <- as.formula(amp  ~ + 1 + par_z + nse_1 + nse_3 + risk_1 + risk_2)
+f03 <- as.formula(fin  ~ + 1 + par_z + nse_1 + nse_3 + risk_1 + risk_2) 
+f04 <- as.formula(pro  ~ + 1 + par_z + nse_1 + nse_3 + risk_1 + risk_2)
+f05 <- as.formula(soc  ~ + 1 + par_z + nse_1 + nse_3 + risk_1 + risk_2)
+
+#--------------------------------------
+# ajustar modelos
+#--------------------------------------
+
+m01 <- lm(f01, data = data_model)
+m02 <- lm(f02, data = data_model)
+m03 <- lm(f03, data = data_model)
+m04 <- lm(f04, data = data_model)
+m05 <- lm(f05, data = data_model)
+
+#--------------------------------------
+# tabla de modelos
+#--------------------------------------
+
+texreg::screenreg(
+    list(m01, m02, m03, m04, m05),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE,
+    custom.model.names = c('com', 'amp', 'fin','pro','soc')
+    )
+
+```
+
+
+## Estudio 4: involucramiento parental y desarollo (interacciones)
+
+```{r , echo=TRUE, warning=FALSE}
+
+#----------------------------------------------------------
+# regresion
+#----------------------------------------------------------
+
+data_model <- datos_desarollo
+
+#--------------------------------------
+# regresion
+#--------------------------------------
+
+f01 <- as.formula(com  ~ + 1 + par_z + nse_1 + nse_3 + risk_1 + risk_2 + par_z*nse_1 + par_z*nse_3)
+f02 <- as.formula(amp  ~ + 1 + par_z + nse_1 + nse_3 + risk_1 + risk_2 + par_z*nse_1 + par_z*nse_3)
+f03 <- as.formula(fin  ~ + 1 + par_z + nse_1 + nse_3 + risk_1 + risk_2 + par_z*nse_1 + par_z*nse_3) 
+f04 <- as.formula(pro  ~ + 1 + par_z + nse_1 + nse_3 + risk_1 + risk_2 + par_z*nse_1 + par_z*nse_3)
+f05 <- as.formula(soc  ~ + 1 + par_z + nse_1 + nse_3 + risk_1 + risk_2 + par_z*nse_1 + par_z*nse_3)
+
+#--------------------------------------
+# ajustar modelos
+#--------------------------------------
+
+m01 <- lm(f01, data = data_model)
+m02 <- lm(f02, data = data_model)
+m03 <- lm(f03, data = data_model)
+m04 <- lm(f04, data = data_model)
+m05 <- lm(f05, data = data_model)
+
+#--------------------------------------
+# tabla de modelos
+#--------------------------------------
+
+texreg::screenreg(
+    list(m01, m02, m03, m04, m05),
+    star.symbol = "*", 
+    center = TRUE, 
+    doctype = FALSE,
+    dcolumn = TRUE, 
+    booktabs = TRUE,
+    single.row = FALSE,
+    custom.model.names = c('com', 'amp', 'fin','pro','soc')
+    )
+
+```
+
