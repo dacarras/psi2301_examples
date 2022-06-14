@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAAAZwABAAAAAACFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEU0lHAAAGaAAAAAgAAAAIAAAAAUdTVUIAAAZcAAAACgAAAAoAAQAAT1MvMgAAAyQAAABJAAAAYFYEU3RjbWFwAAADcAAAAEUAAACAAJThvmN2dCAAAATkAAAABAAAAAQAAAAAZnBnbQAAA7gAAACyAAABCUM+8IhnYXNwAAAGTAAAABAAAAAQABoAI2dseWYAAAFsAAABPAAAAZwcEq9taGVhZAAAAsgAAAA0AAAANgh4a91oaGVhAAADCAAAABoAAAAkCA8DRGhtdHgAAAL8AAAADAAAAAwGAACfbG9jYQAAAsAAAAAIAAAACABiATBtYXhwAAACqAAAABgAAAAgAA8ASm5hbWUAAAToAAABQgAAAlXu73sOcG9zdAAABiwAAAAeAAAAME3QpOBwcmVwAAAEbAAAAHYAAAB/aFGpk3jaTY6xa8JAGMW/O62BDi0tJLYQincXEypYIiGJjSgHniQ6umTsUEyLm5BV6NDBP8Tpts6F0v+k/0an2i+itHDw3v2+9+DBKTzsJNnWJNTgHEy4BgG3EMI9DCEDOGEXzDADU5hBKMIgNPZqoD3SilVaXZCER3/I7AtxEJLtzzuZfI+VVkprxTlXShWKb3TBecG11rwoNlmmn1P2WYcJczl32etSpKnziC7lQyWe1smVPy/Lt7Kc+0vWY/gAgIIEqAN9we0pwKXreiMasxvabDQMM4riO+qxM2ogwDGOZTXxwxDiycQIcoYFBLj5K3EIaSctAq2kTYiw+ymhce7vwM9jSqO8JyVd5RH9gyTt2+J/yUmYlIR0s04n6+7Vm1ozezUeLEaUjhaDSuXHwVRgvLJn1tQ7xiuVv/ocTRF42mNgZGBgYGbwZOBiAAFGJBIMAAizAFoAAABiAGIAznjaY2BkYGAA4in8zwXi+W2+MjCzMIDApSwvXzC97Z4Ig8N/BxYGZgcgl52BCSQKAA3jCV8CAABfAAAAAAQAAEB42mNgZGBg4f3vACQZQABIMjKgAmYAKEgBXgAAeNpjYGY6wTiBgZWBg2kmUxoDA4MPhGZMYzBi1AHygVLYQUCaawqDA4PChxhmh/8ODDEsvAwHgMKMIDnGL0x7gJQCAwMAJd4MFwAAAHjaY2BgYGaA4DAGRgYQkAHyGMF8NgYrIM3JIAGVYYDT+AEjAwuDFpBmA9KMDEwMCh9i/v8H8sH0/4dQc1iAmAkALaUKLgAAAHjaTY9LDsIgEIbtgqHUPpDi3gPoBVyRTmTddOmqTXThEXqrob2gQ1FjwpDvfwCBdmdXC5AVKFu3e5MfNFJ29KTQT48Ob9/lqYwOGZxeUelN2U2R6+cArgtCJpauW7UQBqnFkUsjAY/kOU1cP+DAgvxwn1chZDwUbd6CFimGXwzwF6tPbFIcjEl+vvmM/byA48e6tWrKArm4ZJlCbdsrxksL1AwWn/yBSJKpYbq8AXaaTb8AAHja28jAwOC00ZrBeQNDQOWO//sdBBgYGRiYWYAEELEwMTE4uzo5Zzo5b2BxdnFOcALxNjA6b2ByTswC8jYwg0VlNuoCTWAMqNzMzsoK1rEhNqByEyerg5PMJlYuVueETKcd/89uBpnpvIEVomeHLoMsAAe1Id4AAAAAAAB42oWQT07CQBTGv0JBhagk7HQzKxca2sJCE1hDt4QF+9JOS0nbaaYDCQfwCJ7Au3AHj+LO13FMmm6cl7785vven0kBjHCBhfpYuNa5Ph1c0e2Xu3jEvWG7UdPDLZ4N92nOm+EBXuAbHmIMSRMs+4aUEd4Nd3CHD8NdvOLTsA2GL8M9PODbcL+hD7C1xoaHeLJSEao0FEW14ckxC+TU8TxvsY6X0eLPmRhry2WVioLpkrbp84LLQPGI7c6sOiUzpWIWS5GzlSgUzzLBSikOPFTOXqly7rqx0Z1Q5BAIoZBSFihQYQOOBEdkCOgXTOHA07HAGjGWiIjaPZNW13/+lm6S9FT7rLHFJ6fQbkATOG1j2OFMucKJJsxIVfQORl+9Jyda6Sl1dUYhSCm1dyClfoeDve4qMYdLEbfqHf3O/AdDumsjAAB42mNgYoAAZQYjBmyAGYQZmdhL8zLdDEydARfoAqIAAAABAAMABwAKABMAB///AA8AAQAAAAAAAAAAAAAAAAABAAAAAA==) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="asociación-entre-variables">Asociación entre variables</h1>
+<h1 id="confiabilidad-de-puntajes">Confiabilidad de puntajes</h1>
+<ul>
+<li>Ejemplos de <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgYDIJYwCCcIZOBgcGlgUM3DoHGDgdGLiMGRgSGxh4rzEwHGRg4C1gYOBOYHhb0MDAVvSo7XMDAP+vDGtHMefkAAAAAElFTkSuQmCC" title="\alpha" alt="\alpha" /> de Cronbach</li>
+</ul>
+<h2 id="amenazas-a-la-democracia">Amenazas a la democracia</h2>
+<ul>
+<li>Hay varias maneras de obtener un estimado de Alpha</li>
+<li>En el siguiente código se ilustran tres formas:
+<ul>
+<li>Las forma mas convencional, empleando la librería psych</li>
+<li>Empleando la matriz de correlaciones, usando la librería psych</li>
+<li>Empleando la media de correlaciones usando una formula</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># threats to democracy</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>data_lat <span class="ot">&lt;-</span> psi2301<span class="sc">::</span>iccs_16_lat</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># items table</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>items_table <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="at">text=</span><span class="st">&quot;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="st">final_selection var_name  variable  item_text</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="st">yes IS3G22A td1 &#39;[R] Political leaders give government jobs to their family members.&#39;</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="st">yes IS3G22B td2 &#39;[R] One company or the government owns all newspapers in a country.&#39;</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="st">yes IS3G22C td3 &#39;People are allowed to publicly criticize the government.&#39;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="st">yes IS3G22D td4 &#39;All adult citizens have the right to elect their political leaders.&#39;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="st">yes IS3G22E td5 &#39;People are able to protest if they think a law is unfair.&#39;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="st">yes IS3G22F td6 &#39;[R] The police have the right to hold people suspected of threatening national security in jail without trial.&#39;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="st">no  IS3G22G td7 &#39;Differences in income between poor and rich people are small.&#39;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="st">yes IS3G22H td8 &#39;[R] The government influences decisions by courts of justice.&#39;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="st">yes IS3G22I td9 &#39;All &lt;ethnic/racial&gt; groups in the country have the same rights.&#39;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># display item table</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(items_table)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">final_selection</th>
+<th align="left">var_name</th>
+<th align="left">variable</th>
+<th align="left">item_text</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">yes</td>
+<td align="left">IS3G22A</td>
+<td align="left">td1</td>
+<td align="left">[R] Political leaders give government jobs to their
+family members.</td>
+</tr>
+<tr class="even">
+<td align="left">yes</td>
+<td align="left">IS3G22B</td>
+<td align="left">td2</td>
+<td align="left">[R] One company or the government owns all newspapers
+in a country.</td>
+</tr>
+<tr class="odd">
+<td align="left">yes</td>
+<td align="left">IS3G22C</td>
+<td align="left">td3</td>
+<td align="left">People are allowed to publicly criticize the
+government.</td>
+</tr>
+<tr class="even">
+<td align="left">yes</td>
+<td align="left">IS3G22D</td>
+<td align="left">td4</td>
+<td align="left">All adult citizens have the right to elect their
+political leaders.</td>
+</tr>
+<tr class="odd">
+<td align="left">yes</td>
+<td align="left">IS3G22E</td>
+<td align="left">td5</td>
+<td align="left">People are able to protest if they think a law is
+unfair.</td>
+</tr>
+<tr class="even">
+<td align="left">yes</td>
+<td align="left">IS3G22F</td>
+<td align="left">td6</td>
+<td align="left">[R] The police have the right to hold people suspected
+of threatening national security in jail without trial.</td>
+</tr>
+<tr class="odd">
+<td align="left">no</td>
+<td align="left">IS3G22G</td>
+<td align="left">td7</td>
+<td align="left">Differences in income between poor and rich people are
+small.</td>
+</tr>
+<tr class="even">
+<td align="left">yes</td>
+<td align="left">IS3G22H</td>
+<td align="left">td8</td>
+<td align="left">[R] The government influences decisions by courts of
+justice.</td>
+</tr>
+<tr class="odd">
+<td align="left">yes</td>
+<td align="left">IS3G22I</td>
+<td align="left">td9</td>
+<td align="left">All &lt;ethnic/racial&gt; groups in the country have
+the same rights.</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># response values</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>response_values <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">text=</span><span class="st">&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">value response_label</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">1     &#39;Good for democracy&#39;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">2     &#39;Neither good nor bad for democracy&#39;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">3     &#39;Bad for democracy&#39;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># display response values</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(response_values)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">value</th>
+<th align="left">response_label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">Good for democracy</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">Neither good nor bad for democracy</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">Bad for democracy</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># desired names for merge</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>merge_names <span class="ot">&lt;-</span> items_table <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>               dplyr<span class="sc">::</span><span class="fu">select</span>(variable) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>               .<span class="sc">$</span>variable <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>               <span class="fu">as.character</span>()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># get item names</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>original_names <span class="ot">&lt;-</span> <span class="fu">names</span>(dplyr<span class="sc">::</span><span class="fu">select</span>(data_lat, <span class="fu">starts_with</span>(<span class="st">&#39;IS3G22&#39;</span>)))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># recode functions</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>rec_2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#  variable == old ~ new</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(x))</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: it recodes ordinal items,</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#       where 1 is good for democracy (1)</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">#       and zero is neither good or bad (2) and bad for democracy(3)</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>rec_3 <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">#  variable == old ~ new</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(x))</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: it recodes ordinal items, that are reverse coded,</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co">#       where 1 is bad for democracy (1)</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co">#       and zero is neither good or bad (2) and good for democracy(3)</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="co"># recode items, general recode</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>items_data <span class="ot">&lt;-</span> data_lat <span class="sc">%&gt;%</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>              <span class="co"># replace original names for merge names</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rename_at</span>(<span class="fu">vars</span>(original_names), <span class="sc">~</span><span class="fu">paste0</span>(merge_names)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>              <span class="co"># dichotomization of items</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">td1 =</span> <span class="fu">rec_3</span>(td1)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">td2 =</span> <span class="fu">rec_3</span>(td2)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">td3 =</span> <span class="fu">rec_2</span>(td3)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">td4 =</span> <span class="fu">rec_2</span>(td4)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">td5 =</span> <span class="fu">rec_2</span>(td5)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">td6 =</span> <span class="fu">rec_3</span>(td6)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">td7 =</span> <span class="fu">rec_2</span>(td7)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">td8 =</span> <span class="fu">rec_3</span>(td8)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">td9 =</span> <span class="fu">rec_2</span>(td9)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>              <span class="co"># remove labels </span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>              r4sda<span class="sc">::</span><span class="fu">remove_labels</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>              <span class="co"># select recoded data only</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(id_i, td1<span class="sc">:</span>td9)</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="co"># display ten cases</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>items_data[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,] <span class="sc">%&gt;%</span></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">id_i</th>
+<th align="right">td1</th>
+<th align="right">td2</th>
+<th align="right">td3</th>
+<th align="right">td4</th>
+<th align="right">td5</th>
+<th align="right">td6</th>
+<th align="right">td7</th>
+<th align="right">td8</th>
+<th align="right">td9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">5898</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">5899</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">5900</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">5901</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5902</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">5903</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">5904</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">5905</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">5906</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">5907</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha computes</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha with psych</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>items_data <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>id_i) <span class="sc">%&gt;%</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>()</span></code></pre></div>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = .)
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+##       0.55      0.54    0.54      0.12 1.2 0.0043 0.44 0.22    0.096
+## 
+##     95% confidence boundaries 
+##          lower alpha upper
+## Feldt     0.54  0.55  0.55
+## Duhachek  0.54  0.55  0.55
+## 
+##  Reliability if an item is dropped:
+##     raw_alpha std.alpha G6(smc) average_r  S/N alpha se  var.r med.r
+## td1      0.51      0.51    0.50      0.11 1.02   0.0047 0.0091 0.101
+## td2      0.50      0.50    0.49      0.11 0.98   0.0048 0.0087 0.092
+## td3      0.53      0.53    0.52      0.12 1.11   0.0044 0.0107 0.101
+## td4      0.50      0.50    0.49      0.11 0.99   0.0047 0.0087 0.098
+## td5      0.49      0.49    0.49      0.11 0.97   0.0048 0.0091 0.093
+## td6      0.53      0.52    0.52      0.12 1.10   0.0045 0.0090 0.098
+## td7      0.56      0.57    0.56      0.14 1.30   0.0041 0.0073 0.104
+## td8      0.52      0.51    0.51      0.12 1.06   0.0046 0.0085 0.101
+## td9      0.50      0.50    0.49      0.11 0.99   0.0047 0.0096 0.092
+## 
+##  Item statistics 
+##         n raw.r std.r r.cor r.drop mean   sd
+## td1 24603  0.49  0.49  0.37  0.275 0.28 0.45
+## td2 24328  0.53  0.51  0.42  0.305 0.43 0.50
+## td3 24151  0.43  0.43  0.28  0.203 0.29 0.45
+## td4 24340  0.49  0.50  0.41  0.299 0.80 0.40
+## td5 24319  0.53  0.52  0.44  0.312 0.64 0.48
+## td6 24279  0.45  0.43  0.30  0.213 0.36 0.48
+## td7 24120  0.29  0.31  0.11  0.071 0.24 0.43
+## td8 24145  0.45  0.46  0.34  0.249 0.24 0.42
+## td9 24370  0.52  0.51  0.41  0.297 0.67 0.47
+## 
+## Non missing response frequency for each item
+##        0    1 miss
+## td1 0.72 0.28 0.03
+## td2 0.57 0.43 0.04
+## td3 0.71 0.29 0.05
+## td4 0.20 0.80 0.04
+## td5 0.36 0.64 0.04
+## td6 0.64 0.36 0.04
+## td7 0.76 0.24 0.05
+## td8 0.76 0.24 0.05
+## td9 0.33 0.67 0.04</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha with psych over correlation</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>items_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>id_i) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(., <span class="at">use =</span> <span class="st">&#39;pairwise&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>()</span></code></pre></div>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = .)
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N median_r
+##       0.54      0.54    0.54      0.12 1.2    0.096
+## 
+##     95% confidence boundaries 
+##       lower alpha upper
+## Feldt -0.09  0.54  0.88
+## 
+##  Reliability if an item is dropped:
+##     raw_alpha std.alpha G6(smc) average_r  S/N  var.r med.r
+## td1      0.51      0.51    0.50      0.11 1.02 0.0091 0.101
+## td2      0.50      0.50    0.49      0.11 0.98 0.0087 0.092
+## td3      0.53      0.53    0.52      0.12 1.11 0.0108 0.101
+## td4      0.50      0.50    0.49      0.11 0.99 0.0087 0.098
+## td5      0.49      0.49    0.49      0.11 0.97 0.0091 0.093
+## td6      0.52      0.52    0.52      0.12 1.10 0.0090 0.098
+## td7      0.57      0.57    0.56      0.14 1.30 0.0073 0.104
+## td8      0.51      0.51    0.51      0.12 1.06 0.0085 0.101
+## td9      0.50      0.50    0.49      0.11 0.99 0.0096 0.092
+## 
+##  Item statistics 
+##        r r.cor r.drop
+## td1 0.49  0.37  0.271
+## td2 0.51  0.42  0.304
+## td3 0.43  0.28  0.206
+## td4 0.51  0.41  0.294
+## td5 0.52  0.44  0.317
+## td6 0.43  0.30  0.212
+## td7 0.31  0.11  0.071
+## td8 0.46  0.34  0.243
+## td9 0.51  0.41  0.300</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha with average correlations</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">9</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> items_data <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>     dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>id_i) <span class="sc">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>     corrr<span class="sc">::</span><span class="fu">correlate</span>(., </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">&#39;pearson&#39;</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">use =</span> <span class="st">&#39;pairwise&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>     corrr<span class="sc">::</span><span class="fu">shave</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>     corrr<span class="sc">::</span><span class="fu">stretch</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>     <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>     .<span class="sc">$</span>r <span class="sc">%&gt;%</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>     <span class="fu">mean</span>()</span></code></pre></div>
+<pre><code>## 
+## Correlation method: &#39;pearson&#39;
+## Missing treated using: &#39;pairwise&#39;</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> (k <span class="sc">*</span> r) <span class="sc">/</span> ( <span class="dv">1</span> <span class="sc">+</span> (k <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> r)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>alpha</span></code></pre></div>
+<pre><code>## [1] 0.54333</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># comparison</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>alpha_method_1 <span class="ot">&lt;-</span> items_data <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>id_i) <span class="sc">%&gt;%</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                  psych<span class="sc">::</span><span class="fu">alpha</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                  purrr<span class="sc">::</span><span class="fu">pluck</span>(<span class="st">&#39;total&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">pull</span>(<span class="st">&#39;raw_alpha&#39;</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>alpha_method_2 <span class="ot">&lt;-</span> items_data <span class="sc">%&gt;%</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>                  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>id_i) <span class="sc">%&gt;%</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">cor</span>(., <span class="at">use =</span> <span class="st">&#39;pairwise&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                  psych<span class="sc">::</span><span class="fu">alpha</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                  purrr<span class="sc">::</span><span class="fu">pluck</span>(<span class="st">&#39;total&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">pull</span>(<span class="st">&#39;raw_alpha&#39;</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>alpha_method_3 <span class="ot">&lt;-</span> alpha</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="fu">c</span>(<span class="st">&#39;conventional&#39;</span>,<span class="st">&#39;correlations&#39;</span>,<span class="st">&#39;average correlation&#39;</span>),</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> <span class="fu">c</span>(</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    alpha_method_1,</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    alpha_method_2,</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    alpha_method_3)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(., <span class="at">digits =</span> <span class="dv">5</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">method</th>
+<th align="right">estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">conventional</td>
+<td align="right">0.54530</td>
+</tr>
+<tr class="even">
+<td align="left">correlations</td>
+<td align="right">0.54333</td>
+</tr>
+<tr class="odd">
+<td align="left">average correlation</td>
+<td align="right">0.54333</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha computes with selected items</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha with psych</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>items_data <span class="sc">%&gt;%</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(td2, td4, td5,td9) <span class="sc">%&gt;%</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>()</span></code></pre></div>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = .)
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean  sd median_r
+##        0.5      0.51    0.45      0.21   1 0.0051 0.63 0.3      0.2
+## 
+##     95% confidence boundaries 
+##          lower alpha upper
+## Feldt     0.49   0.5  0.51
+## Duhachek  0.49   0.5  0.51
+## 
+##  Reliability if an item is dropped:
+##     raw_alpha std.alpha G6(smc) average_r  S/N alpha se   var.r med.r
+## td2      0.54      0.54    0.44      0.28 1.18   0.0050 0.00079  0.29
+## td4      0.38      0.38    0.30      0.17 0.61   0.0068 0.00491  0.13
+## td5      0.40      0.41    0.32      0.19 0.69   0.0066 0.00837  0.14
+## td9      0.41      0.42    0.33      0.19 0.72   0.0065 0.00931  0.14
+## 
+##  Item statistics 
+##         n raw.r std.r r.cor r.drop mean   sd
+## td2 24328  0.58  0.55  0.25   0.18 0.43 0.50
+## td4 24340  0.65  0.68  0.52   0.37 0.80 0.40
+## td5 24319  0.67  0.66  0.48   0.33 0.64 0.48
+## td9 24370  0.66  0.65  0.46   0.32 0.67 0.47
+## 
+## Non missing response frequency for each item
+##        0    1 miss
+## td2 0.57 0.43 0.04
+## td4 0.20 0.80 0.04
+## td5 0.36 0.64 0.04
+## td9 0.33 0.67 0.04</code></pre>
+<blockquote>
+<p>Nota: el Alpha obtenido es más bajo de lo esperado (alpha &lt; .7).
+Bajo la convención de que puntajes con alpha menor .7 no debieran ser
+generados, no es recomendable generar un puntaje total con las
+respuestas a estos ítems.</p>
+</blockquote>
+<h2 id="autoritarismo">Autoritarismo</h2>
+<ul>
+<li>Ejemplo de escala con un mejor alpha</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># threats to democracy</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>data_aut <span class="ot">&lt;-</span> psi2301<span class="sc">::</span>iccs_16_lat <span class="sc">%&gt;%</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">au1 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(LS3G01A)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">au2 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(LS3G01B)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">au3 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(LS3G01C)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">au4 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(LS3G01D)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">au5 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(LS3G01E)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">au6 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(LS3G01F)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">au7 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(LS3G02A)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">au8 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(LS3G02B)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">au9 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(LS3G02C)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">select</span>(id_i, au1<span class="sc">:</span>au9)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co"># items table</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co"># au1   !Es mejor que los líderes del gobierno tomen decisiones sin consultar a na</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co"># au2   !Los gobernantes deben hacer valer su autoridad aunque violen los derechos</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="co"># au3   !Los gobernantes pierden su autoridad cuando reconocen sus errores. </span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="co"># au4   !Las personas que tengan opiniones diferentes al gobierno deben ser consid</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co"># au5   !La opinión más importante del país debe ser la de presidente. </span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="co"># au6   !Es justo que el gobierno no cumpla con las leyes cuando lo crea necesario</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="co"># au7   !La concentración del poder en una sola persona garantiza el orden.</span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="co"># au8   !El gobierno debería cerrar los medios de comunicación que lo critiquen. </span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="co"># au9   !Si el presidente no está de acuerdo con el &lt;congreso&gt;, debería &lt;disolverl</span></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a><span class="co"># display ten cases</span></span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>data_aut[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,] <span class="sc">%&gt;%</span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">id_i</th>
+<th align="right">au1</th>
+<th align="right">au2</th>
+<th align="right">au3</th>
+<th align="right">au4</th>
+<th align="right">au5</th>
+<th align="right">au6</th>
+<th align="right">au7</th>
+<th align="right">au8</th>
+<th align="right">au9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">5898</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">5899</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">5900</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">5901</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">5902</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">5903</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">5904</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">5905</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">5906</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">5907</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha computes</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha with psych</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>data_aut <span class="sc">%&gt;%</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(au1<span class="sc">:</span>au9) <span class="sc">%&gt;%</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>()</span></code></pre></div>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = .)
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+##       0.87      0.87    0.86      0.42 6.5 0.0013  2.2 0.66     0.41
+## 
+##     95% confidence boundaries 
+##          lower alpha upper
+## Feldt     0.86  0.87  0.87
+## Duhachek  0.86  0.87  0.87
+## 
+##  Reliability if an item is dropped:
+##     raw_alpha std.alpha G6(smc) average_r S/N alpha se  var.r med.r
+## au1      0.85      0.85    0.84      0.42 5.7   0.0014 0.0018  0.41
+## au2      0.85      0.85    0.83      0.41 5.6   0.0014 0.0019  0.41
+## au3      0.86      0.86    0.85      0.43 6.1   0.0013 0.0017  0.43
+## au4      0.85      0.85    0.83      0.41 5.6   0.0014 0.0021  0.41
+## au5      0.85      0.85    0.84      0.42 5.8   0.0014 0.0028  0.41
+## au6      0.85      0.85    0.84      0.42 5.7   0.0014 0.0023  0.41
+## au7      0.85      0.85    0.84      0.42 5.8   0.0014 0.0025  0.42
+## au8      0.85      0.85    0.84      0.42 5.7   0.0014 0.0023  0.41
+## au9      0.85      0.85    0.84      0.42 5.9   0.0014 0.0023  0.43
+## 
+##  Item statistics 
+##         n raw.r std.r r.cor r.drop mean   sd
+## au1 24962  0.71  0.71  0.67   0.61  1.9 0.93
+## au2 24806  0.73  0.73  0.68   0.63  2.0 0.94
+## au3 24698  0.63  0.63  0.56   0.52  2.5 0.94
+## au4 24743  0.72  0.73  0.69   0.64  1.9 0.87
+## au5 24765  0.71  0.69  0.64   0.60  2.5 1.04
+## au6 24796  0.71  0.71  0.66   0.61  2.0 0.96
+## au7 24855  0.68  0.68  0.62   0.58  2.6 0.92
+## au8 24797  0.71  0.71  0.66   0.61  2.0 0.89
+## au9 24686  0.67  0.68  0.62   0.57  2.3 0.92
+## 
+## Non missing response frequency for each item
+##        1    2    3    4 miss
+## au1 0.41 0.39 0.11 0.09 0.01
+## au2 0.35 0.38 0.19 0.08 0.02
+## au3 0.17 0.34 0.34 0.14 0.02
+## au4 0.37 0.44 0.12 0.07 0.02
+## au5 0.22 0.30 0.28 0.20 0.02
+## au6 0.37 0.37 0.17 0.10 0.02
+## au7 0.12 0.32 0.37 0.19 0.02
+## au8 0.30 0.43 0.19 0.08 0.02
+## au9 0.20 0.42 0.27 0.12 0.03</code></pre>
+<blockquote>
+<p>Nota: el Alpha obtenido esta por sobre lo esperado (alpha &gt; .7).
+Puntajes totales generados con las respuestas a estos nuevos 9 items,
+presentan una alta confiabilidad.</p>
+</blockquote>
+<h2 id="apoyo-a-la-equidad-de-género">Apoyo a la equidad de género</h2>
+<ul>
+<li>Ejemplo de escala con un alpha aceptable</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># geneql, apoyo a la equidad de genero</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># reverse function</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>reverse <span class="ot">&lt;-</span> <span class="cf">function</span> (var)  {</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    var <span class="ot">&lt;-</span> labelled<span class="sc">::</span><span class="fu">remove_labels</span>(var)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    var <span class="ot">&lt;-</span> haven<span class="sc">::</span><span class="fu">zap_labels</span>(var)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    max <span class="ot">&lt;-</span> <span class="fu">max</span>(var, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    min <span class="ot">&lt;-</span> <span class="fu">min</span>(var, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(max <span class="sc">+</span> min <span class="sc">-</span> var)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co"># mean score function</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>mean_score <span class="ot">&lt;-</span> <span class="cf">function</span> (..., <span class="at">na.rm =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rowMeans</span>(<span class="fu">cbind</span>(...), <span class="at">na.rm =</span> na.rm)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>data_gen <span class="ot">&lt;-</span> psi2301<span class="sc">::</span>iccs_16_lat <span class="sc">%&gt;%</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">ge1 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(IS3G24A)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">ge2 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(IS3G24B)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">ge3 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(IS3G24C)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">ge4 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(IS3G24D)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">ge5 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(IS3G24E)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">ge6 =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(IS3G24F)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>            <span class="co"># reverse responses to expected direction</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">ge3r =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(ge3)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">ge4r =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(ge4)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">ge6r =</span> r4sda<span class="sc">::</span><span class="fu">reverse</span>(ge6)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>            <span class="co"># create mean_score</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">gen_score =</span> <span class="fu">mean_score</span>(ge1, ge2, ge3r, ge4r, ge5, ge6r)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">select</span>(id_i, ge1<span class="sc">:</span>ge6r)</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a><span class="co"># items table</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------</span></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a><span class="co"># ge1   !Los hombres y las mujeres deberían tener las mismas oportunidades de participar en el gobierno ..</span></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a><span class="co"># ge2   !Los hombres y las mujeres deberían tener los mismos derechos en todos los aspectos</span></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a><span class="co"># ge3   ![R] Las mujeres deberían permanecer alejadas de la política</span></span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a><span class="co"># ge4   ![R] Cuando no hay muchos trabajos disponibles, los hombres deberían tener más derecho a un trabajo que las mujeres</span></span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a><span class="co"># ge5   !Los hombres y las mujeres deberían recibir el mismo pago cuando hacen los mismos trabajos</span></span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a><span class="co"># ge6   ![R] Los hombres están mejor preparados para ser líderes políticos que las mujeres.</span></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a><span class="co"># display ten cases</span></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>data_gen[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,] <span class="sc">%&gt;%</span></span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">id_i</th>
+<th align="right">ge1</th>
+<th align="right">ge2</th>
+<th align="right">ge3</th>
+<th align="right">ge4</th>
+<th align="right">ge5</th>
+<th align="right">ge6</th>
+<th align="right">ge3r</th>
+<th align="right">ge4r</th>
+<th align="right">ge6r</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">5898</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">5899</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">5900</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">5901</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">5902</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">5903</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">5904</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">5905</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">5906</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">5907</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha computes</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha with psych</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>data_gen <span class="sc">%&gt;%</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(ge1, ge2, ge3r, ge4r, ge5, ge6r) <span class="sc">%&gt;%</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>()</span></code></pre></div>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = .)
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+##       0.69       0.7    0.72      0.28 2.3 0.0028  3.3 0.54     0.19
+## 
+##     95% confidence boundaries 
+##          lower alpha upper
+## Feldt     0.68  0.69   0.7
+## Duhachek  0.68  0.69   0.7
+## 
+##  Reliability if an item is dropped:
+##      raw_alpha std.alpha G6(smc) average_r S/N alpha se var.r med.r
+## ge1       0.68      0.67    0.67      0.28 2.0   0.0029 0.033  0.19
+## ge2       0.67      0.66    0.66      0.28 1.9   0.0029 0.034  0.18
+## ge3r      0.66      0.68    0.70      0.30 2.2   0.0032 0.030  0.19
+## ge4r      0.59      0.64    0.63      0.26 1.8   0.0040 0.026  0.19
+## ge5       0.68      0.67    0.69      0.29 2.1   0.0028 0.037  0.18
+## ge6r      0.59      0.63    0.64      0.26 1.7   0.0039 0.029  0.17
+## 
+##  Item statistics 
+##          n raw.r std.r r.cor r.drop mean   sd
+## ge1  24563  0.49  0.62  0.51   0.34  3.7 0.52
+## ge2  24419  0.52  0.64  0.54   0.36  3.7 0.59
+## ge3r 24150  0.67  0.57  0.44   0.42  2.9 1.04
+## ge4r 24287  0.78  0.68  0.63   0.57  2.9 1.07
+## ge5  24223  0.50  0.59  0.46   0.31  3.6 0.68
+## ge6r 24224  0.77  0.69  0.63   0.58  3.0 1.02
+## 
+## Non missing response frequency for each item
+##         1    2    3    4 miss
+## ge1  0.01 0.02 0.20 0.78 0.03
+## ge2  0.01 0.04 0.22 0.73 0.04
+## ge3r 0.13 0.18 0.32 0.37 0.05
+## ge4r 0.16 0.16 0.31 0.36 0.04
+## ge5  0.02 0.05 0.21 0.72 0.04
+## ge6r 0.13 0.16 0.34 0.38 0.04</code></pre>
+<h1 id="anexos">Anexos</h1>
+<h2 id="componentes-del-output-de-un-psychalpha">Componentes del output
+de un psych::alpha</h2>
+<ul>
+<li>Raw_alpha: basado en covarianzas</li>
+<li>Std.alpha: basado en correlaciones</li>
+<li>G6(smc): Indice de Guttman</li>
+<li>Average_r: Correlación media inter item</li>
+<li>Ase: error estándar de la escala</li>
+<li>Mean: Promedio de la escala</li>
+<li>Sd: desviación estándar de la escala</li>
+<li>raw.r : Correlación item-test</li>
+<li>std.r: correlacion estandarizada</li>
+<li>r.cor: Correlación con la escala controlando la interacción con
+otros ítems</li>
+<li>r.drop: Correlación ítem con la escala que se arma sin ese ítem</li>
+<li>mean: Promedio del ítem</li>
+<li>sd: desviación estándar del ítem</li>
+</ul>
+
+</body>
+</html>
