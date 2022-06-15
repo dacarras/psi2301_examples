@@ -26,6 +26,7 @@ mean_score <- function (..., na.rm = TRUE) {
 # crear variable "disp"
 #--------------------------------------
 
+library(dplyr)
 data_ptsd <- data_ptsd %>%
              mutate(disp = mean_score(
              	for1, for5, for6
