@@ -730,6 +730,24 @@ knitr::kable(., digits = 2)
 
 
 library(VIM)
+```
+
+    ## Loading required package: colorspace
+
+    ## Loading required package: grid
+
+    ## VIM is ready to use.
+
+    ## Suggestions and bug-reports can be submitted at: https://github.com/statistikat/VIM/issues
+
+    ## 
+    ## Attaching package: 'VIM'
+
+    ## The following object is masked from 'package:datasets':
+    ## 
+    ##     sleep
+
+``` r
 datos_desarollo %>%
 dplyr::select(parinv, par_z,
 com, #  = comunicación
