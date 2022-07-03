@@ -1,0 +1,405 @@
+---
+title: "ANOVA y pruebas post hot"
+output: github_document
+---
+
+# Pregunta: problemas con Tukey despues de un ANOVA con correcciones
+
+Hola Profe!!
+Aquí están los problemas:
+
+1) ¿Cómo hacemos una Post-Hoc a un ANOVA con corrección de Welch? Cuando tratamos de ejecutar TukeyHSD, R arroja: Error in UseMethod("TukeyHSD") : no applicable method for 'TukeyHSD' applied to an object of class "htest"
+
+```{r, echo=TRUE, eval = FALSE}
+
+anova2 = oneway.test(RES_PROB ~ factor(NSE), data=d1, var.equal =FALSE)
+anova2
+
+#RES_PROB
+TukeyHSD(anova2)
+
+```
+
+En internet dice que es por no usar la función aov, pero resulta que no podemos usarla si no se cumple la homocedasticidad, como es el caso :c
+
+2) ¿Qué hacemos si no se cumple la normalidad? En dos variables hicimos un test de Shapiro que nos dice que no se cumple, y no sabemos qué hacer porque tenemos entendido que en estos casos ANOVA deja de ser una prueba adecuada, y en internet aparece que podemos hacer correcciones logarítmicas y cosas así que suenan terribles y que no hemos aprendido.
+
+Le adjunto el rmd resumido para poder ver el problema y la base de datos.
+Si quieres revisar el rmd tienes que ejecutar todos los códigos que dejamos. Avísame cuando nos podemos juntar entre hoy y mañana; nosotros tenemos toda la disponibilidad.
+
+
+
+# Respuesta
+
+Hay tres cosas que se pueden considerar, para evaluar este problema:
+
+- Evaluar si ANOVA es un modelo para trabajar sobre estos datos
+- Si ANOVA no es la mejor solución, identificar que otras alternativas hay
+- Finalmente, cómo responder al ejercicio del trabajo.
+
+El primero consiste en evaluar si la prueba F es aplicable a los datos. Si los datos empleados, no tienen grupos balanceados (mismo tamaño), no tienen varianzas similares, y tienen una distribución asimétrico (i.e. no-normal), a tal punto que los residuos del modelo no son normales, entonces, mi conclusión seria que la prueba F no es una buena solución para analizar ese tipo de datos.
+
+Respecto a lo segundo, existen comparaciones, por ejemplo Games-Howell, múltiples que son aplicables cuando los tamaños de los grupos, y los tamaños de las varianzas son dispares, pero ciertos autores tienen dudas de si esto aplica, cuando ademas las distribuciones son asimétricos (i.e. *highly skewed*). Otra alternativa, es emplear pruebas no paramétricas para abordar el problema (e.g., Kruskal-Wallis).
+
+Como les indicara el ayudante, para el trabajo, basta con aplicar uno de los procedimientos elegidos, y señalar las limitaciones que estos resultados poseen debido a el escenario que presentan los datos empleados. Esto implica indicar la presencia de varianzas no similares entre grupos, tamaños diferentes, y residuales no-normales.
+
+En el siguiente código se inluyen ejemplos de:
+- aplicar ANOVA tradicional
+- aplicar ANOVA con corrección de Welch
+  - y luego Games-Howell post hoc
+- un ejemplo de una aplicación de Kruskal-Walli.
+
+# Código
+
+## Preparar datos
+
+```{r, echo=TRUE, eval = TRUE}
+# -----------------------------------------------------------------------------
+# abrir dplyr y los datos
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# actualizar psi2301
+# -----------------------------------------------
+
+# credentials::set_github_pat()
+# devtools::install_github("dacarras/psi2301", force = TRUE)
+
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
+
+library(dplyr)
+datos_desarollo <- psi2301::desarollo_psicomotor
+
+# -----------------------------------------------
+# preparar los datos
+# -----------------------------------------------
+
+datos_desarollo <- datos_desarollo %>%
+                   rename_all(tolower) %>%
+                   dplyr::glimpse()
+
+# -----------------------------------------------
+# descriptivo de frecuencias
+# -----------------------------------------------
+
+datos_desarollo %>%
+  dplyr::select(a8com1:a8si6) %>%
+  r4sda::wide_resp() %>%
+  knitr::kable(., digits = 2)
+
+# Nota: items invertidos `a8mfin2` y `a8si1`
+
+# -----------------------------------------------
+# invertir items
+# -----------------------------------------------
+
+datos_desarollo <- datos_desarollo %>%
+                   mutate(a8mfin2_raw = a8mfin2) %>%
+                   mutate(a8mfin2 = case_when(
+                     a8mfin2 ==  0 ~ 10,
+                     a8mfin2 ==  5 ~ 5,
+                     a8mfin2 == 10 ~ 0
+                   )) %>% 
+                   mutate(a8si1_raw = a8si1) %>%
+                   mutate(a8si1 = case_when(
+                     a8si1 ==  0 ~ 10,
+                     a8si1 ==  5 ~ 5,
+                     a8si1 == 10 ~ 0
+                   ))
+                      
+# -----------------------------------------------
+# revisar items invertidos
+# -----------------------------------------------
+
+dplyr::count(datos_desarollo, a8mfin2_raw, a8mfin2)
+dplyr::count(datos_desarollo, a8si1_raw, a8si1)
+
+
+# -----------------------------------------------
+# crear puntajes promedios
+# -----------------------------------------------
+
+com_items <- dplyr::select(datos_desarollo, a8com1:a8com6)
+amp_items <- dplyr::select(datos_desarollo, a8mamp1:a8mamp6)
+fin_items <- dplyr::select(datos_desarollo, a8mfin1:a8mfin6)
+pro_items <- dplyr::select(datos_desarollo, a8rp1:a8rp6)
+soc_items <- dplyr::select(datos_desarollo, a8si1:a8si6)
+
+datos_desarollo <- datos_desarollo %>%
+                   mutate(com = psi2301::mean_score(com_items)) %>%
+                   mutate(amp = psi2301::mean_score(amp_items)) %>%
+                   mutate(fin = psi2301::mean_score(fin_items)) %>%
+                   mutate(pro = psi2301::mean_score(pro_items)) %>%
+                   mutate(soc = psi2301::mean_score(soc_items))
+
+# -----------------------------------------------
+# listado de putajes generados
+# -----------------------------------------------
+
+# com = comunicación
+# amp = motricidad gruesa
+# fin = motricidad fina
+# pro = resolucion de problemas
+# soc = socio individual (relaciones interpersonales)
+
+# -----------------------------------------------
+# crear tabla grupos nse como texto
+# -----------------------------------------------
+
+# crear nse con valores texto
+datos_desarollo <- datos_desarollo %>%
+                   mutate(nse_group = case_when(
+                     nse == 1 ~ 'alto',
+                     nse == 2 ~ 'medio',
+                     nse == 3 ~ 'bajo'
+                   ))
+
+# -----------------------------------------------
+# inspeccionar base de datos creada
+# -----------------------------------------------
+
+datos_desarollo %>%
+r4sda::variables_table() %>%
+knitr::kable()
+
+```
+
+
+## Producir tabla de descriptivos
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# alternativa 3
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# crear tabla de descriptivos (medias y sd)
+# -----------------------------------------------
+
+# crear nse con valores interpretable para tabla
+datos_desarollo <- datos_desarollo %>%
+                   mutate(nse_group = case_when(
+                     nse == 1 ~ 'alto',
+                     nse == 2 ~ 'medio',
+                     nse == 3 ~ 'bajo'
+                   ))
+
+# tabla de comunicación
+table_com <- datos_desarollo %>%
+               group_by(nse_group) %>%
+               summarize(
+                 n = sum(!is.na(com)),
+                 media = mean(com, na.rm = TRUE),
+                 desviacion = sd(com, na.rm = TRUE)
+                 ) %>%
+               mutate(variable = 'comunicación') %>%
+               dplyr::select(nse_group, variable, n, media, desviacion)
+
+# tabla de motricidad gruesa
+table_amp <- datos_desarollo %>%
+               group_by(nse_group) %>%
+               summarize(
+                 n = sum(!is.na(com)),
+                 media = mean(amp, na.rm = TRUE),
+                 desviacion = sd(amp, na.rm = TRUE)
+                 ) %>%
+               mutate(variable = 'movimientos amplios') %>%
+               dplyr::select(nse_group, variable, n, media, desviacion)
+
+# tabla con medias y sd
+table_descriptives <- dplyr::bind_rows(table_com, table_amp)
+
+# guardar a excel
+openxlsx::write.xlsx(table_descriptives, 'tabla_descriptivos_1.xlsx')
+
+```
+
+## Tabla de descriptivos
+
+- Tabla de descriptivos:
+  - n = cantidad de casos con observaciones validas en la variable
+  - media = promedio de variables
+  - desviacion = desviación estandar de variables
+- Cada uno de los descriptivos se produce para los diferentes grupos socioeconómicos (nse) presentes en el estudio.
+
+```{r, echo=FALSE, eval = TRUE}
+
+# mostrar tabla
+table_descriptives %>%
+knitr::kable(., digits = 2, caption = 'Tabla 1: Descriptivos de comunicación y movimientos amplios por cada grupo socioeconómico (nse_group)')
+
+```
+
+# ANOVA
+
+## Caso 1: Residuales no normales, y varianzas no equivalentes
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# traditional anova
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# crear tabla de descriptivos (medias y sd)
+# -----------------------------------------------
+
+aov(pro ~ as.factor(nse), data = datos_desarollo)
+
+# -----------------------------------------------
+# normality
+# -----------------------------------------------
+
+anova_model <- lm(pro ~ as.factor(nse), data = datos_desarollo)
+shapiro.test(residuals(anova_model))
+
+# -----------------------------------------------
+# homocesdasticity
+# -----------------------------------------------
+
+# test 1
+car::leveneTest(
+  pro ~ as.factor(nse), 
+  data = datos_desarollo, 
+  center = 'mean')
+
+
+# test 2
+bartlett.test(pro ~ as.factor(nse), data = datos_desarollo)
+
+# -----------------------------------------------
+# n balance
+# -----------------------------------------------
+
+dplyr::count(datos_desarollo, nse)
+
+# -----------------------------------------------
+# multiple comparison ignoring assumptions
+# -----------------------------------------------
+
+anova_example <- aov(pro ~ as.factor(nse), data = datos_desarollo)
+TukeyHSD(anova_example)
+
+
+```
+
+## Alternativas: Games-Howell Post Hoc Test
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# Welch Anova
+# -----------------------------------------------------------------------------
+
+oneway.test(pro ~ as.factor(nse), data = datos_desarollo, var.equal = FALSE)
+
+# -----------------------------------------------
+# bonferroni
+# -----------------------------------------------
+
+with(datos_desarollo, 
+  pairwise.t.test(
+    x = pro,
+    g = as.factor(nse), 
+    p.adjust.method="bonferroni")
+  )
+
+# -----------------------------------------------
+# Games-Howell Post Hoc Test via "userfriendlyscience"
+# -----------------------------------------------
+
+# devtools::install_github("matherion/userfriendlyscience", dependencies=TRUE)
+
+with(datos_desarollo,
+userfriendlyscience::posthocTGH(
+  y=pro,
+  x=as.factor(nse))
+)
+
+# -----------------------------------------------
+# Games-Howell Post Hoc Test via "rstatix"
+# -----------------------------------------------
+
+# install.packages("rstatix")
+
+rstatix::games_howell_test(
+  data = datos_desarollo, 
+  formula = pro ~ nse_group, 
+  conf.level = 0.95, detailed = TRUE)
+
+
+```
+
+## Alternativas: Kruskal Wallis
+
+```{r, echo=TRUE, eval = TRUE}
+
+# -----------------------------------------------------------------------------
+# non parametric anova
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------
+# kruskal wallis test
+# -----------------------------------------------
+
+kruskal.test(pro ~ nse_group,data = datos_desarollo)
+
+# -----------------------------------------------
+# post hoc
+# -----------------------------------------------
+
+FSA::dunnTest(pro ~ nse_group,data = datos_desarollo, method = 'bh')
+
+
+```
+
+
+# Anexos
+
+
+## Tabla de frecuencia con item invertidos
+
+```text
+
+|variable |   00|   05|   10|   NA|hist     |
+|:--------|----:|----:|----:|----:|:--------|
+|a8com1   |   NA| 0.06| 0.94|   NA|▁▁▁▁▁▁▁▇ |
+|a8com2   |   NA| 0.09| 0.90| 0.00|▁▁▁▁▁▁▁▇ |
+|a8com3   | 0.06| 0.30| 0.64| 0.00|▁▁▁▃▁▁▁▇ |
+|a8com4   | 0.07| 0.09| 0.84|   NA|▁▁▁▁▁▁▁▇ |
+|a8com5   | 0.06| 0.20| 0.74| 0.00|▁▁▁▂▁▁▁▇ |
+|a8com6   | 0.07| 0.08| 0.84| 0.00|▁▁▁▁▁▁▁▇ |
+|a8mamp1  | 0.09| 0.10| 0.82|   NA|▁▁▁▁▁▁▁▇ |
+|a8mamp2  | 0.12| 0.12| 0.76| 0.01|▁▁▁▁▁▁▁▇ |
+|a8mamp3  | 0.50| 0.14| 0.36| 0.00|▇▁▁▂▁▁▁▆ |
+|a8mamp4  | 0.10| 0.11| 0.79|   NA|▁▁▁▁▁▁▁▇ |
+|a8mamp5  | 0.09| 0.12| 0.79|   NA|▁▁▁▁▁▁▁▇ |
+|a8mamp6  | 0.36| 0.19| 0.45| 0.00|▆▁▁▃▁▁▁▇ |
+|a8mfin1  | 0.02| 0.05| 0.93|   NA|▁▁▁▁▁▁▁▇ |
+|a8mfin2  | 0.94| 0.05| 0.01| 0.00|▇▁▁▁▁▁▁▁ | * item invertido
+|a8mfin3  | 0.07| 0.10| 0.84|   NA|▁▁▁▁▁▁▁▇ |
+|a8mfin4  | 0.01| 0.05| 0.94|   NA|▁▁▁▁▁▁▁▇ |
+|a8mfin5  | 0.08| 0.15| 0.77| 0.00|▁▁▁▂▁▁▁▇ |
+|a8mfin6  | 0.11| 0.20| 0.69|   NA|▁▁▁▂▁▁▁▇ |
+|a8rp1    | 0.00| 0.04| 0.96|   NA|▁▁▁▁▁▁▁▇ |
+|a8rp2    | 0.04| 0.09| 0.86| 0.01|▁▁▁▁▁▁▁▇ |
+|a8rp3    | 0.04| 0.05| 0.92|   NA|▁▁▁▁▁▁▁▇ |
+|a8rp4    | 0.05| 0.10| 0.85|   NA|▁▁▁▁▁▁▁▇ |
+|a8rp5    | 0.10| 0.22| 0.68|   NA|▁▁▁▂▁▁▁▇ |
+|a8rp6    | 0.14| 0.18| 0.68| 0.00|▂▁▁▂▁▁▁▇ |
+|a8si1    | 0.91| 0.05| 0.04|   NA|▇▁▁▁▁▁▁▁ | * item invertido
+|a8si2    | 0.06| 0.07| 0.87| 0.00|▁▁▁▁▁▁▁▇ |
+|a8si3    | 0.06| 0.07| 0.88|   NA|▁▁▁▁▁▁▁▇ |
+|a8si4    | 0.08| 0.12| 0.80| 0.00|▁▁▁▁▁▁▁▇ |
+|a8si5    | 0.15| 0.08| 0.75| 0.02|▂▁▁▁▁▁▁▇ |
+|a8si6    | 0.21| 0.06| 0.71| 0.02|▂▁▁▁▁▁▁▇ |
+
+```
+
+## Items invertidos
+
+- A8MFIN2: ¿Puede tomar un juguete pequeño y tenerlo en la palma de la mano, sujetándolo con los dedos?
+- A8SI2: Al estar delante de un espejo, ¿intenta tocar el espejo con las manos?
