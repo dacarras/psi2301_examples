@@ -103,9 +103,16 @@ datos_psicomotor <- datos_psicomotor %>%
 # -----------------------------------------------
 
 datos_psicomotor <- datos_psicomotor %>%
-                   mutate(pad_mudar_r = reverse(pad_mudar)) %>%
-                   mutate(parinv = mean_score(pad_mudar_r, pad_jugar, pad_dormir,pad_alim, pad_med)) %>%
-                   mutate(par_z  = z_score(parinv))
+                    mutate(pad_mudar_r = reverse(pad_mudar)) %>%
+                    mutate(parinv = mean_score(pad_mudar_r, pad_jugar, pad_dormir,pad_alim, pad_med)) %>%
+                    mutate(par_z  = z_score(parinv))
+
+
+# -----------------------------------------------
+# correlation
+# -----------------------------------------------
+
+with(datos_psicomotor, cor.test(par_z, soc))
 
 
 # -----------------------------------------------
@@ -116,9 +123,9 @@ library(ggpubr)
 ggscatter(datos_psicomotor, 
 	      x = "par_z", 
 	      y = "soc",
-          # add = "reg.line",                       # Add regression line
-          fullrange = TRUE,                         # Extending the regression line
-          #rug = TRUE                               # Add marginal rug
+          add = "reg.line",  # Add regression line
+          fullrange = TRUE   # Extending the regression line
+          # rug = TRUE       # Add marginal rug
           )
 
 
