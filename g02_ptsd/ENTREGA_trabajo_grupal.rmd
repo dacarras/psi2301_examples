@@ -9,25 +9,57 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
+# Abrir datos
 
 ```{r, echo=TRUE}
 
-#------------------------------------------------------------------------------
-# folder function
-#------------------------------------------------------------------------------
+# -----------------------------------------------
+# abrir datos
+# -----------------------------------------------
 
-# ptsd#
+data_ptsd <- read.csv(
+  url(
+'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/ptsd_data.csv'
+  )
+)
+
+
+# -----------------------------------------------
+# copia de datos para ejemplos
+# -----------------------------------------------
+
+data_original <- read.csv(
+  url(
+'https://raw.githubusercontent.com/dacarras/psi2301_examples/master/data/ptsd_data.csv'
+  )
+)
+
+
+```
+
+# Abrir datos
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------
+# cargar librerias
+# -----------------------------------------------
+
 
 library(dplyr)
-library(readr)
+
 library(labelled)
 
-data_ptsd <- read.csv(file.choose()), head = TRUE,
-dec = ".", na.strings =
 
-data_ptsd <- data_ptsd
+```
+
+# Descriptivos con war7
+
+```{r, echo=TRUE, eval = FALSE}
+
+# -----------------------------------------------
+# descriptivos
+# -----------------------------------------------
 
 #---------------------------------------------------------------
 #variable 1: Experiencia personal en la guerra, si ha visto a su familia atacada
@@ -50,11 +82,23 @@ max(data_ptsd$war7)
 percentiles=data_ptsd$war7
 quantile(percentiles, c(.25, .75))        
 
+
+```
+
+# Descriptivos con fut2
+
+## Recategorizacion 1
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------
+# descriptivos
+# -----------------------------------------------
+
 #---------------------------------------------------------------     
 #variable 2: "Experiencia personal de trauma de guerra"
 #fut2 = "What do you think; will there be another civil war in Sierra Leone within the next 10 years"
 #grafico de barras recategorizado 4 categorias.
-
 
 dplyr::count(data_ptsd, fut2)
 
@@ -91,6 +135,16 @@ sd(data_ptsd$fut2)
 percentiles=data_ptsd$fut2
 quantile(percentiles, c(.25, .75))  
 
+```
+
+# Descriptivos con noe5
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------
+# descriptivos
+# -----------------------------------------------
+
 #------------------------------------------------------------------
 #variable3: No juzgo a un desconocido por su pasado como "rebelde" o no
 #noe5= " If I meet a person, I look at this person and don’t care whether he was a rebel or not"
@@ -110,6 +164,17 @@ median(data_ptsd$noe5)
 sd(data_ptsd$noe5)
 min(data_ptsd$noe5)
 max(data_ptsd$noe5)
+
+
+```
+
+# Descriptivos con ansiedad intergrupal
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------
+# descriptivos
+# -----------------------------------------------
 
 #-----------------------------------------------------------------
 #variable 4: ¿Como las emociones que sienten las personas al interactuar con los rebeldes afecta para que puedan perdonarlos y avanzar a una reconstruccion social?
@@ -148,6 +213,16 @@ sd(data_ptsd$emociones_reb)
 min(data_ptsd$emociones_reb)
 max(data_ptsd$emociones_reb)
 
+```
+
+# Descriptivos con disposición a perdonar
+
+```{r, echo=TRUE}
+
+# -----------------------------------------------
+# descriptivos
+# -----------------------------------------------
+
 #------------------------------------------------------------
 ##variable 5, construida: disposición de las personas para perdonar y reconstruir
 
@@ -168,13 +243,14 @@ min(data_ptsd$disp)
 max(data_ptsd$disp)
 
 ```
-              
 
-```{r, echo=TRUE}
+## Gráfico              
 
-#------------------------------------------------------------------------------
-# folder function
-#------------------------------------------------------------------------------
+```{r, echo=TRUE, eval = FALSE}
+
+# -----------------------------------------------
+# plot
+# -----------------------------------------------
 
 
 #cruce de variables
@@ -198,24 +274,19 @@ data_ptsd %>%
 
 ```
 
+# Entrega 2
+
+## t test version 1              
 
 ```{r, echo=TRUE}
 
-#------------------------------------------------------------------------------
-# folder function
-#------------------------------------------------------------------------------
+# -----------------------------------------------
+# plot
+# -----------------------------------------------
 
-              
-#------------------------------------------------------------------------
-#------------------------------------------------------------------------
-#ENTREGA 2
-#------------------------------------------------------------------------
-#------------------------------------------------------------------------
-
-
-#t test variable cuanti vs cuali
-#WAR7 -> HA VISTO A SU FMILIA SIENDO ATACADA (si/no)
-#fut2 -> CREES QUE HABRÁ UNA GUERRA CIVIL DENTRO DE 10 AÑOS? 
+# t test variable cuanti vs cuali
+# WAR7 -> HA VISTO A SU FMILIA SIENDO ATACADA (si/no)
+# fut2 -> CREES QUE HABRÁ UNA GUERRA CIVIL DENTRO DE 10 AÑOS? 
 
 data_ptsd %>%
 dplyr::select(for1, for5, for6) %>%
@@ -245,17 +316,13 @@ xlab = "Experiencia", ylab="disposición perdonar y recontruir", col="aliceblue"
 ```
 
 
-# Seccion de ANIVA
+## Seccion de ANOVA (version 1)
 
 ```{r, echo=TRUE}
 
 #------------------------------------------------------------------------------
-# folder function
+# ANOVA
 #------------------------------------------------------------------------------
-
-#--------------------
-#ANOVA
-#-------------------
  
 #codigo denuevo fut2
 
@@ -291,14 +358,24 @@ boxplot(emociones_reb ~ fut2,data=data_ptsd, main=" Anova 1",
    xlab="sensación al enfrentarse a un rebelde", ylab="fut2", col = "pink")
 
 
+```
+
+
+## Seccion de ANOVA (version 2)
+
+```{r, echo=TRUE}
+
 #------------------------------------------------------------
-# redo
+# Anova con datos originales
 #------------------------------------------------------------
 
 
+#------------------------------------------------------------
+# preparar datos
+#------------------------------------------------------------
 
 
-data_model <- psi2301::ptsd_data %>%
+data_model <- data_original %>%
               mutate(fut_recat = case_when(
                 fut2 == 1 ~ 'neg',
                 fut2 == 2 ~ 'neg',
@@ -310,11 +387,16 @@ data_model <- psi2301::ptsd_data %>%
               mutate(disp = psi2301::mean_score(for1, for5, for6)) %>%
               dplyr::glimpse()
 
+#------------------------------------------------------------
+# ajustar ANOVA
+#------------------------------------------------------------
+
 aov(anxiety ~ fut_recat, data = data_model) %>%
 summary()
 
-
-r4sda::variable_label(data_model$fut2)
+#------------------------------------------------------------
+# plot
+#------------------------------------------------------------
 
 boxplot(anxiety ~ fut_recat,
         data=data_model, 
@@ -325,6 +407,9 @@ boxplot(anxiety ~ fut_recat,
         )
 
 
+#------------------------------------------------------------
+# descriptivos
+#------------------------------------------------------------
 
 data_model %>%
 group_by(fut_recat) %>%
@@ -336,19 +421,17 @@ summarize(
 knitr::kable(., digits = 2)
 
 
-````
+```
+
+## Seccion de ANOVA y post hoc (codigo no funciona)
+
+```{r, echo=TRUE, eval = FALSE}
 
 
-```{r, echo=TRUE}
-
-#------------------------------------------------------------------------------
-# folder function
-#------------------------------------------------------------------------------
-
-# tukey post hoc
-#------------------------------------------------
-
-#no supe como hacerla, me tira error
+#------------------------------------------------------------
+# ANOVA y TUKEY
+#------------------------------------------------------------
+# no supe como hacerla, me tira error
 tuckeyHSD("anova1")
 
 #2#
@@ -368,8 +451,16 @@ boxplot(disp ~ fut2,data=data_ptsd, main=" Anova 2",
 #no supe como hacerla, me tira error
 tuckeyHSD("anova2")
 
+```
+
+## ANOVA sin efecto
+
+```{r, echo=TRUE, eval = FALSE}
+
+
+
 #------------------------------------------------------------
-# redo
+# anova
 #------------------------------------------------------------
 
 
@@ -379,5 +470,5 @@ summary()
 boxplot(disp ~ fut_recat,data=data_model)
 
 
+```
 
-´´´
